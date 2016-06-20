@@ -202,6 +202,10 @@ var update = function() {
   collisionCheck(player, monsters);
   collisionCheckLightPuzzle(player, currentLightPuzzle);
   monsterBump(monsters);
+  // -- Checks if light puzzle is completed and 'opens' the East door if it is. -- //
+  if (lightPuzzleCompleteCheck(currentLightPuzzle, true) === true) {
+    doors[1].ballColor = "white";
+  }
 };
 
 // -- place items that need to be drawn in here. static lines, text, images and objects -- //
@@ -377,6 +381,17 @@ LightPuzzle.prototype.toggleLights = function() {
         currentLightPuzzle[i].isLit = !currentLightPuzzle[i].isLit;
       }
   };
+};
+
+// -- Checks that all isLit booleans in an array, lightArray, match the boolean you input in booleanToMatch -- //
+var lightPuzzleCompleteCheck = function(lightArray, booleanToMatch) {
+  var puzzleCompleted = true;
+  for (var i = 0; i < lightArray.length; i ++) {
+    if (lightArray[i].isLit != booleanToMatch) {
+      puzzleCompleted = false;
+    }
+  };
+  return puzzleCompleted;
 };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
