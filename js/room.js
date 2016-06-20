@@ -10,15 +10,45 @@ function Room(width, height) {
   this.width = width;
   this.height = height;
   this.background = [];
-  this.foreground = [];
+  this.sprites = [];
 }
 
-Room.prototype.addMap = function(map, foreground) {
+Room.prototype.addMap = function(map) {
   if(foreground) {
     this.foreground = map;
   } else {
     this.background = map;
   }
+}
+
+Room.prototype.sortSprite = function(sprite) {
+  var index = this.sprites.getIndexOf(sprite);
+  var inc = 1;
+  if(sprite.yPos<sprites[index+1]) {
+    inc = -1;
+  }
+  for(var i=0; i!=-1 && i!=this.sprites.length; i+=inc) {
+    if(inc===1) {
+      if(sprite.yPos<this.sprites[i-1].yPos) {
+        this.sprites[i-1] = this.sprites[i];
+        this.sprites[i] = sprite;
+      } else {
+        this.sprites[i-1] = this.sprites[i];
+      }
+    } else {
+      if(sprite.yPos>this.sprites[i+1].yPos) {
+        this.sprites[i+1] = this.sprites[i];
+        this.sprites[i] = sprite;
+      } else {
+        this.sprites[i+1] = this.sprites[i];
+      }
+    }
+  }
+}
+
+Room.prototype.addSprite = function(sprite) {
+  this.sprites.push(sprite);
+  this.sortSprite(sprite);
 }
 
 Room.prototype.draw = function(ctx) {
@@ -27,4 +57,7 @@ Room.prototype.draw = function(ctx) {
       tileDict[this.background[y][x]].play(ctx, 60*x, 60*y);
     }
   }
+  this.sprites.forEach(function(sprite) {
+    sprite.draw();
+  });
 }
