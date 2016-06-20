@@ -8,7 +8,7 @@ var animate = window.requestAnimationFrame ||
 // -- Initialize Global Variables -- //
 var width = 750;
 var height = 750;
-var playerSpeed = 4;
+var playerSpeed = 2;
 var wallWidth = 10;
 var doorLength = 40;
 
@@ -16,6 +16,23 @@ var canvas = document.createElement('canvas');
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
+context.imageSmoothingEnabled = false;
+context.mozImageSmoothingEnabled = false;
+context.webkitImageSmoothingEnabled = false;
+
+// var testMapB = [
+//   ["a","b","c"],
+//   ["b","a","c"],
+//   ["c","c","c"]
+// ];
+// var testMapF = [
+//   [" "," ","w"],
+//   ["q"," "," "],
+//   [" ","w","q"]
+// ];
+// r = new Room(3, 3);
+// r.addMap(testMapB, false);
+// r.addMap(testMapF, true)
 
 // -- Initialize an empty array
 var monsters = [];
@@ -61,7 +78,74 @@ var lightPanelObject8 = new LightPuzzle(lightPanel8, 3, 2);
 var lightPanel9 = new Sprite(600, 600, 40);
 var lightPanelObject9 = new LightPuzzle(lightPanel9, 3, 3);
 currentLightPuzzle.push(lightPanelObject9, lightPanelObject8, lightPanelObject7, lightPanelObject6, lightPanelObject5, lightPanelObject4, lightPanelObject3, lightPanelObject2, lightPanelObject1);
-
+var MomoSprite = new SuperSprite("down", new Animation("img/Momo-Spritesheet.png",0,1,25,33,4,10),true,function() {
+    var s = this.obj;
+    if(s.xVel===0 && s.yVel===0) {
+      if(this.currentAnimation===this.animations["down"] || this.currentAnimation===this.animations["downStill"]) {
+        return "downStill";
+      } else if(this.currentAnimation===this.animations["up"] || this.currentAnimation===this.animations["upStill"]) {
+        return "upStill";
+      } else if(this.currentAnimation===this.animations["left"] || this.currentAnimation===this.animations["leftStill"]) {
+        return "leftStill";
+      } else if(this.currentAnimation===this.animations["right"] || this.currentAnimation===this.animations["rightStill"]) {
+        return "rightStill";
+      } else if(this.currentAnimation===this.animations["right"] || this.currentAnimation===this.animations["rightStill"]) {
+        return "rightStill";
+      } else if(this.currentAnimation===this.animations["upRight"] || this.currentAnimation===this.animations["upRightStill"]) {
+        return "upRightStill";
+      } else if(this.currentAnimation===this.animations["upLeft"] || this.currentAnimation===this.animations["upLeftStill"]) {
+        return "upLeftStill";
+      } else if(this.currentAnimation===this.animations["downRight"] || this.currentAnimation===this.animations["downRightStill"]) {
+        return "downRightStill";
+      } else if(this.currentAnimation===this.animations["downLeft"] || this.currentAnimation===this.animations["downLeftStill"]) {
+        return "downLeftStill";
+      }
+    }
+    var angle = (Math.atan(Math.abs(s.xVel)/Math.abs(s.yVel)))*(180/Math.PI);
+    if(angle < 23) {
+      if(s.yVel>0) {
+        return "down";
+      } else {
+        return "up"
+      }
+    } else if(angle > 68) {
+      if(s.xVel>0) {
+        return "right";
+      } else {
+        return "left"
+      }
+    } else {
+      if(s.xVel>0) {
+        if(s.yVel>0) {
+          return "downRight";
+        } else {
+          return "upRight";
+        }
+      } else {
+        if(s.yVel>0) {
+          return "downLeft";
+        } else {
+          return "upLeft";
+        }
+      }
+    }
+  }, player);
+MomoSprite.addAnimation("up", new Animation("img/Momo-Spritesheet.png",0,36,25,33,4,10));
+MomoSprite.addAnimation("left", new Animation("img/Momo-Spritesheet.png",100,1,25,33,4,10));
+MomoSprite.addAnimation("right", new Animation("img/Momo-Spritesheet.png",100,36,25,33,4,10));
+MomoSprite.addAnimation("downLeft", new Animation("img/Momo-Spritesheet.png",100,71,25,33,4,10));
+MomoSprite.addAnimation("downRight", new Animation("img/Momo-Spritesheet.png",100,106,25,33,4,10));
+MomoSprite.addAnimation("upRight", new Animation("img/Momo-Spritesheet.png",100,141,25,33,4,10));
+MomoSprite.addAnimation("upLeft", new Animation("img/Momo-Spritesheet.png",100,176,25,33,4,10));
+MomoSprite.addAnimation("upStill", new Animation("img/Momo-Spritesheet.png",0,36,25,33,1,10));
+MomoSprite.addAnimation("downStill", new Animation("img/Momo-Spritesheet.png",0,71,25,33,1,10));
+MomoSprite.addAnimation("leftStill", new Animation("img/Momo-Spritesheet.png",25,71,25,33,1,10));
+MomoSprite.addAnimation("rightStill", new Animation("img/Momo-Spritesheet.png",50,71,25,33,1,10));
+MomoSprite.addAnimation("upLeftStill", new Animation("img/Momo-Spritesheet.png",0,106,25,33,1,10));
+MomoSprite.addAnimation("upRightStill", new Animation("img/Momo-Spritesheet.png",25,106,25,33,1,10));
+MomoSprite.addAnimation("downLeftStill", new Animation("img/Momo-Spritesheet.png",50,106,25,33,1,10));
+MomoSprite.addAnimation("downRightStill", new Animation("img/Momo-Spritesheet.png",75,106,25,33,1,10));
+player.super = MomoSprite;
 // -- initialize some monsters to start -- //
 // var monster1 = new Sprite(300, 300, 20);
 // var monster2 = new Sprite(500, 200, 30, "orange");
@@ -124,6 +208,7 @@ var update = function() {
 var draw = function() {
   context.fillStyle = "#000";
   context.fillRect(0, 0, width, height);
+  //r.draw(context);
   // --
   context.strokeStyle = "#f26";
   context.lineWidth = 20;
@@ -199,14 +284,19 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.ballColor = color;
   this.xVel = xVel;
   this.yVel = yVel;
+  this.super = undefined;
 };
 
 // -- draws the sprite on the canvas -- //
 Sprite.prototype.draw = function () {
-  context.beginPath();
-  context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
-  context.fillStyle = this.ballColor;
-  context.fill();
+  if(typeof this.super === "undefined") {
+    context.beginPath();
+    context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
+    context.fillStyle = this.ballColor;
+    context.fill();
+  } else {
+    this.super.draw(context, this.xPos-25, this.yPos-25);
+  }
 };
 
 // -- Updates the sprites position -- //
