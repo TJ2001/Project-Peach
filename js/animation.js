@@ -21,6 +21,8 @@ function SuperSprite(key, animation,
   this.auto = autoChoose;
   this.chooseAnimation =  choose;
   this.obj = obj;
+  this.height = this.currentAnimation.frameArray[0].height;
+  this.width = this.currentAnimation.frameArray[0].width;
 }
 
 //addAnimation method --
