@@ -1,8 +1,26 @@
+/////TEST ENTITY
+function TestEntity1() {
+  this.sprite = new Sprite(0,0,20, "blue");
+}
+function TestEntity2() {
+  this.sprite = new Sprite(0,0,20, "green");
+}
+
+/////////////////
 
 tileDict = {
-  "a": new Animation("img/test-image.jpg",0,0,30,30,1,10),
-  "b": new Animation("img/test-image.jpg",0,30,30,30,1,10),
-  "c": new Animation("img/test-image.jpg",0,60,30,30,1,10)
+  "a": new Animation("img/test-image.jpg",0,0,32,32,1,10),
+  "b": new Animation("img/test-image.jpg",0,32,32,32,1,10),
+  "c": new Animation("img/test-image.jpg",0,64,32,32,1,10)
+}
+entityDict = {
+  get: function(icon) {
+    if(icon==="q") {
+      return new TestEntity1();
+    } else if(icon==="w") {
+      return new TestEntity2();
+    }
+  }
 }
 
 
@@ -11,11 +29,24 @@ function Room(width, height) {
   this.height = height;
   this.background = [];
   this.sprites = [];
+  this.entities = [];
 }
 
 Room.prototype.addMap = function(map, foreground) {
   if(foreground) {
     this.foreground = map;
+    for(var y=0; y<this.height; y++) {
+      for(var x=0; x<this.width; x++) {
+        var icon = this.foreground[y][x];
+        if(icon!=" ") {
+          var newEntity = entityDict.get(icon)
+          this.entities.push(newEntity);
+          newEntity.sprite.yPos = y*64+32;
+          newEntity.sprite.xPos = x*64+32;
+          this.sprites.push(newEntity.sprite);
+        }
+      }
+    }
   } else {
     this.background = map;
   }

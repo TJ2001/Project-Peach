@@ -12,16 +12,19 @@ var height = 600;
 var playerSpeed = 2;
 
 //test room
-var testMap = [
+var testMapB = [
   ["a","b","c"],
   ["b","a","c"],
   ["c","c","c"]
 ];
+var testMapF = [
+  [" "," ","w"],
+  ["q"," "," "],
+  [" ","w","q"]
+];
 r = new Room(3, 3);
-r.addMap(testMap, false);
-r.addSprite(new Sprite(30, 30, 20, "red", 0, 1));
-r.addSprite(new Sprite(30, 70, 20, "green", 0, 0));
-r.addSprite(new Sprite(30, 50, 20, "blue", 0, 0));
+r.addMap(testMapB, false);
+r.addMap(testMapF, true)
 
 canvas.width = width;
 canvas.height = height;
@@ -33,7 +36,7 @@ context.webkitImageSmoothingEnabled = false;
 // -- Initialize an empty array
 var monsters = [];
 var time = 0;
-var player = new Sprite(100, 100, 20, "blue");
+var player = new Sprite(200, 200, 20, "blue");
 var MomoSprite = new SuperSprite("down", new Animation("img/Momo-Spritesheet.png",0,1,25,33,4,10),true,function() {
     var s = this.obj;
     if(s.xVel===0 && s.yVel===0) {
