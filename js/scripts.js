@@ -11,15 +11,17 @@ var width = 800;
 var height = 600;
 var playerSpeed = 2;
 
-//test
+//test room
 var testMap = [
   ["a","b","c"],
   ["b","a","c"],
   ["c","c","c"]
 ];
-
 r = new Room(3, 3);
 r.addMap(testMap, false);
+r.addSprite(new Sprite(30, 30, 20, "red", 0, 1));
+r.addSprite(new Sprite(30, 70, 20, "green", 0, 0));
+r.addSprite(new Sprite(30, 50, 20, "blue", 0, 0));
 
 canvas.width = width;
 canvas.height = height;
