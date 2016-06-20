@@ -20,19 +20,31 @@ context.imageSmoothingEnabled = false;
 context.mozImageSmoothingEnabled = false;
 context.webkitImageSmoothingEnabled = false;
 
-// var testMapB = [
-//   ["a","b","c"],
-//   ["b","a","c"],
-//   ["c","c","c"]
-// ];
-// var testMapF = [
-//   [" "," ","w"],
-//   ["q"," "," "],
-//   [" ","w","q"]
-// ];
-// r = new Room(3, 3);
-// r.addMap(testMapB, false);
-// r.addMap(testMapF, true)
+var testMapB = [
+  ["a","b","c","a","a","b","c","a","a"],
+  ["b","a","c","b","c","b","c","a","a"],
+  ["c","c","c","b","c","b","c","a","a"],
+  ["b","a","c","b","c","b","c","a","a"],
+  ["c","c","c","b","c","b","c","a","a"],
+  ["b","a","c","b","c","b","c","a","a"],
+  ["c","c","c","b","c","b","c","a","a"],
+  ["b","a","c","b","c","b","c","a","a"],
+  ["c","c","c","b","c","b","c","a","a"]
+];
+var testMapF = [
+  ["l"," ","l"," ","l"," ","l"," ","l"],
+  [" "," "," "," "," "," "," "," "," "],
+  ["l"," ","l"," "," "," ","l"," ","l"],
+  [" "," "," "," "," "," "," "," "," "],
+  ["l"," ","l"," ","l"," ","l"," ","l"],
+  [" "," "," "," "," "," "," "," "," "],
+  ["l"," ","l"," "," "," ","l"," ","l"],
+  [" "," "," "," "," "," "," "," "," "],
+  ["l"," ","l"," ","l"," ","l"," ","l"]
+];
+r = new Room(9, 9);
+r.addMap(testMapB, false);
+r.addMap(testMapF, true)
 
 // -- Initialize an empty array
 var monsters = [];
@@ -53,31 +65,7 @@ doors[3] = doorWest;
 var depressedKeys = [];
 var time = 0;
 var player = new Sprite(100, 100, 20, "blue");
-// -- Boolean to stop triggering the light puzzle repeatedly -- //
-var lightPuzzlePlayerBoolean = false;
-// -- gloabal variable to make collisionCheckLightPuzzle work -- //
-var triggeredLight;
-// -- set up the light puzzle -- //
-var currentLightPuzzle = [];
-var lightPanel1 = new Sprite(200, 200, 40);
-var lightPanelObject1 = new LightPuzzle(lightPanel1, 1, 1);
-var lightPanel2 = new Sprite(400, 200, 40);
-var lightPanelObject2 = new LightPuzzle(lightPanel2, 1, 2);
-var lightPanel3 = new Sprite(600, 200, 40);
-var lightPanelObject3 = new LightPuzzle(lightPanel3, 1, 3);
-var lightPanel4 = new Sprite(200, 400, 40);
-var lightPanelObject4 = new LightPuzzle(lightPanel4, 2, 1);
-var lightPanel5 = new Sprite(400, 400, 40);
-var lightPanelObject5 = new LightPuzzle(lightPanel5, 2, 2);
-var lightPanel6 = new Sprite(600, 400, 40);
-var lightPanelObject6 = new LightPuzzle(lightPanel6, 2, 3);
-var lightPanel7 = new Sprite(200, 600, 40);
-var lightPanelObject7 = new LightPuzzle(lightPanel7, 3, 1);
-var lightPanel8 = new Sprite(400, 600, 40);
-var lightPanelObject8 = new LightPuzzle(lightPanel8, 3, 2);
-var lightPanel9 = new Sprite(600, 600, 40);
-var lightPanelObject9 = new LightPuzzle(lightPanel9, 3, 3);
-currentLightPuzzle.push(lightPanelObject9, lightPanelObject8, lightPanelObject7, lightPanelObject6, lightPanelObject5, lightPanelObject4, lightPanelObject3, lightPanelObject2, lightPanelObject1);
+
 var MomoSprite = new SuperSprite("down", new Animation("img/Momo-Spritesheet.png",0,1,25,33,4,10),true,function() {
     var s = this.obj;
     if(s.xVel===0 && s.yVel===0) {
@@ -200,7 +188,7 @@ var update = function() {
     monsters[i].update();
   };
   collisionCheck(player, monsters);
-  collisionCheckLightPuzzle(player, currentLightPuzzle);
+  r.update();
   monsterBump(monsters);
 };
 
@@ -208,18 +196,15 @@ var update = function() {
 var draw = function() {
   context.fillStyle = "#000";
   context.fillRect(0, 0, width, height);
-  //r.draw(context);
+  r.draw(context);
   // --
   context.strokeStyle = "#f26";
   context.lineWidth = 20;
   context.strokeRect(0, 0, width, height);
   // context.strokeRect(wallWidth, wallWidth, width - 2 *wallWidth, height - 2 * wallWidth);
-  for (i = 0; i < monsters.length; i++) {
-    monsters[i].draw();
-  };
-  for (i = 0; i < currentLightPuzzle.length; i++) {
-    currentLightPuzzle[i].draw();
-  };
+  // for (i = 0; i < currentLightPuzzle.length; i++) {
+  //   currentLightPuzzle[i].draw();
+  // };
   player.draw();
 };
 
@@ -253,20 +238,6 @@ var monsterBump = function(monsterArray) {
     };
   };
 };
-
-var collisionCheckLightPuzzle = function(triggeringSprite, lightPuzzleArray) {
-    for (var i = 0; i < lightPuzzleArray.length; i++) {
-      if (calculateDistance(lightPuzzleArray[i].sprite, triggeringSprite) <= (lightPuzzleArray[i].sprite.radius + triggeringSprite.radius) && !lightPuzzlePlayerBoolean) {
-        lightPuzzleArray[i].toggleLights();
-        triggeredLight = lightPuzzleArray[i].sprite;
-        lightPuzzlePlayerBoolean = true;
-      }
-    };
-  if (lightPuzzlePlayerBoolean === true && calculateDistance(triggeredLight, player) > triggeredLight.radius + triggeringSprite.radius + 10) {
-    lightPuzzlePlayerBoolean = false;
-  }
-};
-
 
 var collisionCheck = function(sprite, monsterArray) {
   for (i = 0; i < monsterArray.length; i++) {
@@ -339,32 +310,33 @@ Sprite.prototype.monsterMove = function() {
 };
 
 // --
-function LightPuzzle(sprite, positionInGridX, positionInGridY, isLit = false) {
-  this.sprite = sprite;
+function LightPuzzle(positionInGridX, positionInGridY, isLit = false) {
+  this.sprite = new Sprite(0, 0, 32);
   // -- adjustments to allow checking neighbors based on numbers -- //
   this.column = 10 * positionInGridX;
   this.row = positionInGridY;
   this.isLit = isLit;
 };
 
-LightPuzzle.prototype.draw = function() {
-  if (this.isLit) {
-    this.sprite.ballColor = "yellow";
-  } else {
-    this.sprite.ballColor = "brown";
-  }
-  this.sprite.draw();
-};
-
 // -- This function will toggle all directly adjacent lights. -- //
-LightPuzzle.prototype.toggleLights = function() {
+LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
   this.isLit = !this.isLit;
   var workingColumn = this.column;
   var workingRow = this.row;
   for(var i = 0; i < currentLightPuzzle.length; i ++) {
-      if (Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 1 || Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 10) {
-        currentLightPuzzle[i].isLit = !currentLightPuzzle[i].isLit;
+    if (Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 1 || Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 10) {
+      currentLightPuzzle[i].isLit = !currentLightPuzzle[i].isLit;
+      if (currentLightPuzzle[i].isLit) {
+        currentLightPuzzle[i].sprite.ballColor = "yellow";
+      } else {
+        currentLightPuzzle[i].sprite.ballColor = "brown";
       }
+      if (this.isLit) {
+        this.sprite.ballColor = "yellow";
+      } else {
+        this.sprite.ballColor = "brown";
+      }
+    }
   };
 };
 
