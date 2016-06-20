@@ -10,7 +10,7 @@ var width = 750;
 var height = 750;
 var playerSpeed = 2;
 var wallWidth = 10;
-var doorLength = 40;
+var doorSize = 80;
 
 var canvas = document.createElement('canvas');
 canvas.width = width;
@@ -41,10 +41,10 @@ var monsters = [];
 var doors = [];
 doors.length = 4;
 // -- using the sprite object for the doors, radius is going to be the size of the door. We will need a new draw method for doors. -- //
-var doorNorth = new Sprite(width / 2 - doorLength / 2, 0, doorLength, "blue");
-var doorEast = new Sprite(width - wallWidth, height / 2 - doorLength / 2, doorLength, "green");
-var doorSouth = new Sprite(width / 2 - doorLength / 2, height - wallWidth, doorLength, "yellow");
-var doorWest = new Sprite(0, height / 2 - doorLength / 2, doorLength, "red");
+var doorNorth = new Sprite(width / 2 - doorSize / 2, 0, doorSize, "blue");
+var doorEast = new Sprite(width - wallWidth, height / 2 - doorSize / 2, doorSize, "green");
+var doorSouth = new Sprite(width / 2 - doorSize / 2, height - wallWidth, doorSize, "yellow");
+var doorWest = new Sprite(0, height / 2 - doorSize / 2, doorSize, "red");
 doors[0] = doorNorth;
 doors[1] = doorEast;
 doors[2] = doorSouth;
@@ -52,7 +52,7 @@ doors[3] = doorWest;
 // -- depressedKeys initialized as an empty set to allow for a different set up for movement keys. -- //
 var depressedKeys = [];
 var time = 0;
-var player = new Sprite(100, 100, 20, "blue");
+var player = new Sprite(100, 100, 25, "blue");
 // -- Boolean to stop triggering the light puzzle repeatedly -- //
 var lightPuzzlePlayerBoolean = false;
 // -- gloabal variable to make collisionCheckLightPuzzle work -- //
@@ -130,22 +130,22 @@ var MomoSprite = new SuperSprite("down", new Animation("img/Momo-Spritesheet.png
       }
     }
   }, player);
-MomoSprite.addAnimation("up", new Animation("img/Momo-Spritesheet.png",0,36,25,33,4,10));
-MomoSprite.addAnimation("left", new Animation("img/Momo-Spritesheet.png",100,1,25,33,4,10));
-MomoSprite.addAnimation("right", new Animation("img/Momo-Spritesheet.png",100,36,25,33,4,10));
-MomoSprite.addAnimation("downLeft", new Animation("img/Momo-Spritesheet.png",100,71,25,33,4,10));
-MomoSprite.addAnimation("downRight", new Animation("img/Momo-Spritesheet.png",100,106,25,33,4,10));
-MomoSprite.addAnimation("upRight", new Animation("img/Momo-Spritesheet.png",100,141,25,33,4,10));
-MomoSprite.addAnimation("upLeft", new Animation("img/Momo-Spritesheet.png",100,176,25,33,4,10));
-MomoSprite.addAnimation("upStill", new Animation("img/Momo-Spritesheet.png",0,36,25,33,1,10));
-MomoSprite.addAnimation("downStill", new Animation("img/Momo-Spritesheet.png",0,71,25,33,1,10));
-MomoSprite.addAnimation("leftStill", new Animation("img/Momo-Spritesheet.png",25,71,25,33,1,10));
-MomoSprite.addAnimation("rightStill", new Animation("img/Momo-Spritesheet.png",50,71,25,33,1,10));
-MomoSprite.addAnimation("upLeftStill", new Animation("img/Momo-Spritesheet.png",0,106,25,33,1,10));
-MomoSprite.addAnimation("upRightStill", new Animation("img/Momo-Spritesheet.png",25,106,25,33,1,10));
-MomoSprite.addAnimation("downLeftStill", new Animation("img/Momo-Spritesheet.png",50,106,25,33,1,10));
-MomoSprite.addAnimation("downRightStill", new Animation("img/Momo-Spritesheet.png",75,106,25,33,1,10));
-player.super = MomoSprite;
+  MomoSprite.addAnimation("up", new Animation("img/Momo-Spritesheet.png",0,36,25,33,4,10));
+  MomoSprite.addAnimation("left", new Animation("img/Momo-Spritesheet.png",100,1,25,33,4,10));
+  MomoSprite.addAnimation("right", new Animation("img/Momo-Spritesheet.png",100,36,25,33,4,10));
+  MomoSprite.addAnimation("downLeft", new Animation("img/Momo-Spritesheet.png",100,71,25,33,4,10));
+  MomoSprite.addAnimation("downRight", new Animation("img/Momo-Spritesheet.png",100,106,25,33,4,10));
+  MomoSprite.addAnimation("upRight", new Animation("img/Momo-Spritesheet.png",100,141,25,33,4,10));
+  MomoSprite.addAnimation("upLeft", new Animation("img/Momo-Spritesheet.png",100,176,25,33,4,10));
+  MomoSprite.addAnimation("upStill", new Animation("img/Momo-Spritesheet.png",0,36,25,33,1,10));
+  MomoSprite.addAnimation("downStill", new Animation("img/Momo-Spritesheet.png",0,71,25,33,1,10));
+  MomoSprite.addAnimation("leftStill", new Animation("img/Momo-Spritesheet.png",25,71,25,33,1,10));
+  MomoSprite.addAnimation("rightStill", new Animation("img/Momo-Spritesheet.png",50,71,25,33,1,10));
+  MomoSprite.addAnimation("upLeftStill", new Animation("img/Momo-Spritesheet.png",0,106,25,33,1,10));
+  MomoSprite.addAnimation("upRightStill", new Animation("img/Momo-Spritesheet.png",25,106,25,33,1,10));
+  MomoSprite.addAnimation("downLeftStill", new Animation("img/Momo-Spritesheet.png",50,106,25,33,1,10));
+  MomoSprite.addAnimation("downRightStill", new Animation("img/Momo-Spritesheet.png",75,106,25,33,1,10));
+  player.super = MomoSprite;
 // -- initialize some monsters to start -- //
 // var monster1 = new Sprite(300, 300, 20);
 // var monster2 = new Sprite(500, 200, 30, "orange");
@@ -210,7 +210,7 @@ var draw = function() {
   context.fillRect(0, 0, width, height);
   //r.draw(context);
   // --
-  context.strokeStyle = "#f26";
+  context.strokeStyle = "#2f6";
   context.lineWidth = 20;
   context.strokeRect(0, 0, width, height);
   // context.strokeRect(wallWidth, wallWidth, width - 2 *wallWidth, height - 2 * wallWidth);
@@ -221,13 +221,19 @@ var draw = function() {
     currentLightPuzzle[i].draw();
   };
   player.draw();
+  drawDoors();
 };
 
 var drawDoors = function(doorArray) {
   context.lineWidth = 1;
   for (i = 0; i < doors.length; i ++) {
+    context.fillStyle = doors[i].ballColor;
     if (i % 2 === 0) {
+      context.fillRect(doors[i].xPos, doors[i].yPos, doors[i].radius, wallWidth);
       // -- draw rectangles for doors. -- //
+    }
+    else {
+      context.fillRect(doors[i].xPos, doors[i].yPos, wallWidth, doors[i].radius);
     }
   }
 }
@@ -295,7 +301,12 @@ Sprite.prototype.draw = function () {
     context.fillStyle = this.ballColor;
     context.fill();
   } else {
-    this.super.draw(context, this.xPos-25, this.yPos-25);
+    this.super.draw(context, this.xPos-25, this.yPos-32);
+    // context.strokeStyle = "#fff";
+    // context.lineWidth = 1;
+    // context.beginPath();
+    // context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
+    // context.stroke();
   }
 };
 
