@@ -42,7 +42,7 @@ var time = 0;
 // var player = new Sprite(100, 100, 25, "blue");
 // var boat = new Sprite(boatX*tileDict["~"].frameArray[0].width,boatY*tileDict["~"].frameArray[0].height,15);
 var weaponTimer = 0;
-var player = new Sprite(100, 100, 25, "blue");
+
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackSprites = [];
 var attackTimer = 0;
@@ -104,9 +104,7 @@ var update = function() {
   for (var i=0; i < monsters.length; i++) {
     monsters[i].update();
   }
-  if(player.yPos>700) {
-    currentRoom = allRooms["b"];
-  }
+
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
@@ -162,18 +160,21 @@ window.addEventListener("keydown", function(event) {
       depressedKeys.push(39);
     }
   }
-
   if(currentRoom===allRooms["overworld"]) {
     var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
-      currentRoom.addSprite(player);
+      if(currentRoom.sprites.indexOf(player)===-1) {
+        currentRoom.addSprite(player);
+      }
       player.xPos = currentRoom.entrance.xPos;
       player.yPos = currentRoom.entrance.yPos;
     }
   }
   if (event.keyCode === 32) {
     weaponTimer = time + weaponSwingTime;
+    // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
+    attack(player, 1.3, 0.9);
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //

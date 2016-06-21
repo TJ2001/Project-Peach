@@ -128,18 +128,17 @@ LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
 
 // -- constructor for static rectangular objects. xPos and yPos are the top left corner of the wall object. xSpan and ySpan are the width and height.  Behavior is how the wall will act with collisions. -- //
 function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall") {
-  this.xPos = xPos;
-  this.yPos = yPos;
   this.xSpan = xSpan;
   this.ySpan = ySpan;
   this.wallColor = color;
   this.behavior = behavior;
+  this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
 };
 
 Wall.prototype.draw = function() {
   context.fillStyle = this.wallColor;
   context.lineWidth = 1;
-  context.fillRect(this.xPos, this.yPos, this.xSpan, this.ySpan);
+  context.fillRect(this.sprite.xPos, this.sprite.yPos, this.xSpan, this.ySpan);
 };
 
 // -- this will check a sprite for collisions with the Wall object and call collisionBehavior with the appropriate arguements. -- //
@@ -147,26 +146,26 @@ Wall.prototype.collisionWithSprite = function(sprite) {
   var collision = false;
   var xCollide = false;
   var yCollide = false;
-  if (calculateDistanceOneSprite(sprite, this.xPos, this.yPos) <= sprite.radius) {
+  if (calculateDistanceOneSprite(sprite, this.sprite.xPos, this.sprite.yPos) <= sprite.radius) {
     collision = true;
     xCollide = true;
     yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.xPos + this.xSpan, this.yPos) <= sprite.radius) {
+  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos + this.xSpan, this.sprite.yPos) <= sprite.radius) {
     collision = true;
     xCollide = true;
     yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.xPos, this.yPos + this.ySpan) <= sprite.radius) {
+  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos, this.sprite.yPos + this.ySpan) <= sprite.radius) {
     collision = true;
     xCollide = true;
     yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.xPos + this.xSpan, this.yPos + this.ySpan) <= sprite.radius) {
+  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos + this.xSpan, this.sprite.yPos + this.ySpan) <= sprite.radius) {
     collision = true;
     xCollide = true;
     yCollide = true;
-  } else if (Math.abs(this.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
+  } else if (Math.abs(this.sprite.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.sprite.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
     collision = true;
     xCollide = true;
-  } else if (Math.abs(this.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
+  } else if (Math.abs(this.sprite.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.sprite.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
     collision = true;
     yCollide = true;
   } else {
@@ -190,6 +189,10 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     if (yCollide) {
       this.yVel *= -1;
     }
+  } else if (this.behavior === "exitDoor") {
+    if(xCollide || yCollide) {
+      currentRoom = allRooms["overworld"];
+    }
   }
 };
 
@@ -208,4 +211,10 @@ var collisionCheck = function(spriteOne, spriteTwo) {
   } else {
     return false;
   }
+};
+
+var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
+  attackTimer = time + 100;
+  var attackSprite = new Sprite(attackingSprite.xPos , attackingSprite.yPos + attackingSprite.radius * 0.9, attackingSprite.radius * attackRadiusModifier);
+  attackSprites.push(attackSprite);
 };
