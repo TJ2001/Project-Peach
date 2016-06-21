@@ -61,6 +61,15 @@ SuperSprite.prototype.draw = function(ctx,x,y) {
   }
   this.currentAnimation.play(ctx,x,y);
 }
+
+SuperSprite.prototype.copy = function() {
+  var aniKeys = Object.keys(this.animations);
+  var newSuper = new SuperSprite(aniKeys[0], this.animations[aniKeys[0]].copy());
+  for(var i=1; i<aniKeys.length; i++) {
+    newSuper.addAnimation(aniKeys[i], this.animations[aniKeys[i]].copy());
+  }
+  return newSuper;
+}
 ////////////////////////////////////
 
 
@@ -114,6 +123,14 @@ Animation.prototype.play = function(ctx,x,y) {
       this.currentFrame = 0;
     }
   }
+}
+
+Animation.prototype.copy = function() {
+  var frame1 = this.frameArray[0];
+  var newAni = new Animation(this.spriteSheet.src,frame1.x,frame1.y,frame1.width,frame1.height,this.frameArray.length,frame1.time);
+  delete newAni.frameArray;
+  newAni.frameArray = this.frameArray;
+  return newAni;
 }
 /////////////////////////////////////////////
 

@@ -59,7 +59,8 @@ var allSuperSprites = {
           }
         }
       }
-    })
+    }),
+    "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1.png",0,0,64,64,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
@@ -78,3 +79,5 @@ allSuperSprites["MomoSprite"].addAnimation("upLeftStill", new Animation("img/Mom
 allSuperSprites["MomoSprite"].addAnimation("upRightStill", new Animation("img/Momo-Spritesheet.png",25,106,25,33,1,10));
 allSuperSprites["MomoSprite"].addAnimation("downLeftStill", new Animation("img/Momo-Spritesheet.png",50,106,25,33,1,10));
 allSuperSprites["MomoSprite"].addAnimation("downRightStill", new Animation("img/Momo-Spritesheet.png",75,106,25,33,1,10));
+
+allSuperSprites["LightPanelSprite"].addAnimation("on", new Animation("img/light-panel1.png",256,0,64,64,1,10));

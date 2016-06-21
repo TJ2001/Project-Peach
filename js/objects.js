@@ -7,6 +7,11 @@
 //--Note to Joel: Most of this code is yours, so I'll leave it to you to document
 
 
+// Important objects
+var player = new Sprite(100, 100, 25, "blue");
+var boat = new Sprite(0,0,15);
+
+
 function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.xPos = xPos;
   this.yPos = yPos;
@@ -75,6 +80,8 @@ function LightPuzzle(positionInGridX, positionInGridY, isLit = false) {
   this.column = 10 * positionInGridX;
   this.row = positionInGridY;
   this.isLit = isLit;
+  var newLightSuper = allSuperSprites["LightPanelSprite"].copy();
+  newLightSuper.addObject(this.sprite);
 };
 
 // -- This function will toggle all directly adjacent lights. -- //
@@ -86,14 +93,14 @@ LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
     if (Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 1 || Math.abs((workingRow + workingColumn) - (currentLightPuzzle[i].row + currentLightPuzzle[i].column)) === 10) {
       currentLightPuzzle[i].isLit = !currentLightPuzzle[i].isLit;
       if (currentLightPuzzle[i].isLit) {
-        currentLightPuzzle[i].sprite.ballColor = "yellow";
+        currentLightPuzzle[i].sprite.super.show("on");
       } else {
-        currentLightPuzzle[i].sprite.ballColor = "brown";
+        currentLightPuzzle[i].sprite.super.show("off");
       }
       if (this.isLit) {
-        this.sprite.ballColor = "yellow";
+        this.sprite.super.show("on");
       } else {
-        this.sprite.ballColor = "brown";
+        this.sprite.super.show("off");
       }
     }
   };

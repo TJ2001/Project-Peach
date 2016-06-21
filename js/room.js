@@ -22,6 +22,9 @@ function Room(width, height) {
   this.background = [];
   this.sprites = [];
   this.entities = [];
+  // -- for the overworld room
+  this.boatX = Math.floor(this.width/2);
+  this.boatY = Math.floor(this.height/2);
   // -- Boolean to stop triggering the light puzzle repeatedly -- //
   this.lightPuzzlePlayerBoolean = false;
   // -- variable to make collisionCheckLightPuzzle work -- //
@@ -46,10 +49,16 @@ Room.prototype.addMap = function(map, foreground) {
         if(icon!=" ") {
           var newEntity = entityDict.get(icon);
           if(newEntity!="") {
-            this.entities.push(newEntity);
-            newEntity.sprite.yPos = y*64+32;
-            newEntity.sprite.xPos = x*64+32;
-            this.sprites.push(newEntity.sprite);
+            if(newEntity instanceof Sprite) {
+              this.sprites.push(newEntity);
+              newEntity.yPos = y*64+32;
+              newEntity.xPos = x*64+32;
+            } else {
+              this.entities.push(newEntity);
+              newEntity.sprite.yPos = y*64+32;
+              newEntity.sprite.xPos = x*64+32;
+              this.sprites.push(newEntity.sprite);
+            }
           }
         }
         if(icon==="l") {
@@ -70,6 +79,9 @@ Room.prototype.addMap = function(map, foreground) {
 //      If you want to add sprites to a room manually, call addSprite and pass it the sprite to be added
 Room.prototype.sortSprites = function() {
   this.sprites.sort(function(a, b) {
+    if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+      return -1;
+    }
     if(a.yPos < b.yPos) {
       return -1;
     } else if(a.yPos > b.yPos) {
@@ -102,10 +114,12 @@ Room.prototype.draw = function(ctx) {
   }
 }
 Room.prototype.update = function() {
+  boat.xPos = currentRoom.boatX*tileDict["~"].frameArray[0].width*2 + (tileDict["~"].frameArray[0].width);
+  boat.yPos = currentRoom.boatY*tileDict["~"].frameArray[0].height*2  + (tileDict["~"].frameArray[0].height);
   this.collisionCheckLightPuzzle(player, this.currentLightPuzzle);
   // -- Checks if light puzzle is completed and 'opens' the East door if it is. -- //
   if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
-    doors[1].ballColor = "white";
+    //Puzzle
   }
 }
 
@@ -119,26 +133,26 @@ Room.prototype.findIsland = function(startX, startY) {
     if(up-1>=0){up--;}
     if(down+1<this.height){down++;}
     for(var x=left; x<=right; x++) {
-      if(this.background[up][x]==="#") {
+      if(this.background[up][x]!="~") {
         return[x,up];
-      } else if(this.background[down][x]==="#") {
+      } else if(this.background[down][x]!="~") {
         return[x,down];
       }
     }
     for(var y=up; y<down; y++) {
       console.log(y);
-      if(this.background[y][left]==="#") {
+      if(this.background[y][left]!="~") {
         return[left,y];
-      } else if(this.background[y][right]==="#") {
+      } else if(this.background[y][right]!="~") {
         return[right,y];
       }
     }
   }
 }
-var moveOverworld = function(direction) {
+Room.prototype.moveOverworld = function(direction) {
   if(0 < direction&&direction < 10) {
-    var newX = boatX;
-    var newY = boatY;
+    var newX = this.boatX;
+    var newY = this.boatY;
     if(direction>6) {
       newY--;
     } else if(direction<4) {
@@ -149,28 +163,21 @@ var moveOverworld = function(direction) {
     } else if(direction%3===0) {
       newX++;
     }
-    if(0 <= newX&&newX < mapWidth  &&  0 <= newY&&newY < mapHeight) {
+    if(0 <= newX&&newX < this.width  &&  0 <= newY&&newY < this.height) {
       supplies --;
       if(supplies<1) {
-        health = Math.floor(health/2);
-        var nearestCoords = findIsland(boatX, boatY);
+        //health = Math.floor(health/2);
+        var nearestCoords = this.findIsland(boatX, boatY);
         newX = nearestCoords[0];
         newY = nearestCoords[1];
       }
-      if(onIsland) {
-        map[boatY][boatX] = "#";
-      } else {
-        map[boatY][boatX] = "~";
+      this.boatX = newX;
+      this.boatY = newY;
+      if(this.background[newY][newX]!="~") {
+        return this.background[newY][newX];
       }
-      if(map[newY][newX]==="~") {
-        onIsland = false;
-      } else {
-        onIsland = true;
-        goToIsland();
-      }
-      boatX = newX;
-      boatY = newY;
     }
+    return "overworld";
   }
 }
 

@@ -14,16 +14,16 @@ var tileDict = {
   "b": new Animation("img/test-image.jpg",0,32,32,32,1,10),
   "c": new Animation("img/test-image.jpg",0,64,32,32,1,10),
   "~": new Animation("img/test-image.jpg",0,100,16,16,1,10),
-  "#": new Animation("img/test-image.jpg",40,32,16,16,1,10)
+  "#": new Animation("img/test-image.jpg",40,32,16,16,1,10),
+  "q": new Animation("img/test-image.jpg",40,32,16,16,1,10),
+  "w": new Animation("img/test-image.jpg",40,32,16,16,1,10)
 }
 var entityDict = {
   get: function(icon,x,y) {
     if(icon==="l") {
       return new LightPuzzle(0,0);
-    } else if(icon==="q") {
-      return new TestEntity1();
-    } else if(icon==="w") {
-      return new TestEntity2();
+    } else if(icon==="p") {
+      return player;
     } else {
       return "";
     }
@@ -38,8 +38,8 @@ var roomHeight = 12;
 // allRooms
 //  -- This object contains all the rooms of the game. To add more rooms, add a key:room-object pair to allRooms
 var allRooms = {
-  "a": new Room(roomWidth, roomHeight),
-  "b": new Room(roomWidth, roomHeight),
+  "q": new Room(roomWidth, roomHeight),
+  "w": new Room(roomWidth, roomHeight),
   "overworld": new Room(23, 15)
 }
 
@@ -47,7 +47,7 @@ var allRooms = {
 //In this area, new maps can be created and added to the rooms created above
 //  Instructions: Get the desired room from the allRooms object and use the addMap method on it.
 //    For additional details see my comments on the addMap method in room.js
-allRooms["a"].addMap([
+allRooms["q"].addMap([
   ["a","a","a","a","a","a","a","a","a","a","a","a"],
   ["a","a","a","a","a","a","a","a","a","a","a","a"],
   ["a","a","a","a","a","a","a","a","a","a","a","a"],
@@ -61,12 +61,12 @@ allRooms["a"].addMap([
   ["a","a","a","a","a","a","a","a","a","a","a","a"],
   ["a","a","a","a","a","a","a","a","a","a","a","a"],
 ],false);
-allRooms["a"].addMap([
+allRooms["q"].addMap([
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" "," ","l"," ","l"," ","l"," "," "," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
-  [" "," ","l"," ","l"," ","l"," "," "," "," "," "],
+  [" "," ","l"," ","l"," ","l"," "," ","p"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" "," ","l"," ","l"," ","l"," "," "," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
@@ -76,7 +76,7 @@ allRooms["a"].addMap([
   [" "," "," "," "," "," "," "," "," "," "," "," "],
 ],true);
 
-allRooms["b"].addMap([
+allRooms["w"].addMap([
   ["b","b","b","b","b","b","b","b","b","b","b","b"],
   ["b","b","b","b","b","b","b","b","b","b","b","b"],
   ["b","b","b","b","b","b","b","b","b","b","b","b"],
@@ -90,7 +90,7 @@ allRooms["b"].addMap([
   ["b","b","b","b","b","b","b","b","b","b","b","b"],
   ["b","b","b","b","b","b","b","b","b","b","b","b"]
 ],false);
-allRooms["b"].addMap([
+allRooms["w"].addMap([
   ["l"," ","l"," ","l"," ","l"," ","l"," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   ["l"," ","l"," ","l"," ","l"," ","l"," "," "," "],
@@ -100,7 +100,7 @@ allRooms["b"].addMap([
   ["l"," ","l"," ","l"," ","l"," ","l"," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   ["l"," ","l"," ","l"," ","l"," ","l"," "," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," ","p"," "," "," "," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
 ],true);
@@ -123,12 +123,13 @@ var placeIslands = function() {
       for(var x=0+i; x<ow-i; x++) {
         var rand = Math.random();
         if(rand<.003*i) {
-          map[y][x] = "#";
+          map[y][x] = "q";
         }
       }
     }
   }
 }
 placeIslands();
-map[boatY][boatX] = "#";
+map[boatY][boatX] = "w";
 allRooms["overworld"].addMap(map, false);
+allRooms["overworld"].addSprite(boat);
