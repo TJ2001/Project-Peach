@@ -17,10 +17,11 @@ var animate = window.requestAnimationFrame ||
 
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["overworld"];
-var width = 750;
-var height = 750;
+var width = 906;
+var height = 906;
 var playerSpeed = 2;
-var wallWidth = 10;
+var wallWidth = 64;
+var doorSize = 128;
 var supplies = 30;
 
 var canvas = document.createElement('canvas');
@@ -35,9 +36,10 @@ context.webkitImageSmoothingEnabled = false;
 var depressedKeys = [];
 var time = 0;
 
-//these are now declared in objects.js
-// var player = new Sprite(100, 100, 25, "blue");
-// var boat = new Sprite(boatX*tileDict["~"].frameArray[0].width,boatY*tileDict["~"].frameArray[0].height,15);
+var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
+var attackSprites = [];
+var attackTimer = 0;
+
 allSuperSprites["MomoSprite"].addObject(player);
 
 // -- place each function in here that runs on each animation step -- //
@@ -45,12 +47,15 @@ var step = function() {
   update();
   draw();
   animate(step);
-  time ++;
   timerEvents();
 };
 
 var timerEvents = function() {
   // -- timed events can go here -- //
+  time ++;
+  if (time === attackTimer) {
+    attackSprites = [];
+  }
 
 };
 
@@ -58,6 +63,10 @@ var timerEvents = function() {
 // -- place update functions in here -- //
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
+
+  if(player.xVel || player.yVel) {
+    playerWeapon.weaponUpdate(player);
+  }
   currentRoom.update();
 };
 
@@ -66,7 +75,14 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   currentRoom.draw(context);
-  // --
+  // currentRoom.draw(context);
+  for (var i = 0; i < wallObjects.length; i ++) {
+    wallObjects[i].draw();
+  };
+  for (var i = 0; i < attackSprites.length; i ++) {
+    attackSprites[i].draw();
+  };
+  playerWeapon.draw();
 };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
@@ -77,7 +93,7 @@ window.onload = function() {
 
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
-// -- Event listener for up and down key. -- //
+  // -- Event listener for up and down key. -- //
   if (event.keyCode === 38) {
     player.yVel = -playerSpeed;
     if (!depressedKeys.includes(38)) {
@@ -103,12 +119,13 @@ window.addEventListener("keydown", function(event) {
       depressedKeys.push(39);
     }
   }
-
   if(currentRoom===allRooms["overworld"]) {
     var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
-    console.log(newRoom);
     currentRoom = allRooms[newRoom];
-    console.log(supplies);
+    
+  if (event.keyCode === 32) {
+    // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
+    attack(player, 1.3, 0.9);
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //
@@ -142,6 +159,14 @@ window.addEventListener("keyup", function (event) {
     }
   }
   while (depressedKeys.includes(event.keyCode)) {
-    depressedKeys.splice(depressedKeys.indexOf(event.keyCode, 1));
+    depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
   };
 });
+
+var wallObjects = [];
+var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
+var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
+var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
+var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
+var randomWall = new Wall (width / 2, height / 2, 50, 200, "purple", "solidWall");
+wallObjects.push(northWall, eastWall, southWall, westWall, randomWall);
