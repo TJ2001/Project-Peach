@@ -67,18 +67,18 @@ allRooms["b"].addMap([
 ],true);
 
 var map = [];
-boatX = Math.floor(mapWidth/2);
-boatY = Math.floor(mapHeight/2);
-for(var y=0; y<mapHeight; y++) {
+boatX = Math.floor(roomWidth/2);
+boatY = Math.floor(roomHeight/2);
+for(var y=0; y<roomHeight; y++) {
   map.push([]);
-  for(var x=0; x<mapWidth; x++) {
+  for(var x=0; x<roomWidth; x++) {
     map[y].push("~");
   }
 }
 var placeIslands = function() {
-  for(var i=0; i<Math.min(mapHeight,mapWidth)/2; i+=1) {
-    for(var y=0+i; y<mapHeight-i; y++) {
-      for(var x=0+i; x<mapWidth-i; x++) {
+  for(var i=0; i<Math.min(roomHeight,roomWidth)/2; i+=1) {
+    for(var y=0+i; y<roomHeight-i; y++) {
+      for(var x=0+i; x<roomWidth-i; x++) {
         var rand = Math.random();
         if(rand<.0005*i) {
           map[y][x] = "#";
@@ -89,4 +89,4 @@ var placeIslands = function() {
 }
 map[boatY][boatX] = "@";
 placeIslands();
-roomDefinitions["overworld"].addMap(map, false);
+allRooms["overworld"].addMap(map, false);

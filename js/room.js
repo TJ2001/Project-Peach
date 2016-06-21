@@ -104,6 +104,10 @@ Room.prototype.draw = function(ctx) {
 
 Room.prototype.update = function() {
   this.collisionCheckLightPuzzle(player, this.currentLightPuzzle);
+  // -- Checks if light puzzle is completed and 'opens' the East door if it is. -- //
+  if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
+    doors[1].ballColor = "white";
+  }
 }
 
 Room.prototype.collisionCheckLightPuzzle = function(triggeringSprite, lightPuzzleArray) {
@@ -119,3 +123,14 @@ Room.prototype.collisionCheckLightPuzzle = function(triggeringSprite, lightPuzzl
     this.lightPuzzlePlayerBoolean = false;
   }
 }
+
+// -- Checks that all isLit booleans in an array, lightArray, match the boolean you input in booleanToMatch -- //
+Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
+  var puzzleCompleted = true;
+  for (var i = 0; i < this.currentLightPuzzle.length; i ++) {
+    if (this.currentLightPuzzle[i].isLit != booleanToMatch) {
+      puzzleCompleted = false;
+    }
+  };
+  return puzzleCompleted;
+};
