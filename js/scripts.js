@@ -75,10 +75,6 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   currentRoom.draw(context);
-  // currentRoom.draw(context);
-  for (var i = 0; i < wallObjects.length; i ++) {
-    wallObjects[i].draw();
-  };
   for (var i = 0; i < attackSprites.length; i ++) {
     attackSprites[i].draw();
   };
@@ -122,7 +118,14 @@ window.addEventListener("keydown", function(event) {
   if(currentRoom===allRooms["overworld"]) {
     var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
     currentRoom = allRooms[newRoom];
-    
+    if(newRoom!="overworld") {
+      if(currentRoom.sprites.indexOf(player)===-1) {
+        currentRoom.addSprite(player);
+      }
+      player.xPos = currentRoom.entrance.xPos;
+      player.yPos = currentRoom.entrance.yPos;
+    }
+  }
   if (event.keyCode === 32) {
     // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
     attack(player, 1.3, 0.9);
@@ -163,10 +166,10 @@ window.addEventListener("keyup", function (event) {
   };
 });
 
-var wallObjects = [];
-var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
-var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
-var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
-var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
-var randomWall = new Wall (width / 2, height / 2, 50, 200, "purple", "solidWall");
-wallObjects.push(northWall, eastWall, southWall, westWall, randomWall);
+
+// var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
+// var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
+// var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
+// var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
+// var randomWall = new Wall (width / 2, height / 2, 50, 200, "purple", "solidWall");
+// wallObjects.push(northWall, eastWall, southWall, westWall, randomWall);

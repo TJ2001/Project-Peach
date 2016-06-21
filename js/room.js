@@ -22,6 +22,7 @@ function Room(width, height) {
   this.background = [];
   this.sprites = [];
   this.entities = [];
+  this.entrance = undefined;
   // -- for the overworld room
   this.boatX = Math.floor(this.width/2);
   this.boatY = Math.floor(this.height/2);
@@ -31,6 +32,7 @@ function Room(width, height) {
   this.triggeredLight;
   // -- set up the light puzzle -- //
   this.currentLightPuzzle = [];
+  this.wallObjects = [];
 }
 
 // addMap method
@@ -51,12 +53,12 @@ Room.prototype.addMap = function(map, foreground) {
           if(newEntity!="") {
             if(newEntity instanceof Sprite) {
               this.sprites.push(newEntity);
-              newEntity.yPos = y*64+32;
-              newEntity.xPos = x*64+32;
+              newEntity.yPos = y*64;
+              newEntity.xPos = x*64;
             } else {
               this.entities.push(newEntity);
-              newEntity.sprite.yPos = y*64+32;
-              newEntity.sprite.xPos = x*64+32;
+              newEntity.sprite.yPos = y*64;
+              newEntity.sprite.xPos = x*64;
               this.sprites.push(newEntity.sprite);
             }
           }
@@ -66,6 +68,12 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.column = ((x/2)+1)*10;
           newEntity.row = (y/2)+1;
           newEntity.sprite.ballColor = "brown";
+        } else if(icon==="@") {
+          this.entrance = newEntity;
+        } else if(icon==="w") {
+          this.wallObjects.push(newEntity);
+        } else if(icon==="x") {
+          this.wallObjects.push(newEntity);
         }
       }
     }
@@ -79,8 +87,14 @@ Room.prototype.addMap = function(map, foreground) {
 //      If you want to add sprites to a room manually, call addSprite and pass it the sprite to be added
 Room.prototype.sortSprites = function() {
   this.sprites.sort(function(a, b) {
-    if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
-      return -1;
+    if(typeof a.super != "undefined") {
+      if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+        return -1;
+      }
+    // } else if(typeof (Object.keys(b)["super"]) != "undefined") {
+    //   if(b.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+    //     return 1;
+    //   }
     }
     if(a.yPos < b.yPos) {
       return -1;
@@ -109,9 +123,11 @@ Room.prototype.draw = function(ctx) {
     if(this.sprites[i].yVel != 0) {
       this.sortSprites(this.sprites[i]);
     }
-    this.sprites[i].update();
     this.sprites[i].draw();
   }
+  for (var i = 0; i < this.wallObjects.length; i ++) {
+    this.wallObjects[i].draw();
+  };
 }
 Room.prototype.update = function() {
   boat.xPos = currentRoom.boatX*tileDict["~"].frameArray[0].width*2 + (tileDict["~"].frameArray[0].width);
@@ -121,6 +137,12 @@ Room.prototype.update = function() {
   if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
     //Puzzle
   }
+  for(var i=0; i<this.sprites.length; i++) {
+    this.sprites[i].update();
+  }
+  for (var i=0; i < this.wallObjects.length; i++) {
+    this.wallObjects[i].collisionWithSprite(player);
+  };
 }
 
 // findIsland and moveOverworld methods
@@ -140,7 +162,6 @@ Room.prototype.findIsland = function(startX, startY) {
       }
     }
     for(var y=up; y<down; y++) {
-      console.log(y);
       if(this.background[y][left]!="~") {
         return[left,y];
       } else if(this.background[y][right]!="~") {
@@ -177,8 +198,8 @@ Room.prototype.moveOverworld = function(direction) {
         return this.background[newY][newX];
       }
     }
-    return "overworld";
   }
+  return "overworld";
 }
 
 // Light puzzle methods
