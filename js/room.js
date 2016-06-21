@@ -22,6 +22,7 @@ function Room(width, height) {
   this.background = [];
   this.sprites = [];
   this.entities = [];
+  this.entrance = undefined;
   // -- for the overworld room
   this.boatX = Math.floor(this.width/2);
   this.boatY = Math.floor(this.height/2);
@@ -67,6 +68,9 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.row = (y/2)+1;
           newEntity.sprite.ballColor = "brown";
         }
+        if(icon==="@") {
+          this.entrance = newEntity;
+        }
       }
     }
   } else {
@@ -79,8 +83,14 @@ Room.prototype.addMap = function(map, foreground) {
 //      If you want to add sprites to a room manually, call addSprite and pass it the sprite to be added
 Room.prototype.sortSprites = function() {
   this.sprites.sort(function(a, b) {
-    if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
-      return -1;
+    if(typeof a.super != "undefined") {
+      if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+        return -1;
+      }
+    // } else if(typeof (Object.keys(b)["super"]) != "undefined") {
+    //   if(b.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+    //     return 1;
+    //   }
     }
     if(a.yPos < b.yPos) {
       return -1;

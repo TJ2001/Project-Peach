@@ -106,9 +106,12 @@ window.addEventListener("keydown", function(event) {
 
   if(currentRoom===allRooms["overworld"]) {
     var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
-    console.log(newRoom);
     currentRoom = allRooms[newRoom];
-    console.log(supplies);
+    if(newRoom!="overworld") {
+      currentRoom.addSprite(player);
+      player.xPos = currentRoom.entrance.xPos;
+      player.yPos = currentRoom.entrance.yPos;
+    }
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //
