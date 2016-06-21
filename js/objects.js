@@ -33,16 +33,20 @@ Sprite.prototype.draw = function () {
 Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
-  if (this.yPos + this.radius >= height) {
-      this.yVel *= -1;
-    } else if (this.yPos - this.radius <= 0) {
-      this.yVel *= -1;
-    }
-  if (this.xPos + this.radius >= width) {
-      this.xVel *= -1;
-    } else if (this.xPos - this.radius <= 0) {
-      this.xVel *= -1;
-    }
+  for (i = 0; i < wallObjects.length; i ++) {
+    wallObjects[i].collisionWithSprite(this);
+  };
+
+  // if (this.yPos + this.radius >= height) {
+  //     this.yVel *= -1;
+  //   } else if (this.yPos - this.radius <= 0) {
+  //     this.yVel *= -1;
+  //   }
+  // if (this.xPos + this.radius >= width) {
+  //     this.xVel *= -1;
+  //   } else if (this.xPos - this.radius <= 0) {
+  //     this.xVel *= -1;
+  //   }
 };
 
 // -- First prototype for monster movement -- //
@@ -99,8 +103,72 @@ LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
   };
 };
 
+// -- constructor for rectangular objects. xPos and yPos are the top left corner of the wall object.  Behavior is how the wall will act with collisions. -- //
+function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall") {
+  this.xPos = xPos;
+  this.yPos = yPos;
+  this.xSpan = xSpan;
+  this.ySpan = ySpan;
+  this.wallColor = color;
+  this.behavior = behavior;
+};
+
+Wall.prototype.draw = function() {
+  context.fillStyle = this.wallColor;
+  context.lineWidth = 1;
+  context.fillRect(this.xPos, this.yPos, this.xSpan, this.ySpan);
+};
+
+Wall.prototype.collisionWithSprite = function(sprite) {
+  var collision = false;
+  var xCollide = false;
+  var yCollide = false;
+  if (calculateDistanceOneSprite(sprite, this.xPos, this.yPos) <= sprite.radius) {
+    collision = true;
+    xCollide = true;
+    yCollide = true;
+  } else if (calculateDistanceOneSprite(sprite, this.xPos + this.xSpan, this.yPos) <= sprite.radius) {
+    collision = true;
+    xCollide = true;
+    yCollide = true;
+  } else if (calculateDistanceOneSprite(sprite, this.xPos, this.yPos + this.ySpan) <= sprite.radius) {
+    collision = true;
+    xCollide = true;
+    yCollide = true;
+  } else if (calculateDistanceOneSprite(sprite, this.xPos + this.xSpan, this.yPos + this.ySpan) <= sprite.radius) {
+    collision = true;
+    xCollide = true;
+    yCollide = true;
+  } else if (Math.abs(this.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
+    collision = true;
+    xCollide = true;
+  } else if (Math.abs(this.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
+    collision = true;
+    yCollide = true;
+  } else {
+    return collision;
+  }
+  return this.collisionBehavior(sprite, xCollide, yCollide);
+};
+
+Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
+  if (this.behavior === "solidWall") {
+    if (xCollide) {
+      sprite.xPos = sprite.xPos - sprite.xVel
+    }
+    if (yCollide) {
+      sprite.yPos = sprite.yPos - sprite.yVel
+    }
+
+  }
+}
+
 
 // -- A function to calculate the total distance between the centers of two sprites -- //
 var calculateDistance = function(spriteOne, spriteTwo) {
   return Math.sqrt(Math.pow((spriteOne.xPos - spriteTwo.xPos), 2) + Math.pow((spriteOne.yPos - spriteTwo.yPos), 2));
+};
+
+var calculateDistanceOneSprite = function(spriteOne, xPos, yPos) {
+  return Math.sqrt(Math.pow((spriteOne.xPos - xPos), 2) + Math.pow((spriteOne.yPos - yPos), 2));
 };

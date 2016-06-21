@@ -17,8 +17,8 @@ var animate = window.requestAnimationFrame ||
 
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["overworld"];
-var width = 750;
-var height = 750;
+var width = 764;
+var height = 764;
 var playerSpeed = 2;
 var wallWidth = 10;
 var doorSize = 80;
@@ -83,15 +83,19 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   currentRoom.draw(context);
-  // --
-  context.strokeStyle = "#2f6";
-  context.lineWidth = 20;
-  context.strokeRect(0, 0, width, height);
+  // // --
+  // context.strokeStyle = "#2f6";
+  // context.lineWidth = 20;
+  // context.strokeRect(0, 0, width, height);
   // context.strokeRect(wallWidth, wallWidth, width - 2 *wallWidth, height - 2 * wallWidth);
   // for (i = 0; i < currentLightPuzzle.length; i++) {
   //   currentLightPuzzle[i].draw();
   // };
   player.draw();
+  for (var i = 0; i < wallObjects.length; i ++) {
+    wallObjects[i].draw();
+  };
+
   drawDoors();
 };
 
@@ -117,7 +121,7 @@ window.onload = function() {
 
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
-// -- Event listener for up and down key. -- //
+  // -- Event listener for up and down key. -- //
   if (event.keyCode === 38) {
     player.yVel = -playerSpeed;
     if (!depressedKeys.includes(38)) {
@@ -178,3 +182,10 @@ window.addEventListener("keyup", function (event) {
     depressedKeys.splice(depressedKeys.indexOf(event.keyCode, 1));
   };
 });
+
+var wallObjects = [];
+var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
+var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
+var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
+var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
+wallObjects.push(northWall, eastWall, southWall, westWall);
