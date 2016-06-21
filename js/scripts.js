@@ -85,7 +85,7 @@ var timerEvents = function() {
   if (time < weaponTimer) {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
     console.log("hi")
-    for (i = monsters.length - 1; i >= 0; i --) {
+    for (var i = monsters.length - 1; i >= 0; i --) {
       if (collisionCheck(playerWeapon, monsters[i])) {
         monsters.splice(i, 1);
       };
@@ -101,7 +101,9 @@ var update = function() {
   if (weaponTimer <= time) {
     player.update();
   }
-  for (i = 0; i < monsters.length)
+  for (var i=0; i < monsters.length; i++) {
+    monsters[i].update();
+  }
   if(player.yPos>700) {
     currentRoom = allRooms["b"];
   }
@@ -169,6 +171,7 @@ window.addEventListener("keydown", function(event) {
       player.xPos = currentRoom.entrance.xPos;
       player.yPos = currentRoom.entrance.yPos;
     }
+  }
   if (event.keyCode === 32) {
     weaponTimer = time + weaponSwingTime;
   }
@@ -207,11 +210,3 @@ window.addEventListener("keyup", function (event) {
     depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
   };
 });
-
-var wallObjects = [];
-var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
-var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
-var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
-var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
-var randomWall = new Wall (width / 2, height / 2, 50, 200, "purple", "solidWall");
-wallObjects.push(northWall, eastWall, southWall, westWall, randomWall);

@@ -48,9 +48,6 @@ Sprite.prototype.draw = function () {
 Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
-  for (i = 0; i < wallObjects.length; i ++) {
-    wallObjects[i].collisionWithSprite(this);
-  };
 };
 
 // -- Special update method for sprites which are a weapon attack of another sprite -- //
