@@ -17,11 +17,11 @@ var animate = window.requestAnimationFrame ||
 
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["overworld"];
-var width = 764;
-var height = 764;
+var width = 906;
+var height = 906;
 var playerSpeed = 2;
-var wallWidth = 10;
-var doorSize = 80;
+var wallWidth = 64;
+var doorSize = 128;
 var supplies = 30;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
@@ -50,6 +50,8 @@ doors[3] = doorWest;
 var depressedKeys = [];
 var time = 0;
 var player = new Sprite(100, 100, 25, "blue");
+var attackSprites = [];
+var attackTimer = 0;
 
 allSuperSprites["MomoSprite"].addObject(player);
 
@@ -58,12 +60,15 @@ var step = function() {
   update();
   draw();
   animate(step);
-  time ++;
   timerEvents();
 };
 
 var timerEvents = function() {
   // -- timed events can go here -- //
+  time ++;
+  if (time === attackTimer) {
+    attackSprites = [];
+  }
 
 };
 
@@ -82,18 +87,13 @@ var update = function() {
 var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
-  currentRoom.draw(context);
-  // // --
-  // context.strokeStyle = "#2f6";
-  // context.lineWidth = 20;
-  // context.strokeRect(0, 0, width, height);
-  // context.strokeRect(wallWidth, wallWidth, width - 2 *wallWidth, height - 2 * wallWidth);
-  // for (i = 0; i < currentLightPuzzle.length; i++) {
-  //   currentLightPuzzle[i].draw();
-  // };
+  // currentRoom.draw(context);
   player.draw();
   for (var i = 0; i < wallObjects.length; i ++) {
     wallObjects[i].draw();
+  };
+  for (var i = 0; i < attackSprites.length; i ++) {
+    attackSprites[i].draw();
   };
 
   drawDoors();
@@ -147,6 +147,10 @@ window.addEventListener("keydown", function(event) {
       depressedKeys.push(39);
     }
   }
+  if (event.keyCode === 32) {
+    // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
+    attack(player, 1.3, 0.9);
+  }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //
 window.addEventListener("keyup", function (event) {
@@ -188,4 +192,5 @@ var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
 var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
 var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
 var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
-wallObjects.push(northWall, eastWall, southWall, westWall);
+var randomWall = new Wall (width / 2, height / 2, 50, 200, "purple", "solidWall");
+wallObjects.push(northWall, eastWall, southWall, westWall, randomWall);
