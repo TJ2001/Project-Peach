@@ -20,6 +20,7 @@ var currentRoom = allRooms["overworld"];
 var width = 906;
 var height = 906;
 var playerSpeed = 2;
+var weaponSwingTime = 10;
 var wallWidth = 64;
 var doorSize = 128;
 var supplies = 30;
@@ -48,7 +49,10 @@ doors[2] = doorSouth;
 doors[3] = doorWest;
 // -- depressedKeys initialized as an empty set to allow for a different set up for movement keys. -- //
 var depressedKeys = [];
+var monsters = [];
 var time = 0;
+var weaponTimer = 0;
+
 var player = new Sprite(100, 100, 25, "blue");
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackSprites = [];
@@ -67,17 +71,45 @@ var step = function() {
 var timerEvents = function() {
   // -- timed events can go here -- //
   time ++;
-  if (time === attackTimer) {
-    attackSprites = [];
+  if (time % 30 === 0) {
+    for (i = 0; i < monsters.length; i++) {
+      monsters[i].monsterMove();
+    };
+  } else if (time % 81 === 0) {
+    var randomColor = "#";
+    while (randomColor.length <= 6) {
+      randomColor += (Math.floor(Math.random() * 9) + 1);
+    };
+    var randomXPos = 0;
+    var randomYPos = 0;
+    while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 100) {
+      randomXPos = (Math.floor(Math.random() * width / 2 + width / 4));
+      // console.log("random x" + randomXPos);
+    };
+    while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 100) {
+      randomYPos = (Math.floor(Math.random() * height / 2 + height / 4));
+      // console.log("random y" + randomYPos);
+    };
+    var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
+    monsters.push(newMonster);
   }
-
+  if (time < weaponTimer) {
+    console.log("hi")
+    for (i = monsters.length - 1; i >= 0; i --) {
+      if (collisionCheck(playerWeapon, monsters[i])) {
+        monsters.splice(i, 1);
+      };
+    };
+  }
 };
 
 
 // -- place update functions in here -- //
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
-  player.update();
+  if (weaponTimer <= time) {
+    player.update();
+  }
   if(player.yPos>700) {
     currentRoom = allRooms["b"];
   }
@@ -92,6 +124,9 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   // currentRoom.draw(context);
+  for (i = 0; i < monsters.length; i++) {
+    monsters[i].draw();
+  };
   player.draw();
   for (var i = 0; i < wallObjects.length; i ++) {
     wallObjects[i].draw();
@@ -100,23 +135,21 @@ var draw = function() {
     attackSprites[i].draw();
   };
   playerWeapon.draw();
-
-  drawDoors();
 };
-
-var drawDoors = function(doorArray) {
-  context.lineWidth = 1;
-  for (i = 0; i < doors.length; i ++) {
-    context.fillStyle = doors[i].ballColor;
-    if (i % 2 === 0) {
-      context.fillRect(doors[i].xPos, doors[i].yPos, doors[i].radius, wallWidth);
-      // -- draw rectangles for doors. -- //
-    }
-    else {
-      context.fillRect(doors[i].xPos, doors[i].yPos, wallWidth, doors[i].radius);
-    }
-  }
-}
+//
+// var drawDoors = function(doorArray) {
+//   context.lineWidth = 1;
+//   for (i = 0; i < doors.length; i ++) {
+//     context.fillStyle = doors[i].ballColor;
+//     if (i % 2 === 0) {
+//       context.fillRect(doors[i].xPos, doors[i].yPos, doors[i].radius, wallWidth);
+//       // -- draw rectangles for doors. -- //
+//     }
+//     else {
+//       context.fillRect(doors[i].xPos, doors[i].yPos, wallWidth, doors[i].radius);
+//     }
+//   };
+// };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
 window.onload = function() {
@@ -153,8 +186,7 @@ window.addEventListener("keydown", function(event) {
     }
   }
   if (event.keyCode === 32) {
-    // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
-    attack(player, 1.3, 0.9);
+    weaponTimer = time + weaponSwingTime;
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //

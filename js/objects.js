@@ -23,7 +23,8 @@ Sprite.prototype.draw = function () {
     context.beginPath();
     context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
     context.fillStyle = this.ballColor;
-    context.lineWidth = 4;
+    context.strokeStyle = this.ballColor;
+    context.lineWidth = 1;
     context.stroke();
   } else {
     this.super.draw(context, this.xPos-25, this.yPos-32);
@@ -65,8 +66,16 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
   if (dependantSprite.yVel) {
     this.yVel = dependantSprite.yVel / Math.abs(dependantSprite.yVel) * Math.abs(this.yVel);
   }
-  this.xPos = dependantSprite.xPos + this.xVel;
-  this.yPos = dependantSprite.yPos + this.yVel;
+  if (dependantSprite.xVel && dependantSprite.yVel) {
+    this.xPos = dependantSprite.xPos + 0.9 * this.xVel;
+    this.yPos = dependantSprite.yPos + 0.9 * this.yVel;
+  } else if (dependantSprite.xVel) {
+    this.xPos = dependantSprite.xPos + this.xVel;
+    this.yPos = dependantSprite.yPos;
+  } else if (dependantSprite.yVel) {
+    this.xPos = dependantSprite.xPos;
+    this.yPos = dependantSprite.yPos + this.yVel;
+  }
 };
 
 // -- First prototype for monster movement -- //
@@ -189,9 +198,17 @@ var calculateDistanceOneSprite = function(spriteOne, xPos, yPos) {
   return Math.sqrt(Math.pow((spriteOne.xPos - xPos), 2) + Math.pow((spriteOne.yPos - yPos), 2));
 };
 
-var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
-  attackTimer = time + 100;
-  var attackSprite = new Sprite(attackingSprite.xPos , attackingSprite.yPos + attackingSprite.radius * 0.9, attackingSprite.radius * attackRadiusModifier);
-  attackSprites.push(attackSprite);
-  console.log(attackSprite);
+var collisionCheck = function(spriteOne, spriteTwo) {
+  if (calculateDistance(spriteOne, spriteTwo) < spriteOne.radius + spriteTwo.radius) {
+    return true;
+  } else {
+    return false;
+  }
 };
+
+// var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
+//   attackTimer = time + 100;
+//   var attackSprite = new Sprite(attackingSprite.xPos , attackingSprite.yPos + attackingSprite.radius * 0.9, attackingSprite.radius * attackRadiusModifier);
+//   attackSprites.push(attackSprite);
+//   console.log(attackSprite);
+// };
