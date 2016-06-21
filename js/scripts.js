@@ -50,6 +50,7 @@ doors[3] = doorWest;
 var depressedKeys = [];
 var time = 0;
 var player = new Sprite(100, 100, 25, "blue");
+var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackSprites = [];
 var attackTimer = 0;
 
@@ -80,6 +81,9 @@ var update = function() {
   if(player.yPos>700) {
     currentRoom = allRooms["b"];
   }
+  if(player.xVel || player.yVel) {
+    playerWeapon.weaponUpdate(player);
+  }
   currentRoom.update();
 };
 
@@ -95,6 +99,7 @@ var draw = function() {
   for (var i = 0; i < attackSprites.length; i ++) {
     attackSprites[i].draw();
   };
+  playerWeapon.draw();
 
   drawDoors();
 };
@@ -183,7 +188,7 @@ window.addEventListener("keyup", function (event) {
     }
   }
   while (depressedKeys.includes(event.keyCode)) {
-    depressedKeys.splice(depressedKeys.indexOf(event.keyCode, 1));
+    depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
   };
 });
 

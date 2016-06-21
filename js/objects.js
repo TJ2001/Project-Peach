@@ -55,6 +55,20 @@ Sprite.prototype.update = function() {
   //   }
 };
 
+// -- Special update method for sprites which are a weapon attack of another sprite -- //
+// -- dependantSprite is the sprite that uses the weapon -- //
+// -- you will call this when either of the dependantSprite's velocities are != 0 -- //
+Sprite.prototype.weaponUpdate = function(dependantSprite) {
+  if (dependantSprite.xVel) {
+    this.xVel = dependantSprite.xVel / Math.abs(dependantSprite.xVel) * Math.abs(this.xVel);
+  }
+  if (dependantSprite.yVel) {
+    this.yVel = dependantSprite.yVel / Math.abs(dependantSprite.yVel) * Math.abs(this.yVel);
+  }
+  this.xPos = dependantSprite.xPos + this.xVel;
+  this.yPos = dependantSprite.yPos + this.yVel;
+};
+
 // -- First prototype for monster movement -- //
 Sprite.prototype.monsterMove = function() {
   var randomNumber = Math.floor(Math.random() * 10);
