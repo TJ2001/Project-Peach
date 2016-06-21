@@ -26,7 +26,6 @@ var doorSize = 128;
 var supplies = 30;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
-
 var canvas = document.createElement('canvas');
 canvas.width = width;
 canvas.height = height;
@@ -34,30 +33,14 @@ var context = canvas.getContext('2d');
 context.imageSmoothingEnabled = false;
 context.mozImageSmoothingEnabled = false;
 context.webkitImageSmoothingEnabled = false;
-
-// -- Make an empty array of length 4 for the doors index 0 will be the door at the top of the screen.  The next doors go clockwise -- //
-var doors = [];
-doors.length = 4;
-// -- using the sprite object for the doors, radius is going to be the size of the door. We will need a new draw method for doors. -- //
-var doorNorth = new Sprite(width / 2 - doorSize / 2, 0, doorSize, "blue");
-var doorEast = new Sprite(width - wallWidth, height / 2 - doorSize / 2, doorSize, "green");
-var doorSouth = new Sprite(width / 2 - doorSize / 2, height - wallWidth, doorSize, "yellow");
-var doorWest = new Sprite(0, height / 2 - doorSize / 2, doorSize, "red");
-doors[0] = doorNorth;
-doors[1] = doorEast;
-doors[2] = doorSouth;
-doors[3] = doorWest;
-// -- depressedKeys initialized as an empty set to allow for a different set up for movement keys. -- //
 var depressedKeys = [];
 var monsters = [];
 var time = 0;
 var weaponTimer = 0;
-
 var player = new Sprite(100, 100, 25, "blue");
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackSprites = [];
 var attackTimer = 0;
-
 allSuperSprites["MomoSprite"].addObject(player);
 
 // -- place each function in here that runs on each animation step -- //
@@ -72,10 +55,12 @@ var timerEvents = function() {
   // -- timed events can go here -- //
   time ++;
   if (time % 30 === 0) {
+    // -- check for monster movement every half second -- //
     for (i = 0; i < monsters.length; i++) {
       monsters[i].monsterMove();
     };
   } else if (time % 81 === 0) {
+    // -- Spawn random monsters -- //
     var randomColor = "#";
     while (randomColor.length <= 6) {
       randomColor += (Math.floor(Math.random() * 9) + 1);
@@ -84,16 +69,15 @@ var timerEvents = function() {
     var randomYPos = 0;
     while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 100) {
       randomXPos = (Math.floor(Math.random() * width / 2 + width / 4));
-      // console.log("random x" + randomXPos);
     };
     while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 100) {
       randomYPos = (Math.floor(Math.random() * height / 2 + height / 4));
-      // console.log("random y" + randomYPos);
     };
     var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
     monsters.push(newMonster);
   }
   if (time < weaponTimer) {
+    // -- check for collisions with monsters and your weapon while weapon is active -- //
     console.log("hi")
     for (i = monsters.length - 1; i >= 0; i --) {
       if (collisionCheck(playerWeapon, monsters[i])) {
@@ -110,6 +94,7 @@ var update = function() {
   if (weaponTimer <= time) {
     player.update();
   }
+  for (i = 0; i < monsters.length)
   if(player.yPos>700) {
     currentRoom = allRooms["b"];
   }
@@ -136,20 +121,6 @@ var draw = function() {
   };
   playerWeapon.draw();
 };
-//
-// var drawDoors = function(doorArray) {
-//   context.lineWidth = 1;
-//   for (i = 0; i < doors.length; i ++) {
-//     context.fillStyle = doors[i].ballColor;
-//     if (i % 2 === 0) {
-//       context.fillRect(doors[i].xPos, doors[i].yPos, doors[i].radius, wallWidth);
-//       // -- draw rectangles for doors. -- //
-//     }
-//     else {
-//       context.fillRect(doors[i].xPos, doors[i].yPos, wallWidth, doors[i].radius);
-//     }
-//   };
-// };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
 window.onload = function() {

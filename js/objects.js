@@ -6,7 +6,8 @@
 ###########################################################################################*/
 //--Note to Joel: Most of this code is yours, so I'll leave it to you to document
 
-
+// -- SPRITE CONSTRUCTOR -- //
+// -- This is the primary game object. It has a position, size and speed.  Super is used for animations -- //
 function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.xPos = xPos;
   this.yPos = yPos;
@@ -17,7 +18,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.super = undefined;
 };
 
-// -- draws the sprite on the canvas -- //
+// -- draws the sprite object on the canvas -- //
 Sprite.prototype.draw = function () {
   if(typeof this.super === "undefined") {
     context.beginPath();
@@ -43,17 +44,6 @@ Sprite.prototype.update = function() {
   for (i = 0; i < wallObjects.length; i ++) {
     wallObjects[i].collisionWithSprite(this);
   };
-
-  // if (this.yPos + this.radius >= height) {
-  //     this.yVel *= -1;
-  //   } else if (this.yPos - this.radius <= 0) {
-  //     this.yVel *= -1;
-  //   }
-  // if (this.xPos + this.radius >= width) {
-  //     this.xVel *= -1;
-  //   } else if (this.xPos - this.radius <= 0) {
-  //     this.xVel *= -1;
-  //   }
 };
 
 // -- Special update method for sprites which are a weapon attack of another sprite -- //
@@ -99,7 +89,7 @@ Sprite.prototype.monsterMove = function() {
   }
 };
 
-// --
+// -- a construcor to make light puzzles. -- //
 function LightPuzzle(positionInGridX, positionInGridY, isLit = false) {
   this.sprite = new Sprite(0, 0, 32);
   // -- adjustments to allow checking neighbors based on numbers -- //
@@ -130,7 +120,7 @@ LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
   };
 };
 
-// -- constructor for static rectangular objects. xPos and yPos are the top left corner of the wall object.  Behavior is how the wall will act with collisions. -- //
+// -- constructor for static rectangular objects. xPos and yPos are the top left corner of the wall object. xSpan and ySpan are the width and height.  Behavior is how the wall will act with collisions. -- //
 function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall") {
   this.xPos = xPos;
   this.yPos = yPos;
@@ -146,6 +136,7 @@ Wall.prototype.draw = function() {
   context.fillRect(this.xPos, this.yPos, this.xSpan, this.ySpan);
 };
 
+// -- this will check a sprite for collisions with the Wall object and call collisionBehavior with the appropriate arguements. -- //
 Wall.prototype.collisionWithSprite = function(sprite) {
   var collision = false;
   var xCollide = false;
@@ -177,7 +168,7 @@ Wall.prototype.collisionWithSprite = function(sprite) {
   }
   return this.collisionBehavior(sprite, xCollide, yCollide);
 };
-
+// -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
     if (xCollide) {
@@ -186,6 +177,13 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     if (yCollide) {
       sprite.yPos = sprite.yPos - sprite.yVel;
     }
+  } else if (this.behavior === "bounceWall") {
+    if (xCollide) {
+      this.xVel *= -1;
+    }
+    if (yCollide) {
+      this.yVel *= -1;
+    }
   }
 };
 
@@ -193,11 +191,11 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
 var calculateDistance = function(spriteOne, spriteTwo) {
   return Math.sqrt(Math.pow((spriteOne.xPos - spriteTwo.xPos), 2) + Math.pow((spriteOne.yPos - spriteTwo.yPos), 2));
 };
-
 var calculateDistanceOneSprite = function(spriteOne, xPos, yPos) {
   return Math.sqrt(Math.pow((spriteOne.xPos - xPos), 2) + Math.pow((spriteOne.yPos - yPos), 2));
 };
 
+// -- A function to check for collisions between two sprites. -- //
 var collisionCheck = function(spriteOne, spriteTwo) {
   if (calculateDistance(spriteOne, spriteTwo) < spriteOne.radius + spriteTwo.radius) {
     return true;
@@ -205,10 +203,3 @@ var collisionCheck = function(spriteOne, spriteTwo) {
     return false;
   }
 };
-
-// var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
-//   attackTimer = time + 100;
-//   var attackSprite = new Sprite(attackingSprite.xPos , attackingSprite.yPos + attackingSprite.radius * 0.9, attackingSprite.radius * attackRadiusModifier);
-//   attackSprites.push(attackSprite);
-//   console.log(attackSprite);
-// };
