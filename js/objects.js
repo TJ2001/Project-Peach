@@ -1,3 +1,12 @@
+/*#########################################################################################
+            OBJECTS
+  -- This file contains the constructors and method definitions and related functions for
+      game entity objects, e.g. anything that appears on screen and has some functionality
+      beyond just being an image or animation.
+###########################################################################################*/
+//--Note to Joel: Most of this code is yours, so I'll leave it to you to document
+
+
 function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.xPos = xPos;
   this.yPos = yPos;

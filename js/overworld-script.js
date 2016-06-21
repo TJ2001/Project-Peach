@@ -33,72 +33,72 @@ onIsland = true;
 // placeIslands();
 
 //return coords of nearest island
-var findIsland = function(startX, startY) {
-  left = startX; right = startX; up = startY; down = startY;
-  while(true) {
-    if(left-1>=0){left--;}
-    if(right+1<mapWidth){right++;}
-    if(up-1>=0){up--;}
-    if(down+1<mapHeight){down++;}
-    for(var x=left; x<=right; x++) {
-      if(map[up][x]==="#") {
-        return[x,up];
-      } else if(map[down][x]==="#") {
-        return[x,down];
-      }
-    }
-    for(var y=up; y<down; y++) {
-      console.log(y);
-      if(map[y][left]==="#") {
-        return[left,y];
-      } else if(map[y][right]==="#") {
-        return[right,y];
-      }
-    }
-  }
-}
+// var findIsland = function(startX, startY) {
+//   left = startX; right = startX; up = startY; down = startY;
+//   while(true) {
+//     if(left-1>=0){left--;}
+//     if(right+1<mapWidth){right++;}
+//     if(up-1>=0){up--;}
+//     if(down+1<mapHeight){down++;}
+//     for(var x=left; x<=right; x++) {
+//       if(map[up][x]==="#") {
+//         return[x,up];
+//       } else if(map[down][x]==="#") {
+//         return[x,down];
+//       }
+//     }
+//     for(var y=up; y<down; y++) {
+//       console.log(y);
+//       if(map[y][left]==="#") {
+//         return[left,y];
+//       } else if(map[y][right]==="#") {
+//         return[right,y];
+//       }
+//     }
+//   }
+// }
 
 //move player
 //directions: numpad
-var move = function(direction) {
-  if(0 < direction&&direction < 10) {
-    var newX = boatX;
-    var newY = boatY;
-    if(direction>6) {
-      newY--;
-    } else if(direction<4) {
-      newY++;
-    }
-    if((direction-1)%3===0) {
-      newX--;
-    } else if(direction%3===0) {
-      newX++;
-    }
-    if(0 <= newX&&newX < mapWidth  &&  0 <= newY&&newY < mapHeight) {
-      supplies --;
-      if(supplies<1) {
-        health = Math.floor(health/2);
-        var nearestCoords = findIsland(boatX, boatY);
-        newX = nearestCoords[0];
-        newY = nearestCoords[1];
-      }
-      if(onIsland) {
-        map[boatY][boatX] = "#";
-      } else {
-        map[boatY][boatX] = "~";
-      }
-      if(map[newY][newX]==="~") {
-        onIsland = false;
-      } else {
-        onIsland = true;
-        goToIsland();
-      }
-      boatX = newX;
-      boatY = newY;
-      map[boatY][boatX] = "@";
-    }
-  }
-}
+// var move = function(direction) {
+//   if(0 < direction&&direction < 10) {
+//     var newX = boatX;
+//     var newY = boatY;
+//     if(direction>6) {
+//       newY--;
+//     } else if(direction<4) {
+//       newY++;
+//     }
+//     if((direction-1)%3===0) {
+//       newX--;
+//     } else if(direction%3===0) {
+//       newX++;
+//     }
+//     if(0 <= newX&&newX < mapWidth  &&  0 <= newY&&newY < mapHeight) {
+//       supplies --;
+//       if(supplies<1) {
+//         health = Math.floor(health/2);
+//         var nearestCoords = findIsland(boatX, boatY);
+//         newX = nearestCoords[0];
+//         newY = nearestCoords[1];
+//       }
+//       if(onIsland) {
+//         map[boatY][boatX] = "#";
+//       } else {
+//         map[boatY][boatX] = "~";
+//       }
+//       if(map[newY][newX]==="~") {
+//         onIsland = false;
+//       } else {
+//         onIsland = true;
+//         goToIsland();
+//       }
+//       boatX = newX;
+//       boatY = newY;
+//       map[boatY][boatX] = "@";
+//     }
+//   }
+// }
 
 //for now, get random results --- in final game the player will go to the island and play there
 // var goToIsland = function() {

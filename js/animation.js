@@ -1,3 +1,9 @@
+/*###############################################################################
+          ANIMATION
+  -- This file contains the framework for creating animations from spritesheets
+################################################################################*/
+
+
 //  SUPERSPRITE OBJECT
 //    Acts as a container for multiple animations associated with a single in game object
 
@@ -10,17 +16,14 @@
       autoChoose: Optional - boolean value which, if true, tells the object to use a function to
         automatically choose which animation to play. False by default.
       choose: Optional - function that will test some conditions and return the key for the
-        desired animation at any given point. Will return the first animation by default
-      obj: Optional - a javascript object with which the supersprite is associated. Undefined
-        by default */
+        desired animation at any given point. Will return the first animation by default */
 function SuperSprite(key, animation,
-            autoChoose=false, choose=function(){return Object.keys(this.animations)[0];}, obj=undefined) {
+            autoChoose=false, choose=function(){return Object.keys(this.animations)[0];}) {
   this.animations = {};
   this.animations[key] = animation;
   this.currentAnimation = animation;
   this.auto = autoChoose;
   this.chooseAnimation =  choose;
-  this.obj = obj;
   this.height = this.currentAnimation.frameArray[0].height;
   this.width = this.currentAnimation.frameArray[0].width;
 }
@@ -29,6 +32,13 @@ function SuperSprite(key, animation,
 //  Instructions: call to add animations to a SuperSprite, uses the same format as the constructor
 SuperSprite.prototype.addAnimation = function(key, animation) {
   this.animations[key] = animation;
+}
+
+//addObject method --
+//  Instruction: pass this method an object to associate it with this supersprite
+SuperSprite.prototype.addObject = function(obj) {
+  this.obj = obj;
+  obj.super = this;
 }
 
 //show method --
@@ -121,12 +131,3 @@ Frame.prototype.display = function(ctx, x, y) {
   ctx.drawImage(this.spriteSheet, this.spriteSheetX, this.spriteSheetY, this.width, this.height, x, y, this.width*2, this.height*2);
 }
 ///////////////////////////////////////////
-
-
-//  DEMO
-//Making my test animation
-// var turnHeadGuy1 = new Animation("img/test-sheet.png",0,132,24,27,3,20);
-// var turnHeadGuy2 = new Animation("img/test-sheet.png",0,132,24,27,3,52);
-
-// var canvas = document.getElementById("demo-canvas");
-// var ctx = canvas.getContext("2d");
