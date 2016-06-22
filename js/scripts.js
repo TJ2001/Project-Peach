@@ -62,6 +62,10 @@ var step = function() {
 var monsterOne = new Sprite(350,350,70, "black");
 monsters.push(monsterOne);
 var timerEvents = function() {
+  if (time === -1) {
+    $(".story-intro").hide();
+    $("canvas").show();
+  }
   // -- timed events can go here -- //
   time ++;
   if (time % 30 === 0) {
