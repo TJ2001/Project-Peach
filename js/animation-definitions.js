@@ -60,7 +60,7 @@ var allSuperSprites = {
         }
       }
     }),
-    "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1.png",0,0,64,64,1,10)),
+    "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1-sm.png",0,0,32,32,1,10)),
     "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall2.png",0,0,32,64,1,10)),
     "MapMarker": new SuperSprite("momohead", new Animation("img/overworld.png",64,0,16,16,1,10)),
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
@@ -94,7 +94,8 @@ allSuperSprites["MomoSprite"].addAnimation("downLeftSwing", new Animation("img/M
 allSuperSprites["MomoSprite"].addAnimation("downRightSwing", new Animation("img/MomoSword-Sprites/Momo-sword-downright.png",1,0,62,64,4,1));
 
 
-allSuperSprites["LightPanelSprite"].addAnimation("on", new Animation("img/light-panel1.png",256,0,64,64,1,10));
+allSuperSprites["LightPanelSprite"].addAnimation("on", new Animation("img/light-panel1-sm.png",32,0,32,32,1,10));
+allSuperSprites["WallSprite"].addAnimation("boulder", new Animation("img/boulder1.png",0,0,32,32,1,10));
 
 allSuperSprites["CrabMobSprite"].addAnimation("walk", new Animation("img/Monster-Spritesheet.png",1,0,43,18,2,20));
 allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,4,5));
