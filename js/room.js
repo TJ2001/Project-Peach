@@ -120,10 +120,8 @@ Room.prototype.draw = function(ctx) {
       ani.play(ctx, 2*ani.frameArray[0].width*x, 2*ani.frameArray[0].height*y);
     }
   }
+  this.sortSprites(this.sprites[i]);
   for(var i=0; i<this.sprites.length; i++) {
-    if(this.sprites[i].yVel != 0) {
-      this.sortSprites(this.sprites[i]);
-    }
     this.sprites[i].draw();
   }
 }
@@ -136,7 +134,13 @@ Room.prototype.update = function() {
     //Puzzle
   }
   for(var i=0; i<this.sprites.length; i++) {
-    this.sprites[i].update();
+    if (this.sprites[i] === player) {
+      if (weaponTimer <= time && monsterHitTimer <= time) {
+        this.sprites[i].update();
+      } else {}
+    } else {
+      this.sprites[i].update();
+    }
   }
   for (var i=0; i < this.wallObjects.length; i++) {
     this.wallObjects[i].collisionWithSprite(player);

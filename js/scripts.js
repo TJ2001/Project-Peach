@@ -92,7 +92,6 @@ var timerEvents = function() {
   }
   if (time < weaponTimer) {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
-
     for (var i = monsters.length - 1; i >= 0; i --) {
       if (collisionCheck(playerWeapon, monsters[i])) {
         monsters.splice(i, 1);
@@ -105,33 +104,34 @@ var timerEvents = function() {
 // -- place update functions in here -- //
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
-
-  // if (weaponTimer <= time & monsterHitTimer <= time) {
-  //   player.update();
+  // for (var i=0; i < monsters.length; i++) {
+  //   monsters[i].update();
   // }
-  if(player.yPos>700) {
-    currentRoom = allRooms["b"];
-  }
-  for (var i=0; i < monsters.length; i++) {
-    monsters[i].update();
-  }
-
+  // -- this updates the position of the hitbox for Momo's sword -- //
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
   for (i = 0; i < monsters.length; i ++) {
     if (collisionCheck(monsters[i], player)) {
       collisionCount ++;
-      var angle = Math.atan2((monsters[i].xPos - player.xPos), (monsters[i].yPos - player.yPos));
+      var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
       console.log(collisionCount)
-      player.xPos += enemyKnockBack * Math.sin(angle);
-      player.yPos += enemyKnockBack * Math.cos(angle);
+      player.xPos += enemyKnockBack * reboundVector[0];
+      player.yPos += enemyKnockBack * reboundVector[1];
       monsterHitTimer = time + 15;
       console.log("you lost a life");
     }
     // monsters[i].update;
   };
   currentRoom.update();
+};
+
+// -- a helper function to find the vector ratios between two pointsit takes two points as an input and returns a vector pair [x,y]
+var vector = function (xPos1, yPos1, xPos2, yPos2) {
+  var angle = Math.atan2(xPos1 - xPos2, yPos1 -yPos2);
+  var resultVector = [Math.sin(angle), Math.cos(angle)];
+  console.log(resultVector)
+  return resultVector;
 };
 
 // -- place items that need to be drawn in here. static lines, text, images and objects -- //

@@ -77,9 +77,64 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
   }
 };
 
-// -- First prototype for monster movement -- //
 Sprite.prototype.monsterMove = function() {
+ // -- causes the sprite to constantly move towards the player -- //
+    if (this.xPos < player.xPos) {
+      this.xVel = 1;
+    } else if (this.xPos >player.xPos) {
+      this.xVel = -1;
+    } else {
+      this.xVel = 0;
+    }
+    if (this.yPos < player.yPos) {
+      this.yVel = 1;
+    } else if (this.yPos >player.yPos) {
+      this.yVel = -1;
+    } else {
+      this.yVel = 0;
+    }
+
   var randomNumber = Math.floor(Math.random() * 10);
+
+// -- causes the monster to adjust his yPos to be close to the player, then toggles to adjust xPos then back to yPos -- //
+// -- this is the ai for the crab-- //
+  if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
+    if (this.yPos - player.yPos < 0) {
+      this.yVel = 2;
+    } else {
+      this.yVel = -2;
+    }
+  } else if (this.xPos - player.xPos < -4) {
+    this.xVel = 3;
+    this.yVel = 0;
+  } else if (this.xPos -player.xPos > 4) {
+    this.xVel = -3;
+    this.yVel = 0;
+  } else {
+    this.xVel = 0;
+  }
+
+// --  causes the monster to head towards the player if the player is close enough to the monster -- //
+  if (calculateDistance(this, player) <= this.radius + 400) {
+    console.log("you triggered the proximity move.")
+    if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      this.xVel = 3;
+      this.yVel = 0;
+    } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      this.xVel = -3;
+      this.yVel = 0;
+    }
+
+    if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      this.xVel = 0;
+      this.yVel = 3;
+    } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      this.xVel = 0;
+      this.yVel = -3;
+    }
+  }
+
+
   if (randomNumber ===  0) {
     this.xVel = 2;
     this.yVel = 0;
