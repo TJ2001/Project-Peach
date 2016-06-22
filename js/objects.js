@@ -138,6 +138,7 @@ function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall")
   this.wallColor = color;
   this.behavior = behavior;
   this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
+  if(this.behavior==="pit") {this.sprite.ballColor="orange";}
   allSuperSprites["WallSprite"].copy().addObject(this.sprite);
   this.xMovable = true;
   this.yMovable = false;
@@ -201,13 +202,20 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
     this.collideSolid(sprite, xCollide, yCollide);
   } else if(this.behavior==="boulder") {
-    if (sprite!=player){
-       if(xCollide) {
-         this.xMovable = false;
-       }
-       if(yCollide) {
-         this.yMovable = false;
-       }
+    if (sprite!=player) {
+      for(var i=0; i<currentRoom.wallObjects.length; i++) {
+        var wo = currentRoom.wallObjects[i];
+        if(wo.behavior==="pit") {
+          this.behavior = "none";
+          wo.behavior = "none";
+        }
+      }
+      if(xCollide) {
+        this.xMovable = false;
+      }
+      if(yCollide) {
+        this.yMovable = false;
+      }
    } else {
       if(xCollide && !yCollide) {
         if(this.xMovable) {
@@ -220,6 +228,8 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
       }
       this.collideSolid(sprite, xCollide, yCollide);
     }
+  } else if(this.behavior==="pit") {
+    if (sprite===player) { this.collideSolid(sprite, xCollide, yCollide); }
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
       this.xVel *= -1;

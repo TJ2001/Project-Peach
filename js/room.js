@@ -71,7 +71,7 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.ballColor = "brown";
         } else if(icon==="@") {
           this.entrance = newEntity;
-        } else if(icon==="w" || icon==="x" || icon==="b") {
+        } else if(icon==="w" || icon==="x" || icon==="b" || icon==="p") {
           this.wallObjects.push(newEntity);
         }
       }
