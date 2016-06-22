@@ -10,6 +10,7 @@
 // Important objects
 var player = new Sprite(100, 100, 25, "blue");
 var boat = new Sprite(0,0,15);
+allSuperSprites["MapMarker"].addObject(boat);
 
 
 // -- SPRITE CONSTRUCTOR -- //
@@ -164,60 +165,44 @@ Wall.prototype.collisionWithSprite = function(sprite) {
       return false;
     }
   }
-  // var collision = false;
-  // var xCollide = false;
-  // var yCollide = false;
-  // if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius-this.sprite.radius, this.sprite.yPos-this.sprite.radius) <= sprite.radius) {
-  //   collision = true;
-  //   xCollide = true;
-  //   yCollide = true;
-  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius + this.xSpan, this.sprite.yPos-this.sprite.radius) <= sprite.radius) {
-  //   collision = true;
-  //   xCollide = true;
-  //   yCollide = true;
-  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius, this.sprite.yPos-this.sprite.radius + this.ySpan) <= sprite.radius) {
-  //   collision = true;
-  //   xCollide = true;
-  //   yCollide = true;
-  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius + this.xSpan, this.sprite.yPos-this.sprite.radius + this.ySpan) <= sprite.radius) {
-  //   collision = true;
-  //   xCollide = true;
-  //   yCollide = true;
-  // } else if (Math.abs(this.sprite.xPos-this.sprite.radius + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.sprite.yPos-this.sprite.radius + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
-  //   collision = true;
-  //   xCollide = true;
-  // } else if (Math.abs(this.sprite.xPos-this.sprite.radius + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.sprite.yPos-this.sprite.radius + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
-  //   collision = true;
-  //   yCollide = true;
-  // } else {
-  //   return collision;
-  // }
-  // return this.collisionBehavior(sprite, xCollide, yCollide);
 };
+
+//Collision Behavior used by all solid wall types
+Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
+  if (xCollide) {
+    while(Math.abs(this.sprite.xPos-sprite.xPos) <= this.sprite.radius + sprite.radius) {
+      if(this.sprite.xPos>sprite.xPos) {
+        var bump = Math.min(sprite.xVel, -.5);
+      } else {
+        var bump = Math.max(sprite.xVel, .5);
+      }
+      sprite.xPos = sprite.xPos + bump;
+    }
+  }
+  if (yCollide) {
+    while(Math.abs(this.sprite.yPos-sprite.yPos) <= this.sprite.radius + sprite.radius) {
+      if(this.sprite.yPos>sprite.yPos) {
+        var bump = Math.min(sprite.xVel, -.5);
+      } else {
+        var bump = Math.max(sprite.xVel, .5);
+      }
+      sprite.yPos = sprite.yPos + bump;
+    }
+  }
+}
 // -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
-    if (xCollide) {
-      while(Math.abs(this.sprite.xPos-sprite.xPos) <= this.sprite.radius + sprite.radius) {
-        if(this.sprite.xPos>sprite.xPos) {
-          var bump = Math.min(sprite.xVel, -.5);
-        } else {
-          var bump = Math.max(sprite.xVel, .5);
-        }
-        sprite.xPos = sprite.xPos + bump;
-      }
-    }
-    if (yCollide) {
-      while(Math.abs(this.sprite.yPos-sprite.yPos) <= this.sprite.radius + sprite.radius) {
-        if(this.sprite.yPos>sprite.yPos) {
-          var bump = Math.min(sprite.xVel, -.5);
-        } else {
-          var bump = Math.max(sprite.xVel, .5);
-        }
-        sprite.yPos = sprite.yPos + bump;
-      }
-    }
+    this.collideSolid(sprite, xCollide, yCollide);
     this.sprite.super.show("solid");
+  } else if(this.behavior==="boulder") {
+    if(xCollide && yCollide) {
+      this.collideSolid(sprite, xCollide, yCollide);
+    } else if(xCollide) {
+      if(sprite.xPos < this.sprite.xPos && collisionCheckMultiple(this.sprite, currentRoom.wallObjects).length===0) {
+        this.sprite.xPos += this.sprite.radius*2;
+      }
+    }
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
       this.xVel *= -1;
@@ -248,6 +233,18 @@ var collisionCheck = function(spriteOne, spriteTwo) {
     return false;
   }
 };
+
+// -- A function to check for collisions between a particular sprite and an array of other sprites
+//    returns an array of sprites that are collided with sthe first sprite
+var collisionCheckMultiple = function(s1, s2Array) {
+  var collisions = [];
+  s2Array.forEach(function(s2) {
+    if(calculateDistance(s1, s2) < s1.radius + s2.radius + ) {
+      collisions.push(s2);
+    }
+  });
+  return collisions;
+}
 
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;

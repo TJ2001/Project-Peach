@@ -71,9 +71,7 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.ballColor = "brown";
         } else if(icon==="@") {
           this.entrance = newEntity;
-        } else if(icon==="w") {
-          this.wallObjects.push(newEntity);
-        } else if(icon==="x") {
+        } else if(icon==="w" || icon==="x" || icon==="b") {
           this.wallObjects.push(newEntity);
         }
       }
@@ -195,7 +193,10 @@ Room.prototype.moveOverworld = function(direction) {
       this.boatX = newX;
       this.boatY = newY;
       if(this.background[newY][newX]!="~") {
+        boat.super.show("momohead");
         return this.background[newY][newX];
+      } else {
+        boat.super.show("boat");
       }
     }
   }

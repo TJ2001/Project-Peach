@@ -61,7 +61,8 @@ var allSuperSprites = {
       }
     }),
     "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1.png",0,0,64,64,1,10)),
-    "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall2.png",0,0,32,64,1,10))
+    "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall2.png",0,0,32,64,1,10)),
+    "MapMarker": new SuperSprite("momohead", new Animation("img/overworld.png",64,0,16,16,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
@@ -82,3 +83,4 @@ allSuperSprites["MomoSprite"].addAnimation("downLeftStill", new Animation("img/M
 allSuperSprites["MomoSprite"].addAnimation("downRightStill", new Animation("img/Momo-Spritesheet.png",75,106,25,33,1,10));
 
 allSuperSprites["LightPanelSprite"].addAnimation("on", new Animation("img/light-panel1.png",256,0,64,64,1,10));
+allSuperSprites["MapMarker"].addAnimation("boat", new Animation("img/overworld.png",80,0,16,16,1,10));
