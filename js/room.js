@@ -92,11 +92,11 @@ Room.prototype.addMap = function(map, foreground) {
 //      If you want to add sprites to a room manually, call addSprite and pass it the sprite to be added
 Room.prototype.sortSprites = function() {
   this.sprites.sort(function(a, b) {
-    if(typeof a.super != "undefined") {
-      if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
-        return -1;
-      }
-    }
+    // if(typeof a.super != "undefined") {
+    //   if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
+    //     return -1;
+    //   }
+    // }
     if(a.yPos < b.yPos) {
       return -1;
     } else if(a.yPos > b.yPos) {
@@ -120,8 +120,8 @@ Room.prototype.draw = function(ctx) {
       ani.play(ctx, 2*ani.frameArray[0].width*x, 2*ani.frameArray[0].height*y);
     }
   }
+  this.sortSprites();
   for(var i=0; i<this.sprites.length; i++) {
-    this.sortSprites(this.sprites[i]);
     this.sprites[i].draw();
   }
 }
