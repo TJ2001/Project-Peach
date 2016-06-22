@@ -239,7 +239,7 @@ var collisionCheck = function(spriteOne, spriteTwo) {
 var collisionCheckMultiple = function(s1, s2Array) {
   var collisions = [];
   s2Array.forEach(function(s2) {
-    if(calculateDistance(s1, s2) < s1.radius + s2.radius + ) {
+    if(calculateDistance(s1, s2) < s1.radius + s2.radius + 5) {
       collisions.push(s2);
     }
   });
