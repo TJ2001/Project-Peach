@@ -77,9 +77,64 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
   }
 };
 
-// -- First prototype for monster movement -- //
 Sprite.prototype.monsterMove = function() {
+ // -- causes the sprite to constantly move towards the player -- //
+    if (this.xPos < player.xPos) {
+      this.xVel = 1;
+    } else if (this.xPos >player.xPos) {
+      this.xVel = -1;
+    } else {
+      this.xVel = 0;
+    }
+    if (this.yPos < player.yPos) {
+      this.yVel = 1;
+    } else if (this.yPos >player.yPos) {
+      this.yVel = -1;
+    } else {
+      this.yVel = 0;
+    }
+
   var randomNumber = Math.floor(Math.random() * 10);
+
+// -- causes the monster to adjust his yPos to be close to the player, then toggles to adjust xPos then back to yPos -- //
+// -- this is the ai for the crab-- //
+  if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
+    if (this.yPos - player.yPos < 0) {
+      this.yVel = 2;
+    } else {
+      this.yVel = -2;
+    }
+  } else if (this.xPos - player.xPos < -4) {
+    this.xVel = 3;
+    this.yVel = 0;
+  } else if (this.xPos -player.xPos > 4) {
+    this.xVel = -3;
+    this.yVel = 0;
+  } else {
+    this.xVel = 0;
+  }
+
+// --  causes the monster to head towards the player if the player is close enough to the monster -- //
+  if (calculateDistance(this, player) <= this.radius + 250) {
+    console.log("you triggered the proximity move.")
+    if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      this.xVel = 3;
+      this.yVel = 0;
+    } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      this.xVel = -3;
+      this.yVel = 0;
+    }
+
+    if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      this.xVel = 0;
+      this.yVel = 3;
+    } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      this.xVel = 0;
+      this.yVel = -3;
+    }
+  }
+
+
   if (randomNumber ===  0) {
     this.xVel = 2;
     this.yVel = 0;
@@ -138,7 +193,11 @@ function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall")
   this.wallColor = color;
   this.behavior = behavior;
   this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
+  this.door = -1;
+  this.doorOpen = false;
   allSuperSprites["WallSprite"].copy().addObject(this.sprite);
+  this.xMovable = true;
+  this.yMovable = false;
 };
 
 Wall.prototype.draw = function() {
@@ -194,15 +253,39 @@ Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
     this.collideSolid(sprite, xCollide, yCollide);
-    this.sprite.super.show("solid");
-  } else if(this.behavior==="boulder") {
-    if(xCollide && yCollide) {
+  } else if(this.behavior==="door") {
+    if(!this.doorOpen) {
       this.collideSolid(sprite, xCollide, yCollide);
-    } else if(xCollide) {
-      if(sprite.xPos < this.sprite.xPos && collisionCheckMultiple(this.sprite, currentRoom.wallObjects).length===0) {
-        this.sprite.xPos += this.sprite.radius*2;
-      }
     }
+  } else if(this.behavior==="boulder") {
+    if (sprite!=player) {
+      for(var i=0; i<currentRoom.wallObjects.length; i++) {
+        var wo = currentRoom.wallObjects[i];
+        if(wo.behavior==="pit") {
+          this.behavior = "none";
+          wo.behavior = "none";
+        }
+      }
+      if(xCollide) {
+        this.xMovable = false;
+      }
+      if(yCollide) {
+        this.yMovable = false;
+      }
+   } else {
+      if(xCollide && !yCollide) {
+        if(this.xMovable) {
+          this.sprite.xPos += sprite.xVel*2;
+        }
+      } else if(yCollide && !xCollide) {
+        if(this.yMovable) {
+          this.sprite.yPos += sprite.yVel*2;
+        }
+      }
+      this.collideSolid(sprite, xCollide, yCollide);
+    }
+  } else if(this.behavior==="pit") {
+    if (sprite===player) { this.collideSolid(sprite, xCollide, yCollide); }
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
       this.xVel *= -1;
@@ -216,6 +299,25 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     }
   }
 };
+
+function Switch(func = function() {
+      for(var i=0; i<currentRoom.wallObjects.length; i++) {
+        var wo = currentRoom.wallObjects[i];
+        if(wo.door===this.idNumber+5) {
+          wo.doorOpen = true;
+        }
+      }
+    }) {
+  this.sprite = new Sprite(0,0,16,"purple");
+  this.idNumber = 0;
+  this.func = func;
+}
+
+Switch.prototype.collisionWithSprite = function(sprite) {
+  if(calculateDistance(this.sprite, sprite) <= this.sprite.radius + sprite.radius) {
+    this.func();
+  }
+}
 
 // -- A function to calculate the total distance between the centers of two sprites -- //
 var calculateDistance = function(spriteOne, spriteTwo) {
@@ -233,18 +335,6 @@ var collisionCheck = function(spriteOne, spriteTwo) {
     return false;
   }
 };
-
-// -- A function to check for collisions between a particular sprite and an array of other sprites
-//    returns an array of sprites that are collided with sthe first sprite
-var collisionCheckMultiple = function(s1, s2Array) {
-  var collisions = [];
-  s2Array.forEach(function(s2) {
-    if(calculateDistance(s1, s2) < s1.radius + s2.radius + 5) {
-      collisions.push(s2);
-    }
-  });
-  return collisions;
-}
 
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;
