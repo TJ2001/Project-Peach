@@ -121,9 +121,7 @@ Room.prototype.draw = function(ctx) {
     }
   }
   for(var i=0; i<this.sprites.length; i++) {
-    if(this.sprites[i].yVel != 0) {
-      this.sortSprites(this.sprites[i]);
-    }
+    this.sortSprites(this.sprites[i]);
     this.sprites[i].draw();
   }
 }
