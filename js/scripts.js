@@ -102,9 +102,9 @@ var timerEvents = function() {
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
 
-  if (weaponTimer <= time & monsterHitTimer <= time) {
-    player.update();
-  }
+  // if (weaponTimer <= time & monsterHitTimer <= time) {
+  //   player.update();
+  // }
   if(player.yPos>700) {
     currentRoom = allRooms["b"];
   }
@@ -139,7 +139,7 @@ var draw = function() {
     monsters[i].draw();
   };
   playerWeapon.draw();
-  player.draw();
+  // player.draw();
 };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
@@ -177,7 +177,7 @@ window.addEventListener("keydown", function(event) {
     }
   }
   if(currentRoom===allRooms["overworld"]) {
-    var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
+    var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
       if(currentRoom.sprites.indexOf(player)===-1) {
