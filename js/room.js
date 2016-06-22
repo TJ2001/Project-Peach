@@ -139,6 +139,13 @@ Room.prototype.update = function() {
     this.sprites[i].update();
   }
   for (var i=0; i < this.wallObjects.length; i++) {
+    this.wallObjects[i].xMovable = true;
+    this.wallObjects[i].yMovable = true;
+    for(var s=0; s<this.sprites.length; s++) {
+      if(this.sprites[s]!=player) {
+        this.wallObjects[i].collisionWithSprite(this.sprites[s]);
+      }
+    }
     this.wallObjects[i].collisionWithSprite(player);
   };
 }

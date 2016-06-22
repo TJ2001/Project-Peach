@@ -139,6 +139,8 @@ function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall")
   this.behavior = behavior;
   this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
   allSuperSprites["WallSprite"].copy().addObject(this.sprite);
+  this.xMovable = true;
+  this.yMovable = false;
 };
 
 Wall.prototype.draw = function() {
@@ -192,16 +194,31 @@ Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
 }
 // -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
+  // var wallSprites = [];
+  // currentRoom.wallObjects.forEach(function(wo) {
+  //   wallSprites.push(wo);
+  // });
   if (this.behavior === "solidWall") {
     this.collideSolid(sprite, xCollide, yCollide);
-    this.sprite.super.show("solid");
   } else if(this.behavior==="boulder") {
-    if(xCollide && yCollide) {
-      this.collideSolid(sprite, xCollide, yCollide);
-    } else if(xCollide) {
-      if(sprite.xPos < this.sprite.xPos && collisionCheckMultiple(this.sprite, currentRoom.wallObjects).length===0) {
-        this.sprite.xPos += this.sprite.radius*2;
+    if (sprite!=player){
+       if(xCollide) {
+         this.xMovable = false;
+       }
+       if(yCollide) {
+         this.yMovable = false;
+       }
+   } else {
+      if(xCollide && !yCollide) {
+        if(this.xMovable) {
+          this.sprite.xPos += sprite.xVel*2;
+        }
+      } else if(yCollide && !xCollide) {
+        if(this.yMovable) {
+          this.sprite.yPos += sprite.yVel*2;
+        }
       }
+      this.collideSolid(sprite, xCollide, yCollide);
     }
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
@@ -234,17 +251,17 @@ var collisionCheck = function(spriteOne, spriteTwo) {
   }
 };
 
-// -- A function to check for collisions between a particular sprite and an array of other sprites
-//    returns an array of sprites that are collided with sthe first sprite
-var collisionCheckMultiple = function(s1, s2Array) {
-  var collisions = [];
-  s2Array.forEach(function(s2) {
-    if(calculateDistance(s1, s2) < s1.radius + s2.radius + 5) {
-      collisions.push(s2);
-    }
-  });
-  return collisions;
-}
+// // -- A function to check for collisions between a particular sprite and an array of other sprites
+// //    returns an array of sprites that are collided with sthe first sprite
+// var collisionCheckMultiple = function(s1, s2Array) {
+//   var collisions = [];
+//   s2Array.forEach(function(s2) {
+//     if(calculateDistance(s1, s2) < s1.radius + s2.radius + 10) {
+//       collisions.push(s2);
+//     }
+//   });
+//   return collisions;
+// }
 
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;

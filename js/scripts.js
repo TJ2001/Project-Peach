@@ -98,9 +98,9 @@ var timerEvents = function() {
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
 
-  if (weaponTimer <= time) {
-    player.update();
-  }
+  // if (weaponTimer <= time) {
+  //   player.update();
+  // }
   for (var i=0; i < monsters.length; i++) {
     monsters[i].update();
   }
