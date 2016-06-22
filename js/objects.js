@@ -215,6 +215,5 @@ var collisionCheck = function(spriteOne, spriteTwo) {
 
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;
-  var attackSprite = new Sprite(attackingSprite.xPos , attackingSprite.yPos + attackingSprite.radius * 0.9, attackingSprite.radius * attackRadiusModifier);
-  attackSprites.push(attackSprite);
+
 };
