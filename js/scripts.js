@@ -227,11 +227,3 @@ window.addEventListener("keyup", function (event) {
     depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
   };
 });
-
-var wallObjects = [];
-var northWall = new Wall(0, 0, wallWidth, width, "#2f6", "solidWall");
-var eastWall = new Wall(width - wallWidth, 0, wallWidth, width, "#2f6", "solidWall");
-var southWall = new Wall(0, height - wallWidth, width, wallWidth, "#2f6", "solidWall");
-var westWall = new Wall(0, 0, width, wallWidth, "#2f6", "solidWall");
-
-wallObjects.push(northWall, eastWall, southWall, westWall);
