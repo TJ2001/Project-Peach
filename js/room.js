@@ -34,6 +34,7 @@ function Room(width, height) {
   // -- set up the light puzzle -- //
   this.currentLightPuzzle = [];
   this.wallObjects = [];
+  this.switches = [];
 }
 
 // addMap method
@@ -71,8 +72,14 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.ballColor = "brown";
         } else if(icon==="@") {
           this.entrance = newEntity;
-        } else if(icon==="w" || icon==="x" || icon==="b" || icon==="p") {
+        } else if(icon==="w"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
           this.wallObjects.push(newEntity);
+          if(parseInt(icon)) {
+            newEntity.door = parseInt(icon);
+          }
+        } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
+          this.switches.push(newEntity);
+          newEntity.idNumber = parseInt(icon);
         }
       }
     }
@@ -147,7 +154,26 @@ Room.prototype.update = function() {
       }
     }
     this.wallObjects[i].collisionWithSprite(player);
-  };
+  }
+  for (var i=0; i < this.switches.length; i++) {
+    this.switches[i].collisionWithSprite(player);
+  }
+}
+
+Room.prototype.reset = function() {
+  if(currentRoom!=allRooms["overworld"]) {
+    currentRoom = allRooms["overworld"];
+    var allRoomKeys = Object.keys(allRooms);
+    var copy = new Room(this.width, this.height);
+    for(var i=0; i<allRoomKeys.length; i++) {
+      if(allRooms[allRoomKeys[i]]===this) {
+        copy.addMap(this.foreground, true);
+        copy.addMap(this.background, false);
+        allRooms[allRoomKeys[i]] = copy;
+        delete this;
+      }
+    }
+  }
 }
 
 // findIsland and moveOverworld methods

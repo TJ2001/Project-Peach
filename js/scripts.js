@@ -160,6 +160,9 @@ window.addEventListener("keydown", function(event) {
       depressedKeys.push(39);
     }
   }
+  if(event.keyCode === 82) {
+    currentRoom.reset();
+  }
   if(currentRoom===allRooms["overworld"]) {
     var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-96);
     currentRoom = allRooms[newRoom];
