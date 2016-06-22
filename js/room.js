@@ -120,8 +120,8 @@ Room.prototype.draw = function(ctx) {
       ani.play(ctx, 2*ani.frameArray[0].width*x, 2*ani.frameArray[0].height*y);
     }
   }
-  this.sortSprites(this.sprites[i]);
   for(var i=0; i<this.sprites.length; i++) {
+    this.sortSprites(this.sprites[i]);
     this.sprites[i].draw();
   }
 }

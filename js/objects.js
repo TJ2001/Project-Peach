@@ -115,7 +115,7 @@ Sprite.prototype.monsterMove = function() {
   }
 
 // --  causes the monster to head towards the player if the player is close enough to the monster -- //
-  if (calculateDistance(this, player) <= this.radius + 400) {
+  if (calculateDistance(this, player) <= this.radius + 250) {
     console.log("you triggered the proximity move.")
     if (player.xPos - this.xPos > 0 && randomNumber < 5) {
       this.xVel = 3;
