@@ -35,7 +35,11 @@ Sprite.prototype.draw = function () {
     context.lineWidth = 1;
     context.stroke();
   } else {
-    this.super.draw(context, this.xPos-25, this.yPos-32);
+    if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
+      this.super.draw(context, this.xPos-this.radius, this.yPos-(this.radius*3));
+    } else {
+      this.super.draw(context, this.xPos-this.radius, this.yPos-this.radius);
+    }
     // -- CODE FOR TESTING- draw the hitbox circle so we can adjust numbers -- //
     context.beginPath();
     context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
@@ -133,55 +137,87 @@ function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall")
   this.wallColor = color;
   this.behavior = behavior;
   this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
+  allSuperSprites["WallSprite"].copy().addObject(this.sprite);
 };
 
 Wall.prototype.draw = function() {
   context.fillStyle = this.wallColor;
   context.lineWidth = 1;
-  context.fillRect(this.sprite.xPos, this.sprite.yPos, this.xSpan, this.ySpan);
+  context.fillRect(this.sprite.xPos-this.sprite.radius, this.sprite.yPos-this.sprite.radius, this.xSpan, this.ySpan);
 };
 
 // -- this will check a sprite for collisions with the Wall object and call collisionBehavior with the appropriate arguements. -- //
 Wall.prototype.collisionWithSprite = function(sprite) {
-  var collision = false;
   var xCollide = false;
   var yCollide = false;
-  if (calculateDistanceOneSprite(sprite, this.sprite.xPos, this.sprite.yPos) <= sprite.radius) {
-    collision = true;
-    xCollide = true;
-    yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos + this.xSpan, this.sprite.yPos) <= sprite.radius) {
-    collision = true;
-    xCollide = true;
-    yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos, this.sprite.yPos + this.ySpan) <= sprite.radius) {
-    collision = true;
-    xCollide = true;
-    yCollide = true;
-  } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos + this.xSpan, this.sprite.yPos + this.ySpan) <= sprite.radius) {
-    collision = true;
-    xCollide = true;
-    yCollide = true;
-  } else if (Math.abs(this.sprite.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.sprite.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
-    collision = true;
-    xCollide = true;
-  } else if (Math.abs(this.sprite.xPos + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.sprite.yPos + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
-    collision = true;
-    yCollide = true;
-  } else {
-    return collision;
+  if(calculateDistance(this.sprite, sprite) <= this.sprite.radius + sprite.radius) {
+    var angle = Math.abs(Math.atan((this.sprite.xPos-sprite.xPos)/(this.sprite.yPos-sprite.yPos))*(180/Math.PI));
+    if(angle>35) {
+      xCollide = true;
+    }
+    if(angle<55) {
+      yCollide = true;
+    }
+    if(xCollide||yCollide) {
+      return this.collisionBehavior(sprite, xCollide, yCollide);
+    } else {
+      return false;
+    }
   }
-  return this.collisionBehavior(sprite, xCollide, yCollide);
+  // var collision = false;
+  // var xCollide = false;
+  // var yCollide = false;
+  // if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius-this.sprite.radius, this.sprite.yPos-this.sprite.radius) <= sprite.radius) {
+  //   collision = true;
+  //   xCollide = true;
+  //   yCollide = true;
+  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius + this.xSpan, this.sprite.yPos-this.sprite.radius) <= sprite.radius) {
+  //   collision = true;
+  //   xCollide = true;
+  //   yCollide = true;
+  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius, this.sprite.yPos-this.sprite.radius + this.ySpan) <= sprite.radius) {
+  //   collision = true;
+  //   xCollide = true;
+  //   yCollide = true;
+  // } else if (calculateDistanceOneSprite(sprite, this.sprite.xPos-this.sprite.radius + this.xSpan, this.sprite.yPos-this.sprite.radius + this.ySpan) <= sprite.radius) {
+  //   collision = true;
+  //   xCollide = true;
+  //   yCollide = true;
+  // } else if (Math.abs(this.sprite.xPos-this.sprite.radius + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 + sprite.radius && Math.abs(this.sprite.yPos-this.sprite.radius + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 ) {
+  //   collision = true;
+  //   xCollide = true;
+  // } else if (Math.abs(this.sprite.xPos-this.sprite.radius + this.xSpan / 2 - sprite.xPos) <= this.xSpan / 2 && Math.abs(this.sprite.yPos-this.sprite.radius + this.ySpan / 2 - sprite.yPos) <= this.ySpan / 2 + sprite.radius)  {
+  //   collision = true;
+  //   yCollide = true;
+  // } else {
+  //   return collision;
+  // }
+  // return this.collisionBehavior(sprite, xCollide, yCollide);
 };
 // -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
     if (xCollide) {
-      sprite.xPos = sprite.xPos - sprite.xVel;
+      while(Math.abs(this.sprite.xPos-sprite.xPos) <= this.sprite.radius + sprite.radius) {
+        if(this.sprite.xPos>sprite.xPos) {
+          var bump = Math.min(sprite.xVel, -.5);
+        } else {
+          var bump = Math.max(sprite.xVel, .5);
+        }
+        sprite.xPos = sprite.xPos + bump;
+      }
     }
     if (yCollide) {
-      sprite.yPos = sprite.yPos - sprite.yVel;
+      while(Math.abs(this.sprite.yPos-sprite.yPos) <= this.sprite.radius + sprite.radius) {
+        if(this.sprite.yPos>sprite.yPos) {
+          var bump = Math.min(sprite.xVel, -.5);
+        } else {
+          var bump = Math.max(sprite.xVel, .5);
+        }
+        sprite.yPos = sprite.yPos + bump;
+      }
     }
+    this.sprite.super.show("solid");
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
       this.xVel *= -1;

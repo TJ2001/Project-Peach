@@ -60,7 +60,8 @@ var allSuperSprites = {
         }
       }
     }),
-    "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1.png",0,0,64,64,1,10))
+    "LightPanelSprite": new SuperSprite("off", new Animation("img/light-panel1.png",0,0,64,64,1,10)),
+    "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall2.png",0,0,32,64,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above

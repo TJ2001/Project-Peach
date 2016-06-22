@@ -20,6 +20,7 @@ function Room(width, height) {
   this.width = width;
   this.height = height;
   this.background = [];
+  this.backgroundAnimations = [];
   this.sprites = [];
   this.entities = [];
   this.entrance = undefined;
@@ -53,12 +54,12 @@ Room.prototype.addMap = function(map, foreground) {
           if(newEntity!="") {
             if(newEntity instanceof Sprite) {
               this.sprites.push(newEntity);
-              newEntity.yPos = y*64;
-              newEntity.xPos = x*64;
+              newEntity.yPos = y*64+32;
+              newEntity.xPos = x*64+32;
             } else {
               this.entities.push(newEntity);
-              newEntity.sprite.yPos = y*64;
-              newEntity.sprite.xPos = x*64;
+              newEntity.sprite.yPos = y*64+32;
+              newEntity.sprite.xPos = x*64+32;
               this.sprites.push(newEntity.sprite);
             }
           }
@@ -79,6 +80,12 @@ Room.prototype.addMap = function(map, foreground) {
     }
   } else {
     this.background = map;
+    for(var y=0; y<this.height; y++) {
+      this.backgroundAnimations.push([]);
+      for(var x=0; x<this.width; x++) {
+        this.backgroundAnimations[y].push(tileDict[this.background[y][x]].copy());
+      }
+    }
   }
 }
 
@@ -91,10 +98,6 @@ Room.prototype.sortSprites = function() {
       if(a.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
         return -1;
       }
-    // } else if(typeof (Object.keys(b)["super"]) != "undefined") {
-    //   if(b.super.currentAnimation.spriteSheet.src===allSuperSprites["LightPanelSprite"].currentAnimation.spriteSheet.src) {
-    //     return 1;
-    //   }
     }
     if(a.yPos < b.yPos) {
       return -1;
@@ -115,7 +118,7 @@ Room.prototype.addSprite = function(sprite) {
 Room.prototype.draw = function(ctx) {
   for(var y=0; y<this.height; y++) {
     for(var x=0; x<this.width; x++) {
-      var ani = tileDict[this.background[y][x]];
+      ani = this.backgroundAnimations[y][x];
       ani.play(ctx, 2*ani.frameArray[0].width*x, 2*ani.frameArray[0].height*y);
     }
   }
@@ -125,9 +128,6 @@ Room.prototype.draw = function(ctx) {
     }
     this.sprites[i].draw();
   }
-  for (var i = 0; i < this.wallObjects.length; i ++) {
-    this.wallObjects[i].draw();
-  };
 }
 Room.prototype.update = function() {
   boat.xPos = currentRoom.boatX*tileDict["~"].frameArray[0].width*2 + (tileDict["~"].frameArray[0].width);
