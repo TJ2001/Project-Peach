@@ -16,7 +16,14 @@ var tileDict = {
   "~": new Animation("img/overworld.png",32,0,16,16,2,59),
   "#": new Animation("img/overworld.png",0,0,16,16,2,59),
   "q": new Animation("img/overworld.png",0,0,16,16,2,59),
-  "w": new Animation("img/overworld.png",0,0,16,16,2,60)
+  "w": new Animation("img/overworld.png",0,0,16,16,2,60),
+
+  "<": new Animation("img/edge-island-corner.png",0,0,32,32,1,10),
+  ">": new Animation("img/edge-island-corner.png",32,0,32,32,1,10),
+  "|": new Animation("img/edge-island1.png",0,0,32,32,1,10),
+  "_": new Animation("img/edge-island1.png",32,0,32,32,1,10),
+  "x": new Animation("img/exit-boat1-sm.png",0,0,32,32,1,10),
+  "L": new Animation("img/exit-boat1-sm.png",32,0,32,32,1,10)
 }
 var entityDict = {
   get: function(icon) {
