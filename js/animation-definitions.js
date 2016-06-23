@@ -84,8 +84,8 @@ var allSuperSprites = {
     "Fireball": new SuperSprite("right", new Animation("img/fireball.png",0,0,32,32,3,10)),
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
-    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2))
-    "Button": new Supersprite("on", new Animation("img/button.png",0,0,32,32,1,10))
+    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2)),
+    "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
