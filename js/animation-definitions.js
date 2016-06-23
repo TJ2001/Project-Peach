@@ -104,7 +104,8 @@ var allSuperSprites = {
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
     "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,5)),
-    "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10))
+    "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10)),
+    "PickupSprite": new SuperSprite("heart", new Animation("img/Momo-Spritesheet.png",210,527,13,11,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
@@ -169,3 +170,6 @@ allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png
 allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",97,65,32,32,3,10));
 
 allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,2,10));
+
+allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Spritesheet.png",226,527,13,11,1,10))
+allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10))

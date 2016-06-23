@@ -40,11 +40,11 @@ Sprite.prototype.draw = function () {
     context.lineWidth = 1;
     context.stroke();
   } else {
-    if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
+    if(Object.keys(this.super.animations).indexOf("solid") != -1) {
       if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
       } else {
-        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2);
       }
     } else if(this===player) {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
@@ -63,6 +63,7 @@ Sprite.prototype.draw = function () {
 Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
+  if (this.ballColor === "blue" || this.ballColor === "#000" || this.ballColor === "#111") {
     if (this.xPos - this.radius < 64) {
       this.xPos = this.radius + 65;
     } else if (this.xPos + this.radius > currentRoom.width * 64 - 64) {
@@ -73,6 +74,7 @@ Sprite.prototype.update = function() {
     } else if (this.yPos + this.radius > currentRoom.height * 64 - 64) {
       this.yPos = currentRoom.height * 64 - this.radius - 65;
     }
+  }
 };
 
 // -- Special update method for sprites which are a weapon attack of another sprite -- //
@@ -120,20 +122,20 @@ Sprite.prototype.monsterMove = function() {
   } else if (this.ballColor === "#000") {
     if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
       if (this.yPos - player.yPos < 0) {
-        this.yVel = 2;
+        this.yVel = 1.5;
         this.super.show("walk");
       } else {
-        this.yVel = -2;
+        this.yVel = -1.5;
         this.super.show("walk");
       }
     } else if (Math.abs(this.xPos - player.xPos) < 20) {
       this.xVel = 0;
     } else if (this.xPos - player.xPos < 0) {
-      this.xVel = 3;
+      this.xVel = 2.5;
       this.yVel = 0;
       this.super.show("swipeRight");
     } else if (this.xPos -player.xPos > 0) {
-      this.xVel = -3;
+      this.xVel = -2.5;
       this.yVel = 0;
       this.super.show("swipeLeft");
     } else {
@@ -141,40 +143,44 @@ Sprite.prototype.monsterMove = function() {
     }
 // --  causes the monster to head towards the player if the player is close enough to the monster -- //
   } else if (this.ballColor === "#111") {
-    if (calculateDistance(this, player) <= this.radius + 250) {
-      if (player.xPos - this.xPos > 0 && randomNumber < 5) {
-        this.xVel = 3;
-        this.yVel = 0;
-        this.super.show("flyRight");
-      } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
-        this.xVel = -3;
-        this.yVel = 0;
-        this.super.show("flyLeft");
-      }
-      if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
-        this.xVel = 0;
-        this.yVel = 3;
-      } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
-        this.xVel = 0;
-        this.yVel = -3;
-      }
-    } else {
-      if (randomNumber ===  0) {
-        this.xVel = 2;
-        this.yVel = 0;
-      } else if (randomNumber === 1) {
-        this.xVel = -2;
-        this.yVel = 0;
-      } else if (randomNumber === 2) {
-        this.xVel = 0;
-        this.yVel = 2;
-      } else if (randomNumber === 3) {
-        this.xVel = 0;
-        this.yVel = -2;
-      } else if (randomNumber === 4) {
-        this.xVel = 0;
-        this.yVel = 0;
-      }
+    if (time % 30 === 0 ) {
+      // if (calculateDistance(this, player) <= this.radius + 200) {
+      //   if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      //     this.xVel = 3;
+      //     this.yVel = 0;
+      // this.super.show("flyRight");
+      //   } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+      //     this.xVel = -3;
+      //     this.yVel = 0;
+      // this.super.show("flyLeft");
+      //   }
+      //   if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      //     this.xVel = 0;
+      //     this.yVel = 3;
+      //   } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+      //     this.xVel = 0;
+      //     this.yVel = -3;
+      //   }
+      // } else {
+        if (randomNumber ===  0) {
+          this.xVel = 2;
+          this.yVel = 0;
+          this.super.show("flyRight");
+        } else if (randomNumber === 1) {
+          this.xVel = -2;
+          this.yVel = 0;
+          this.super.show("flyLeft");
+        } else if (randomNumber === 2) {
+          this.xVel = 0;
+          this.yVel = 2;
+        } else if (randomNumber === 3) {
+          this.xVel = 0;
+          this.yVel = -2;
+        } else if (randomNumber === 4) {
+          this.xVel = 0;
+          this.yVel = 0;
+        }
+      // }
     }
   }
 };
