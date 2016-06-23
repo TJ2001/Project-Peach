@@ -322,7 +322,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
       this.collideSolid(sprite, xCollide, yCollide);
     }
   } else if(this.behavior==="pit") {
-    if (sprite===player) { this.collideSolid(sprite, xCollide, yCollide); }
+    if(Object.keys(sprite.super.animations).indexOf("solid")===-1) { this.collideSolid(sprite, xCollide, yCollide); }
   } else if (this.behavior === "bounceWall") {
     if (xCollide) {
       this.xVel *= -1;
@@ -343,7 +343,7 @@ function Switch(func = function() {
         if(wo.door===this.idNumber+5) {
           wo.doorOpen = true;
           wo.sprite.super.show("inDoorHOpen");
-          this.sprite.super.show("off");
+          this.sprite.super.show("on");
           wo.sprite.front = false;
         }
       }

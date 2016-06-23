@@ -230,6 +230,9 @@ Room.prototype.runTimedEvents = function() {
         var reboundVector = vector(player.xPos, player.yPos, this.monsters[i].xPos, this.monsters[i].yPos);
         this.monsters[i].xPos += knockBack * reboundVector[0];
         this.monsters[i].yPos += knockBack * reboundVector[1];
+        if(this.monsters[i].ballColor === "#000") {
+          this.monsters[i].super.show("hit");
+        }
         if(!hitActive) {
           this.monsters[i].health-=1;
           hitActive = true;

@@ -31,7 +31,7 @@ var entityDict = {
     } else if(icon==="b") {
       return new Wall(0,0,54,64,"orange","boulder");
     } else if(icon==="p") {
-      return new Wall(0,0,64,64,"red","pit");
+      return new Wall(0,0,50,64,"red","pit");
     } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
       return new Switch();
     } else if(icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {

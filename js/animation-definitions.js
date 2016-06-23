@@ -155,7 +155,7 @@ allSuperSprites["WallSprite"].addAnimation("hole", new Animation("img/hole1.png"
 allSuperSprites["WallSprite"].addAnimation("boulderHole", new Animation("img/boulder-hole1.png",0,0,32,32,1,10));
 
 allSuperSprites["CrabMobSprite"].addAnimation("walk", new Animation("img/Monster-Spritesheet.png",1,0,43,18,2,20));
-allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,4,5));
+allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,1,15));
 allSuperSprites["CrabMobSprite"].addAnimation("swipeLeft", new Animation("img/Monster-Spritesheet.png",178,1,43,18,3,5));
 allSuperSprites["CrabMobSprite"].addAnimation("swipeRight", new Animation("img/Monster-Spritesheet.png",179,19,43,18,3,5));
 
@@ -169,7 +169,7 @@ allSuperSprites["Fireball"].addAnimation("down", new Animation("img/fireball.png
 allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",0,65,32,32,3,10));
 allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",97,65,32,32,3,10));
 
-allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,2,10));
+allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,1,10));
 
 allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Spritesheet.png",226,527,13,11,1,10))
 allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10))
