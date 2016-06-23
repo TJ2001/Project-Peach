@@ -16,6 +16,8 @@ var collisionCount = 0;
 
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["overworld"];
+var batRadius = 16;
+var crabRadius = 16;
 var width = 906;
 var height = 906;
 var playerSpeed = 2;

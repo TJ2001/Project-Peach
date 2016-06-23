@@ -37,9 +37,9 @@ var entityDict = {
     } else if(icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
       return new Wall(0,0,64,64,"brown","door");
     } else if(icon==="f") {
-      return new Sprite(0,0,30,"#111");
+      return new Sprite(0,0,batRadius,"#111");
     } else if(icon==="c") {
-      return new Sprite(0,0,30,"#000");
+      return new Sprite(0,0,crabRadius,"#000");
     } else if(icon==="%") {
       return new Switch(function() {
         player.health += 0.5;
