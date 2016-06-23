@@ -47,6 +47,7 @@ function Room(width, height) {
 //      tiles are for the foreground. When adding a foreground map, the foreground parameter should be passed true.
 Room.prototype.addMap = function(map, foreground) {
   if(foreground) {
+
     this.foreground = map;
     for(var y=0; y<this.height; y++) {
       for(var x=0; x<this.width; x++) {
@@ -62,6 +63,7 @@ Room.prototype.addMap = function(map, foreground) {
               this.entities.push(newEntity);
               newEntity.sprite.yPos = y*64+32;
               newEntity.sprite.xPos = x*64+32;
+              //debugger;
               this.sprites.push(newEntity.sprite);
             }
           }
@@ -97,6 +99,9 @@ Room.prototype.addMap = function(map, foreground) {
           } else if(icon==="&") {
             newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
             newEntity.sprite.super.show("peach");
+          } else {
+            newEntity.sprite.super = allSuperSprites["Button"].copy();
+            newEntity.sprite.super.show("off");
           }
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
@@ -227,6 +232,9 @@ Room.prototype.runTimedEvents = function() {
         var reboundVector = vector(player.xPos, player.yPos, this.monsters[i].xPos, this.monsters[i].yPos);
         this.monsters[i].xPos += knockBack * reboundVector[0];
         this.monsters[i].yPos += knockBack * reboundVector[1];
+        if(this.monsters[i].ballColor === "#000") {
+          this.monsters[i].super.show("hit");
+        }
         if(!hitActive) {
           this.monsters[i].health-=1;
           hitActive = true;
@@ -372,7 +380,6 @@ Room.prototype.spawnMonster = function() {
     for (var i = 0; i < this.sprites.length; i ++) {
       if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
         collisionAlert = true;
-        console.log(sprite);
         console.log("x=" + randomXPos + " y=" + randomYPos);
       }
       if (collisionAlert === false) {
@@ -381,6 +388,11 @@ Room.prototype.spawnMonster = function() {
     };
   };
   var newMonster = new Sprite(randomXPos, randomYPos, monsterRadius, randomColor);
+  if(newMonster.ballColor==="#000") {
+    newMonster.super = allSuperSprites["CrabMobSprite"].copy();
+  } else if(newMonster.ballColor==="#111") {
+    newMonster.super = allSuperSprites["BatMobSprite"].copy();
+  }
   this.monsters.push(newMonster);
   this.sprites.push(newMonster);
 };

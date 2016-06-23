@@ -27,6 +27,15 @@ body {
   animation: 120s credits linear infinite;
 }
 
+#continued {
+margin-left: -60%;
+font-size: 40px;
+margin-bottom: 600px;
+font-family: fantasy;
+text-transform: none;
+}
+
+
 .movie {
   margin-bottom: 50px;
   font-size: 60px;
