@@ -16,6 +16,7 @@ var collisionCount = 0;
 
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["overworld"];
+
 var width = 906;
 var height = 906;
 var playerSpeed = 2;

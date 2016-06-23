@@ -8,9 +8,11 @@
 
 
 // Important objects
-var player = new Sprite(100, 100, 20, "blue");
+var player = new Sprite(400, 400, 20, "blue");
 var boat = new Sprite(0,0,15);
 allSuperSprites["MapMarker"].addObject(boat);
+var batRadius = 16;
+var crabRadius = 16;
 
 
 // -- SPRITE CONSTRUCTOR -- //
@@ -61,6 +63,16 @@ Sprite.prototype.draw = function () {
 Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
+    if (this.xPos - this.radius < 64) {
+      this.xPos = this.radius + 65;
+    } else if (this.xPos + this.radius > currentRoom.width * 64 - 64) {
+      this.xPos = currentRoom.width * 64 - this.radius - 65;
+    }
+    if (this.yPos - this.radius < 64) {
+      this.yPos = this.radius + 65;
+    } else if (this.yPos + this.radius > currentRoom.height * 64 - 64) {
+      this.yPos = currentRoom.height * 64 - this.radius - 65;
+    }
 };
 
 // -- Special update method for sprites which are a weapon attack of another sprite -- //
@@ -112,10 +124,12 @@ Sprite.prototype.monsterMove = function() {
       } else {
         this.yVel = -2;
       }
-    } else if (this.xPos - player.xPos < -4) {
+    } else if (Math.abs(this.xPos - player.xPos) < 20) {
+      this.xVel = 0;
+    } else if (this.xPos - player.xPos < 0) {
       this.xVel = 3;
       this.yVel = 0;
-    } else if (this.xPos -player.xPos > 4) {
+    } else if (this.xPos -player.xPos > 0) {
       this.xVel = -3;
       this.yVel = 0;
     } else {

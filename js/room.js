@@ -203,12 +203,12 @@ Room.prototype.update = function() {
   }
 }
 
+
+
+
 Room.prototype.runTimedEvents = function() {
-  if (time % 30 === 0) {
-    // -- check for monster movement every half second -- //
     for (i = 0; i < this.monsters.length; i++) {
       this.monsters[i].monsterMove();
-    };
   }
   if (time < weaponTimer) {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
@@ -345,19 +345,19 @@ Room.prototype.spawnMonster = function() {
   var legalPosition = false;
   var randomColor = Math.floor(Math.random() * 2);
   if (randomColor === 0) {
-    var monsterRadius = 10;
     randomColor = "#000";
+    var monsterRadius = crabRadius;
   } else {
     randomColor = "#111";
-    var monsterRadius = 15;
+    var monsterRadius = batRadius;
   }
   while (legalPosition === false) {
     var collisionAlert = false;
     while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 75) {
-      randomXPos = (Math.floor(Math.random() * this.width * 0.9 + monsterRadius));
+      randomXPos = (Math.floor(Math.random() * this.width * 64 * 0.9 + monsterRadius));
     };
     while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 75) {
-      randomYPos = (Math.floor(Math.random() * this.height * 0.9 + monsterRadius));
+      randomYPos = (Math.floor(Math.random() * this.height * 64 * 0.9 + monsterRadius));
     };
     for (var i = 0; i < this.sprites.length; i ++) {
       if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
