@@ -155,36 +155,22 @@ window.onload = function() {
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
   // -- Event listener for up and down key. -- //
-  if (event.keyCode === 38) {
-    player.yVel = -playerSpeed;
-    if (!depressedKeys.includes(38)) {
-      depressedKeys.push(38);
-    }
-  }
-  if (event.keyCode === 40) {
-    player.yVel = playerSpeed;
-    if (!depressedKeys.includes(40)) {
-      depressedKeys.push(40);
-    }
-  }
-  // -- Event listener for left and rigth key. -- //
-  if (event.keyCode === 37) {
-    player.xVel = -playerSpeed;
-    if (!depressedKeys.includes(37)) {
-      depressedKeys.push(37);
-    }
-  }
-  if (event.keyCode === 39) {
-    player.xVel = playerSpeed;
-    if (!depressedKeys.includes(39)) {
-      depressedKeys.push(39);
-    }
-  }
-  if(event.keyCode === 82) {
-    currentRoom.reset();
-  }
   if(currentRoom===allRooms["overworld"]) {
-    var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
+    if (event.keyCode === 38) {
+      var tempMove = 8;
+    }
+    if (event.keyCode === 40) {
+      var tempMove = 2;
+    }
+    // -- Event listener for left and rigth key. -- //
+    if (event.keyCode === 37) {
+      var tempMove = 4;
+    }
+    if (event.keyCode === 39) {
+      var tempMove = 6;
+    }
+    var newRoom = currentRoom.moveOverworld(tempMove);
+    // var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
       if(currentRoom.sprites.indexOf(player)===-1) {
@@ -193,7 +179,47 @@ window.addEventListener("keydown", function(event) {
       player.xPos = currentRoom.entrance.xPos;
       player.yPos = currentRoom.entrance.yPos;
     }
+  } else {
+    if (event.keyCode === 38) {
+      player.yVel = -playerSpeed;
+      if (!depressedKeys.includes(38)) {
+        depressedKeys.push(38);
+      }
+    }
+    if (event.keyCode === 40) {
+      player.yVel = playerSpeed;
+      if (!depressedKeys.includes(40)) {
+        depressedKeys.push(40);
+      }
+    }
+    // -- Event listener for left and rigth key. -- //
+    if (event.keyCode === 37) {
+      player.xVel = -playerSpeed;
+      if (!depressedKeys.includes(37)) {
+        depressedKeys.push(37);
+      }
+    }
+    if (event.keyCode === 39) {
+      player.xVel = playerSpeed;
+      if (!depressedKeys.includes(39)) {
+        depressedKeys.push(39);
+      }
+    }
+    if(event.keyCode === 82) {
+      currentRoom.reset();
+    }
   }
+  // if(currentRoom===allRooms["overworld"]) {
+  //   var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
+  //   currentRoom = allRooms[newRoom];
+  //   if(newRoom!="overworld") {
+  //     if(currentRoom.sprites.indexOf(player)===-1) {
+  //       currentRoom.addSprite(player);
+  //     }
+  //     player.xPos = currentRoom.entrance.xPos;
+  //     player.yPos = currentRoom.entrance.yPos;
+  //   }
+  // }
   if (event.keyCode === 32) {
     weaponActive = true;
     weaponTimer = time + weaponSwingTime;
