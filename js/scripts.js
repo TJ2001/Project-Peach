@@ -4,9 +4,6 @@
       and functions closely related thereto. Other functionality may be added to this file at a later stage,
       but ideally this file should be kept as clean as possible.
 ##############################################################################################################*/
-//--Note to Joel: This file could be cleaned up even more. Since most of it is your code, I'll leave control of it to you.
-//  Also, your code pertaining to doors was left in this file for the time being, but it should be moved to room.js eventually.
-
 
 // -- Helps with animation -- //
 var animate = window.requestAnimationFrame ||
@@ -22,7 +19,6 @@ var currentRoom = allRooms["overworld"];
 var width = 906;
 var height = 906;
 var playerSpeed = 2;
-var wallWidth = 10;
 var supplies = 30;
 var enemyKnockBack = -70;
 var boatX = Math.floor(allRooms["overworld"].width/2);
@@ -44,6 +40,7 @@ var time = 0;
 var weaponTimer = 0;
 var weaponActive = false;
 var monsterHitTimer = 0;
+var hitActive = false;
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackTimer = 0;
 

@@ -25,6 +25,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.yVel = yVel;
   this.super = undefined;
   this.front = true;
+  this.health = 3;
 };
 
 // -- draws the sprite object on the canvas -- //
@@ -38,7 +39,11 @@ Sprite.prototype.draw = function () {
     context.stroke();
   } else {
     if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
-      this.super.draw(context, this.xPos-this.radius, this.yPos-(this.radius*3));
+      if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
+      } else {
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
+      }
     } else if(this===player) {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
     } else {
