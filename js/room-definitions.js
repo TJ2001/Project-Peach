@@ -149,13 +149,16 @@ for(var y=0; y<oh; y++) {
     map[y].push("~");
   }
 }
+var islandKeys = Object.keys(allRooms);
+islandKeys.splice(islandKeys.indexOf("overworld"),1);
 var placeIslands = function() {
   for(var i=0; i<Math.min(oh,ow)/2; i+=1) {
     for(var y=0+i; y<oh-i; y++) {
       for(var x=0+i; x<ow-i; x++) {
         var rand = Math.random();
         if(rand<.003*i) {
-          map[y][x] = "q";
+          var rand = Math.floor(Math.random()*islandKeys.length);
+          map[y][x] = islandKeys[rand];
         }
       }
     }
