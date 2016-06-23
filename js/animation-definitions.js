@@ -103,7 +103,7 @@ var allSuperSprites = {
     "Fireball": new SuperSprite("right", new Animation("img/fireball.png",0,0,32,32,3,10)),
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
-    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2)),
+    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,5)),
     "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10)),
     "PickupSprite": new SuperSprite("heart", new Animation("img/Momo-Spritesheet.png",210,527,13,11,1,10))
 }
@@ -156,10 +156,10 @@ allSuperSprites["WallSprite"].addAnimation("boulderHole", new Animation("img/bou
 
 allSuperSprites["CrabMobSprite"].addAnimation("walk", new Animation("img/Monster-Spritesheet.png",1,0,43,18,2,20));
 allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,4,5));
-allSuperSprites["CrabMobSprite"].addAnimation("swipeLeft", new Animation("img/Monster-Spritesheet.png",177,0,43,18,4,5));
-allSuperSprites["CrabMobSprite"].addAnimation("swipeRight", new Animation("img/Monster-Spritesheet.png",177,18,43,18,4,5));
+allSuperSprites["CrabMobSprite"].addAnimation("swipeLeft", new Animation("img/Monster-Spritesheet.png",178,1,43,18,3,5));
+allSuperSprites["CrabMobSprite"].addAnimation("swipeRight", new Animation("img/Monster-Spritesheet.png",179,19,43,18,3,5));
 
-allSuperSprites["BatMobSprite"].addAnimation("flyRight", new Animation("img/monster-bat1.png",0,32,32,32,6,2));
+allSuperSprites["BatMobSprite"].addAnimation("flyRight", new Animation("img/monster-bat1.png",0,32,32,32,6,5));
 
 allSuperSprites["MapMarker"].addAnimation("boat", new Animation("img/overworld.png",80,0,16,16,1,10));
 
