@@ -378,7 +378,6 @@ Room.prototype.spawnMonster = function() {
     for (var i = 0; i < this.sprites.length; i ++) {
       if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
         collisionAlert = true;
-        console.log(sprite);
         console.log("x=" + randomXPos + " y=" + randomYPos);
       }
       if (collisionAlert === false) {
@@ -387,6 +386,11 @@ Room.prototype.spawnMonster = function() {
     };
   };
   var newMonster = new Sprite(randomXPos, randomYPos, monsterRadius, randomColor);
+  if(newMonster.ballColor==="#000") {
+    newMonster.super = allSuperSprites["CrabMobSprite"].copy();
+  } else if(newMonster.ballColor==="#111") {
+    newMonster.super = allSuperSprites["BatMobSprite"].copy();
+  }
   this.monsters.push(newMonster);
   this.sprites.push(newMonster);
 };
