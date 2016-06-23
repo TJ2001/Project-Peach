@@ -75,6 +75,12 @@ Room.prototype.addMap = function(map, foreground) {
         } else if(icon==="@") {
           this.entrance = newEntity;
         } else if(icon==="w"||icon==="u"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
+          if (parseInt(icon)<10 && parseInt(icon)>4) {
+            newEntity.sprite.super.show("inDoorHClosed");
+          } else if (icon === "b") {
+            newEntity.sprite.super.show("boulder");
+          }
+
           this.wallObjects.push(newEntity);
           if(parseInt(icon)) {
             newEntity.door = parseInt(icon);

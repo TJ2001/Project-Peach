@@ -125,6 +125,13 @@ allSuperSprites["MomoSprite"].addAnimation("downRightHit", new Animation("img/Mo
 allSuperSprites["LightPanelSprite"].addAnimation("on", new Animation("img/light-panel1-sm.png",32,0,32,32,1,10));
 allSuperSprites["WallSprite"].addAnimation("boulder", new Animation("img/boulder1.png",0,0,32,32,1,10));
 allSuperSprites["WallSprite"].addAnimation("solidShort", new Animation("img/inroom-wall2.png",0,0,32,64,1,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorHClosed", new Animation("img/inroom-door1.png",0,0,32,32,1,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorHOpen", new Animation("img/inroom-door1.png",384,0,32,32,1,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorHOpening", new Animation("img/inroom-door1.png",0,0,32,32,13,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorVClosed", new Animation("img/inroom-door1-vert.png",0,0,32,64,1,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorVOpen", new Animation("img/inroom-door1-vert.png",224,0,32,64,1,10));
+allSuperSprites["WallSprite"].addAnimation("inDoorVOpening", new Animation("img/inroom-door1-vert.png",0,0,32,64,8,10));
+// allSuperSprites["WallSprite"].addAnimation("hole", new Animation("img/inroom-door1.png",0,0,32,32,1,10));
 
 allSuperSprites["CrabMobSprite"].addAnimation("walk", new Animation("img/Monster-Spritesheet.png",1,0,43,18,2,20));
 allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,4,5));

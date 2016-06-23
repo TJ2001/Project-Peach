@@ -308,6 +308,7 @@ function Switch(func = function() {
         var wo = currentRoom.wallObjects[i];
         if(wo.door===this.idNumber+5) {
           wo.doorOpen = true;
+          wo.sprite.super.show("inDoorHOpen");
         }
       }
     }) {
