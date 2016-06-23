@@ -166,8 +166,8 @@ Room.prototype.update = function() {
       collisionCount ++;
       var reboundVector = vector(this.monsters[i].xPos, this.monsters[i].yPos, player.xPos, player.yPos);
       console.log(collisionCount)
-      player.xPos += enemyKnockBack * reboundVector[0];
-      player.yPos += enemyKnockBack * reboundVector[1];
+      player.xPos += knockBack * reboundVector[0];
+      player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
       console.log("you lost a life");
     }

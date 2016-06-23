@@ -24,7 +24,7 @@ var height = 906;
 var playerSpeed = 2;
 var wallWidth = 10;
 var supplies = 30;
-var enemyKnockBack = -70;
+var knockBack = -45;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
 var weaponSwingTime = 20;
@@ -100,8 +100,8 @@ var update = function() {
   //     collisionCount ++;
   //     var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
   //     console.log(collisionCount)
-  //     player.xPos += enemyKnockBack * reboundVector[0];
-  //     player.yPos += enemyKnockBack * reboundVector[1];
+  //     player.xPos += knockBack * reboundVector[0];
+  //     player.yPos += knockBack * reboundVector[1];
   //     monsterHitTimer = time + 15;
   //     console.log("you lost a life");
   //   }
