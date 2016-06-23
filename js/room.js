@@ -47,6 +47,7 @@ function Room(width, height) {
 //      tiles are for the foreground. When adding a foreground map, the foreground parameter should be passed true.
 Room.prototype.addMap = function(map, foreground) {
   if(foreground) {
+
     this.foreground = map;
     for(var y=0; y<this.height; y++) {
       for(var x=0; x<this.width; x++) {
@@ -62,6 +63,7 @@ Room.prototype.addMap = function(map, foreground) {
               this.entities.push(newEntity);
               newEntity.sprite.yPos = y*64+32;
               newEntity.sprite.xPos = x*64+32;
+              //debugger;
               this.sprites.push(newEntity.sprite);
             }
           }

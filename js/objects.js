@@ -120,7 +120,7 @@ Sprite.prototype.monsterMove = function() {
 // -- causes the monster to adjust his yPos to be close to the player, then toggles to adjust xPos then back to yPos -- //
 // -- this is the ai for the crab-- //
   } else if (this.ballColor === "#000") {
-    if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
+    if (Math.abs(this.yPos - player.yPos) >= 16  && this.xVel === 0) {
       if (this.yPos - player.yPos < 0) {
         this.yVel = 1.5;
         this.super.show("walk");
@@ -128,7 +128,7 @@ Sprite.prototype.monsterMove = function() {
         this.yVel = -1.5;
         this.super.show("walk");
       }
-    } else if (Math.abs(this.xPos - player.xPos) < 20) {
+    } else if (Math.abs(this.xPos - player.xPos) < 16) {
       this.xVel = 0;
     } else if (this.xPos - player.xPos < 0) {
       this.xVel = 2.5;
@@ -301,7 +301,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
           currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
           return;
         }
-      }
+      };
       this.collideSolid(sprite, xCollide, yCollide);
       if(xCollide) {
         this.xMovable = false;
@@ -351,13 +351,13 @@ function Switch(func = function() {
   this.sprite = new Sprite(0,0,16,"purple");
   this.idNumber = 0;
   this.func = func;
-}
+};
 
 Switch.prototype.collisionWithSprite = function(sprite) {
   if(calculateDistance(this.sprite, sprite) <= this.sprite.radius + sprite.radius) {
     this.func();
   }
-}
+};
 
 // -- A function to calculate the total distance between the centers of two sprites -- //
 var calculateDistance = function(spriteOne, spriteTwo) {
