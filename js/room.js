@@ -23,6 +23,7 @@ function Room(width, height) {
   this.backgroundAnimations = [];
   this.sprites = [];
   this.entities = [];
+  this.monsters = [];
   this.entrance = undefined;
   // -- for the overworld room
   this.boatX = Math.floor(this.width/2);
@@ -82,6 +83,8 @@ Room.prototype.addMap = function(map, foreground) {
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
           newEntity.sprite.front = false;
+        } else if(icon==="m") {
+          this.monsters.push(newEntity);
         }
       }
     }
@@ -158,11 +161,22 @@ Room.prototype.update = function() {
       this.sprites[i].update();
     }
   }
+  for (i = 0; i < this.monsters.length; i ++) {
+    if (collisionCheck(this.monsters[i], player)) {
+      collisionCount ++;
+      var reboundVector = vector(this.monsters[i].xPos, this.monsters[i].yPos, player.xPos, player.yPos);
+      console.log(collisionCount)
+      player.xPos += enemyKnockBack * reboundVector[0];
+      player.yPos += enemyKnockBack * reboundVector[1];
+      monsterHitTimer = time + 15;
+      console.log("you lost a life");
+    }
+  };
   for (var i=0; i < this.wallObjects.length; i++) {
     this.wallObjects[i].xMovable = true;
     this.wallObjects[i].yMovable = true;
     for(var s=0; s<this.sprites.length; s++) {
-      if(this.sprites[s]!=player) {
+      if(this.sprites[s]!=player && this.wallObjects[i].behavior!="exitDoor") {
         this.wallObjects[i].collisionWithSprite(this.sprites[s]);
       }
     }
@@ -170,6 +184,26 @@ Room.prototype.update = function() {
   }
   for (var i=0; i < this.switches.length; i++) {
     this.switches[i].collisionWithSprite(player);
+  }
+}
+
+Room.prototype.runTimedEvents = function() {
+  if (time % 30 === 0) {
+    // -- check for monster movement every half second -- //
+    for (i = 0; i < this.monsters.length; i++) {
+      this.monsters[i].monsterMove();
+    };
+  }
+  if (time < weaponTimer) {
+    // -- check for collisions with monsters and your weapon while weapon is active -- //
+    for (var i = this.monsters.length - 1; i >= 0; i --) {
+      if (collisionCheck(playerWeapon, this.monsters[i])) {
+        this.sprites.splice(this.sprites.indexOf(this.monsters[i]),1);
+        this.monsters.splice(i, 1);
+      }
+    };
+  } else {
+    weaponActive = false;
   }
 }
 

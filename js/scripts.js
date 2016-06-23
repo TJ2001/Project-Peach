@@ -38,7 +38,7 @@ context.webkitImageSmoothingEnabled = false;
 
 // -- depressedKeys initialized as an empty set to allow for a different set up for movement keys. -- //
 var depressedKeys = [];
-var monsters = [];
+//var monsters = [];
 var time = 0;
 // -- weaponTimer and monsterHitTimer will halt your ability to move while they are larger than time. -- //
 var weaponTimer = 0;
@@ -56,8 +56,6 @@ var step = function() {
   animate(step);
   timerEvents();
 };
-var monsterOne = new Sprite(350,350,70, "black");
-monsters.push(monsterOne);
 var timerEvents = function() {
   if (time === -1) {
     $(".story-intro").hide();
@@ -65,12 +63,14 @@ var timerEvents = function() {
   }
   // -- timed events can go here -- //
   time ++;
-  if (time % 30 === 0) {
-    // -- check for monster movement every half second -- //
-    for (i = 0; i < monsters.length; i++) {
-      monsters[i].monsterMove();
-    };
-  } else if (time % 81 === 0) {
+  currentRoom.runTimedEvents();
+  // if (time % 30 === 0) {
+  //   // -- check for monster movement every half second -- //
+  //   for (i = 0; i < monsters.length; i++) {
+  //     monsters[i].monsterMove();
+  //   };
+  // } else
+  if (time % 81 === 0) {
     // -- Spawn random monsters -- //
       // var randomColor = "#";
       // while (randomColor.length <= 6) {
@@ -87,16 +87,16 @@ var timerEvents = function() {
       // var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
       // monsters.push(newMonster);
   }
-  if (time < weaponTimer) {
-    // -- check for collisions with monsters and your weapon while weapon is active -- //
-    for (var i = monsters.length - 1; i >= 0; i --) {
-      if (collisionCheck(playerWeapon, monsters[i])) {
-        monsters.splice(i, 1);
-      }
-    };
-  } else {
-    weaponActive = false;
-  }
+  // if (time < weaponTimer) {
+  //   // -- check for collisions with monsters and your weapon while weapon is active -- //
+  //   for (var i = monsters.length - 1; i >= 0; i --) {
+  //     if (collisionCheck(playerWeapon, monsters[i])) {
+  //       monsters.splice(i, 1);
+  //     }
+  //   };
+  // } else {
+  //   weaponActive = false;
+  // }
 };
 
 
@@ -111,18 +111,18 @@ var update = function() {
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
-  for (i = 0; i < monsters.length; i ++) {
-    if (collisionCheck(monsters[i], player)) {
-      collisionCount ++;
-      var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
-      console.log(collisionCount)
-      player.xPos += enemyKnockBack * reboundVector[0];
-      player.yPos += enemyKnockBack * reboundVector[1];
-      monsterHitTimer = time + 15;
-      console.log("you lost a life");
-    }
-    // monsters[i].update;
-  };
+  // for (i = 0; i < monsters.length; i ++) {
+  //   if (collisionCheck(monsters[i], player)) {
+  //     collisionCount ++;
+  //     var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
+  //     console.log(collisionCount)
+  //     player.xPos += enemyKnockBack * reboundVector[0];
+  //     player.yPos += enemyKnockBack * reboundVector[1];
+  //     monsterHitTimer = time + 15;
+  //     console.log("you lost a life");
+  //   }
+  //   // monsters[i].update;
+  // };
   currentRoom.update();
 };
 
@@ -139,9 +139,9 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   currentRoom.draw(context);
-  for (i = 0; i < monsters.length; i++) {
-    monsters[i].draw();
-  };
+  // for (i = 0; i < monsters.length; i++) {
+  //   monsters[i].draw();
+  // };
   playerWeapon.draw();
   // player.draw();
 };
