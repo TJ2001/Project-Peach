@@ -22,6 +22,8 @@ var height = 906;
 var playerSpeed = 2;
 var supplies = 30;
 var knockBack = -45;
+var money = 0;
+
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
 var weaponSwingTime = 20;
@@ -62,23 +64,6 @@ var timerEvents = function() {
   // -- timed events can go here -- //
   time ++;
   currentRoom.runTimedEvents();
-  // if (time % 30 === 0) {
-  //   // -- check for monster movement every half second -- //
-  //   for (i = 0; i < monsters.length; i++) {
-  //     monsters[i].monsterMove();
-  //   };
-  // } else
-
-  // if (time < weaponTimer) {
-  //   // -- check for collisions with monsters and your weapon while weapon is active -- //
-  //   for (var i = monsters.length - 1; i >= 0; i --) {
-  //     if (collisionCheck(playerWeapon, monsters[i])) {
-  //       monsters.splice(i, 1);
-  //     }
-  //   };
-  // } else {
-  //   weaponActive = false;
-  // }
 };
 
 
@@ -86,25 +71,10 @@ var timerEvents = function() {
 // -- Updates are used to incrementally adjust an objects position and possibly other things.  Called every frame through the step function -- //
 var update = function() {
 
-  // for (var i=0; i < monsters.length; i++) {
-  //   monsters[i].update();
-  // }
   // -- this updates the position of the hitbox for Momo's sword -- //
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
-  // for (i = 0; i < monsters.length; i ++) {
-  //   if (collisionCheck(monsters[i], player)) {
-  //     collisionCount ++;
-  //     var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
-  //     console.log(collisionCount)
-  //     player.xPos += knockBack * reboundVector[0];
-  //     player.yPos += knockBack * reboundVector[1];
-  //     monsterHitTimer = time + 15;
-  //     console.log("you lost a life");
-  //   }
-  //   // monsters[i].update;
-  // };
   currentRoom.update();
 };
 
@@ -121,11 +91,14 @@ var draw = function() {
   context.fillStyle = "#666";
   context.fillRect(0, 0, width, height);
   currentRoom.draw(context);
-  // for (i = 0; i < monsters.length; i++) {
-  //   monsters[i].draw();
-  // };
   playerWeapon.draw();
-  // player.draw();
+  context.font = "15px Arial";
+  allSuperSprites["PickupSprite"].animations["heart"].play(context,5,5);
+  context.fillText("x "+player.health.toString(),35,22);
+  allSuperSprites["PickupSprite"].animations["peach"].play(context,75,5);
+  context.fillText("x "+supplies.toString(),105,22);
+  allSuperSprites["PickupSprite"].animations["coin"].play(context,145,5);
+  context.fillText("x "+money.toString(),175,22);
 };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
@@ -207,11 +180,6 @@ window.addEventListener("keydown", function(event) {
     weaponTimer = time + weaponSwingTime;
     // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
     attack(player, 1.3, 0.9);
-    // if(player.super.currentAnimation===player.super.animations["up"] || player.super.currentAnimation===player.super.animations["upStill"]) {
-    //   player.super.show("upSwing");
-    // } else if(player.super.currentAnimation===player.super.animations["down"] || player.super.currentAnimation===player.super.animations["downStill"]) {
-    //   player.super.show("downSwing");
-    // }
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //

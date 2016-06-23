@@ -40,11 +40,11 @@ Sprite.prototype.draw = function () {
     context.lineWidth = 1;
     context.stroke();
   } else {
-    if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
+    if(Object.keys(this.super.animations).indexOf("solid") != -1) {
       if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
       } else {
-        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2);
       }
     } else if(this===player) {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
