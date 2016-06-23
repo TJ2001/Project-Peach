@@ -98,7 +98,7 @@ Room.prototype.addMap = function(map, foreground) {
         } else if(icon==="c") {
           this.monsters.push(newEntity);
           newEntity.super = allSuperSprites["CrabMobSprite"].copy();
-          newEntity.super.show("idle");
+          newEntity.super.show("walk");
         }
       }
     }

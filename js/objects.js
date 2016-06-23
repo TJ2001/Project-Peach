@@ -121,17 +121,21 @@ Sprite.prototype.monsterMove = function() {
     if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
       if (this.yPos - player.yPos < 0) {
         this.yVel = 2;
+        this.super.show("walk");
       } else {
         this.yVel = -2;
+        this.super.show("walk");
       }
     } else if (Math.abs(this.xPos - player.xPos) < 20) {
       this.xVel = 0;
     } else if (this.xPos - player.xPos < 0) {
       this.xVel = 3;
       this.yVel = 0;
+      this.super.show("swipeRight");
     } else if (this.xPos -player.xPos > 0) {
       this.xVel = -3;
       this.yVel = 0;
+      this.super.show("swipeLeft");
     } else {
       this.xVel = 0;
     }
@@ -141,9 +145,11 @@ Sprite.prototype.monsterMove = function() {
       if (player.xPos - this.xPos > 0 && randomNumber < 5) {
         this.xVel = 3;
         this.yVel = 0;
+        this.super.show("flyRight");
       } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
         this.xVel = -3;
         this.yVel = 0;
+        this.super.show("flyLeft");
       }
       if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
         this.xVel = 0;
