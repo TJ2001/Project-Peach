@@ -335,6 +335,7 @@ function Switch(func = function() {
         if(wo.door===this.idNumber+5) {
           wo.doorOpen = true;
           wo.sprite.super.show("inDoorHOpen");
+          this.sprite.super.show("off");
           wo.sprite.front = false;
         }
       }

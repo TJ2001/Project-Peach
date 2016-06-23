@@ -97,6 +97,9 @@ Room.prototype.addMap = function(map, foreground) {
           } else if(icon==="&") {
             newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
             newEntity.sprite.super.show("peach");
+          } else {
+            newEntity.sprite.super = allSuperSprites["Button"].copy();
+            newEntity.sprite.super.show("off");
           }
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
