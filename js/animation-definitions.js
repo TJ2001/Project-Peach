@@ -103,7 +103,8 @@ var allSuperSprites = {
     "Fireball": new SuperSprite("upright", new Animation("img/fireball.png",0,0,32,32,3,10)),
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
-    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2))
+    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2)),
+    "PickupSprite": new SuperSprite("heart", new Animation("img/Momo-Spritesheet.png",210,527,13,11,1,10))
 
 }
 
@@ -158,3 +159,6 @@ allSuperSprites["Fireball"].addAnimation("up", new Animation("img/fireball.png",
 allSuperSprites["Fireball"].addAnimation("down", new Animation("img/fireball.png",104,33,32,32,3,10));
 allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",1,69,32,32,3,10));
 allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",102,69,32,32,3,10));
+
+allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Spritesheet.png",226,527,13,11,1,10))
+allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10))

@@ -50,6 +50,12 @@ var entityDict = {
         currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
         currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
       });
+    } else if(icon==="$") {
+      return new Switch(function() {
+        money += 5;
+        currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
+        currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
+      });
     } else {
       return "";
     }
@@ -119,10 +125,10 @@ allRooms["w"].addMap([
 allRooms["w"].addMap([
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
-  [" "," "," "," ","%"," ","%"," "," "," "," "," "],
+  [" "," "," "," ","%"," ","%"," "," "," ","$"," "],
   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
-  [" ","l"," ","l"," ","l","@","l"," ","l"," "," "],
+  [" ","l"," ","l"," ","l","@","l"," ","l","$"," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" ","l"," ","l","&","l"," ","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],

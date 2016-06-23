@@ -79,7 +79,17 @@ Room.prototype.addMap = function(map, foreground) {
           if(parseInt(icon)) {
             newEntity.door = parseInt(icon);
           }
-        } else if(icon==="%"||icon ==="&"||icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
+        } else if(icon==="$"||icon==="%"||icon ==="&"||icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
+          if(icon==="$") {
+            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super.show("coin");
+          } else if(icon==="%") {
+            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super.show("heart");
+          } else if(icon==="&") {
+            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super.show("peach");
+          }
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
           newEntity.sprite.front = false;
