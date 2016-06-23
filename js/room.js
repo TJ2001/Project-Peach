@@ -87,7 +87,7 @@ Room.prototype.addMap = function(map, foreground) {
           if(parseInt(icon)) {
             newEntity.door = parseInt(icon);
           }
-        } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
+        } else if(icon==="%"||icon ==="&"||icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
           newEntity.sprite.front = false;
@@ -156,7 +156,7 @@ Room.prototype.update = function() {
   boat.xPos = currentRoom.boatX*tileDict["~"].frameArray[0].width*2 + (tileDict["~"].frameArray[0].width);
   boat.yPos = currentRoom.boatY*tileDict["~"].frameArray[0].height*2  + (tileDict["~"].frameArray[0].height);
   this.collisionCheckLightPuzzle(player, this.currentLightPuzzle);
-  // -- Checks if light puzzle is completed and 'opens' the East door if it is. -- //
+  // -- Checks if light puzzle is completed -- //
   if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
     //Puzzle
   }
@@ -164,7 +164,7 @@ Room.prototype.update = function() {
     if (this.sprites[i] === player) {
       if (weaponTimer <= time && monsterHitTimer <= time) {
         this.sprites[i].update();
-      } else {}
+      }
     } else {
       this.sprites[i].update();
     }
@@ -173,18 +173,20 @@ Room.prototype.update = function() {
     if (collisionCheck(this.monsters[i], player)) {
       collisionCount ++;
       var reboundVector = vector(this.monsters[i].xPos, this.monsters[i].yPos, player.xPos, player.yPos);
+
       console.log(collisionCount)
-      player.xPos += enemyKnockBack * reboundVector[0];
-      player.yPos += enemyKnockBack * reboundVector[1];
+      player.xPos += knockBack * reboundVector[0];
+      player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
-      console.log("you lost a life");
+      player.health-=0.5;
+      console.log("Health: "+player.health.toString());
     }
   };
   for (var i=0; i < this.wallObjects.length; i++) {
     this.wallObjects[i].xMovable = true;
     this.wallObjects[i].yMovable = true;
     for(var s=0; s<this.sprites.length; s++) {
-      if(this.sprites[s]!=player && this.wallObjects[i].behavior!="exitDoor") {
+      if(this.sprites[s]!=player && this.wallObjects[i].behavior!="exitDoor" && this.sprites[s].front) {
         this.wallObjects[i].collisionWithSprite(this.sprites[s]);
       }
     }
@@ -206,12 +208,23 @@ Room.prototype.runTimedEvents = function() {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
     for (var i = this.monsters.length - 1; i >= 0; i --) {
       if (collisionCheck(playerWeapon, this.monsters[i])) {
-        this.sprites.splice(this.sprites.indexOf(this.monsters[i]),1);
-        this.monsters.splice(i, 1);
+        var reboundVector = vector(player.xPos, player.yPos, this.monsters[i].xPos, this.monsters[i].yPos);
+        this.monsters[i].xPos += knockBack * reboundVector[0];
+        this.monsters[i].yPos += knockBack * reboundVector[1];
+        if(!hitActive) {
+          this.monsters[i].health-=1;
+          hitActive = true;
+        }
+        console.log("Monster Health: "+this.monsters[i].health.toString());
+        if(this.monsters[i].health<=0) {
+          this.sprites.splice(this.sprites.indexOf(this.monsters[i]),1);
+          this.monsters.splice(i, 1);
+        }
       }
     };
   } else {
     weaponActive = false;
+    hitActive = false;
   }
 }
 
@@ -273,7 +286,7 @@ Room.prototype.moveOverworld = function(direction) {
     if(0 <= newX&&newX < this.width  &&  0 <= newY&&newY < this.height) {
       supplies --;
       if(supplies<1) {
-        //health = Math.floor(health/2);
+        player.health -= 2;
         var nearestCoords = this.findIsland(boatX, boatY);
         newX = nearestCoords[0];
         newY = nearestCoords[1];
@@ -316,4 +329,42 @@ Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
     }
   };
   return puzzleCompleted;
+};
+
+
+Room.prototype.spawnMonster = function() {
+  // -- Spawn random monsters -- //
+  var randomXPos = 0;
+  var randomYPos = 0;
+  var legalPosition = false;
+  var randomColor = Math.floor(Math.random() * 2);
+  if (randomColor === 0) {
+    var monsterRadius = 10;
+    randomColor = "#000";
+  } else {
+    randomColor = "#111";
+    var monsterRadius = 15;
+  }
+  while (legalPosition === false) {
+    var collisionAlert = false;
+    while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 75) {
+      randomXPos = (Math.floor(Math.random() * this.width * 0.9 + monsterRadius));
+    };
+    while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 75) {
+      randomYPos = (Math.floor(Math.random() * this.height * 0.9 + monsterRadius));
+    };
+    for (var i = 0; i < this.sprites.length; i ++) {
+      if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
+        collisionAlert = true;
+        console.log(sprite);
+        console.log("x=" + randomXPos + " y=" + randomYPos);
+      }
+      if (collisionAlert === false) {
+        legalPosition = true;
+      }
+    };
+  };
+  var newMonster = new Sprite(randomXPos, randomYPos, monsterRadius, randomColor);
+  this.monsters.push(newMonster);
+  this.sprites.push(newMonster);
 };

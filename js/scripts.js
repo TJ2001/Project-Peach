@@ -4,9 +4,6 @@
       and functions closely related thereto. Other functionality may be added to this file at a later stage,
       but ideally this file should be kept as clean as possible.
 ##############################################################################################################*/
-//--Note to Joel: This file could be cleaned up even more. Since most of it is your code, I'll leave control of it to you.
-//  Also, your code pertaining to doors was left in this file for the time being, but it should be moved to room.js eventually.
-
 
 // -- Helps with animation -- //
 var animate = window.requestAnimationFrame ||
@@ -22,9 +19,8 @@ var currentRoom = allRooms["overworld"];
 var width = 906;
 var height = 906;
 var playerSpeed = 2;
-var wallWidth = 10;
 var supplies = 30;
-var enemyKnockBack = -70;
+var knockBack = -45;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
 var weaponSwingTime = 20;
@@ -44,6 +40,7 @@ var time = 0;
 var weaponTimer = 0;
 var weaponActive = false;
 var monsterHitTimer = 0;
+var hitActive = false;
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackTimer = 0;
 
@@ -70,23 +67,7 @@ var timerEvents = function() {
   //     monsters[i].monsterMove();
   //   };
   // } else
-  if (time % 81 === 0) {
-    // -- Spawn random monsters -- //
-      // var randomColor = "#";
-      // while (randomColor.length <= 6) {
-      //   randomColor += (Math.floor(Math.random() * 9) + 1);
-      // };
-      // var randomXPos = 0;
-      // var randomYPos = 0;
-      // while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 100) {
-      //   randomXPos = (Math.floor(Math.random() * width / 2 + width / 4));
-      // };
-      // while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 100) {
-      //   randomYPos = (Math.floor(Math.random() * height / 2 + height / 4));
-      // };
-      // var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
-      // monsters.push(newMonster);
-  }
+
   // if (time < weaponTimer) {
   //   // -- check for collisions with monsters and your weapon while weapon is active -- //
   //   for (var i = monsters.length - 1; i >= 0; i --) {
@@ -116,8 +97,8 @@ var update = function() {
   //     collisionCount ++;
   //     var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
   //     console.log(collisionCount)
-  //     player.xPos += enemyKnockBack * reboundVector[0];
-  //     player.yPos += enemyKnockBack * reboundVector[1];
+  //     player.xPos += knockBack * reboundVector[0];
+  //     player.yPos += knockBack * reboundVector[1];
   //     monsterHitTimer = time + 15;
   //     console.log("you lost a life");
   //   }

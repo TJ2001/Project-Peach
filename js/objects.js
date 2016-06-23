@@ -25,6 +25,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.yVel = yVel;
   this.super = undefined;
   this.front = true;
+  this.health = 3;
 };
 
 // -- draws the sprite object on the canvas -- //
@@ -38,7 +39,11 @@ Sprite.prototype.draw = function () {
     context.stroke();
   } else {
     if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
-      this.super.draw(context, this.xPos-this.radius, this.yPos-(this.radius*3));
+      if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
+      } else {
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
+      }
     } else if(this===player) {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
     } else {
@@ -81,7 +86,9 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
 };
 
 Sprite.prototype.monsterMove = function() {
- // -- causes the sprite to constantly move towards the player -- //
+  var randomNumber = Math.floor(Math.random() * 10);
+ // -- causes the sprite to constantly move towards the player. This is the behavior for the fireballs -- //
+  if (this.ballColor === "#222") {
     if (this.xPos < player.xPos) {
       this.xVel = 1;
     } else if (this.xPos >player.xPos) {
@@ -96,63 +103,59 @@ Sprite.prototype.monsterMove = function() {
     } else {
       this.yVel = 0;
     }
-
-  var randomNumber = Math.floor(Math.random() * 10);
-
 // -- causes the monster to adjust his yPos to be close to the player, then toggles to adjust xPos then back to yPos -- //
 // -- this is the ai for the crab-- //
-  if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
-    if (this.yPos - player.yPos < 0) {
-      this.yVel = 2;
-    } else {
-      this.yVel = -2;
-    }
-  } else if (this.xPos - player.xPos < -4) {
-    this.xVel = 3;
-    this.yVel = 0;
-  } else if (this.xPos -player.xPos > 4) {
-    this.xVel = -3;
-    this.yVel = 0;
-  } else {
-    this.xVel = 0;
-  }
-
-// --  causes the monster to head towards the player if the player is close enough to the monster -- //
-  if (calculateDistance(this, player) <= this.radius + 250) {
-    console.log("you triggered the proximity move.")
-    if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+  } else if (this.ballColor === "#000") {
+    if (Math.abs(this.yPos - player.yPos) >= 32  && this.xVel === 0) {
+      if (this.yPos - player.yPos < 0) {
+        this.yVel = 2;
+      } else {
+        this.yVel = -2;
+      }
+    } else if (this.xPos - player.xPos < -4) {
       this.xVel = 3;
       this.yVel = 0;
-    } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+    } else if (this.xPos -player.xPos > 4) {
       this.xVel = -3;
       this.yVel = 0;
-    }
-
-    if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+    } else {
       this.xVel = 0;
-      this.yVel = 3;
-    } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
-      this.xVel = 0;
-      this.yVel = -3;
     }
-  }
-
-
-  if (randomNumber ===  0) {
-    this.xVel = 2;
-    this.yVel = 0;
-  } else if (randomNumber === 1) {
-    this.xVel = -2;
-    this.yVel = 0;
-  } else if (randomNumber === 2) {
-    this.xVel = 0;
-    this.yVel = 2;
-  } else if (randomNumber === 3) {
-    this.xVel = 0;
-    this.yVel = -2;
-  } else if (randomNumber === 4) {
-    this.xVel = 0;
-    this.yVel = 0;
+// --  causes the monster to head towards the player if the player is close enough to the monster -- //
+  } else if (this.ballColor === "#111") {
+    if (calculateDistance(this, player) <= this.radius + 250) {
+      if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+        this.xVel = 3;
+        this.yVel = 0;
+      } else if (player.xPos - this.xPos > 0 && randomNumber < 5) {
+        this.xVel = -3;
+        this.yVel = 0;
+      }
+      if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+        this.xVel = 0;
+        this.yVel = 3;
+      } else if (player.yPos - this.yPos > 0 && randomNumber >= 5) {
+        this.xVel = 0;
+        this.yVel = -3;
+      }
+    } else {
+      if (randomNumber ===  0) {
+        this.xVel = 2;
+        this.yVel = 0;
+      } else if (randomNumber === 1) {
+        this.xVel = -2;
+        this.yVel = 0;
+      } else if (randomNumber === 2) {
+        this.xVel = 0;
+        this.yVel = 2;
+      } else if (randomNumber === 3) {
+        this.xVel = 0;
+        this.yVel = -2;
+      } else if (randomNumber === 4) {
+        this.xVel = 0;
+        this.yVel = 0;
+      }
+    }
   }
 };
 
@@ -344,7 +347,14 @@ var collisionCheck = function(spriteOne, spriteTwo) {
   }
 };
 
+var collisionCheckOneSprite = function(spriteOne, xPos2, yPos2, radius2) {
+  if (calculateDistanceOneSprite(spriteOne, xPos2, yPos2) < spriteOne.radius + radius2) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;
-
 };

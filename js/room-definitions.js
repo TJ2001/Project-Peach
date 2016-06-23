@@ -29,7 +29,7 @@ var entityDict = {
     } else if(icon==="x") {
       return new Wall(0,0,64,64,"red","exitDoor");
     } else if(icon==="b") {
-      return new Wall(0,0,64,64,"orange","boulder");
+      return new Wall(0,0,54,64,"orange","boulder");
     } else if(icon==="p") {
       return new Wall(0,0,64,64,"red","pit");
     } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
@@ -40,6 +40,18 @@ var entityDict = {
       return new Sprite(0,0,30,"#111");
     } else if(icon==="c") {
       return new Sprite(0,0,30,"#000");
+    } else if(icon==="%") {
+      return new Switch(function() {
+        player.health += 0.5;
+        currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
+        currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
+      });
+    } else if(icon==="&") {
+      return new Switch(function() {
+        supplies += 5;
+        currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
+        currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
+      });
     } else {
       return "";
     }
@@ -79,7 +91,7 @@ allRooms["q"].addMap([
 ],false);
 allRooms["q"].addMap([
   ["w","w","w","w","w","w","w","w","w","w","w","w"],
-  ["w"," "," "," "," "," "," ","m"," ","m"," ","w"],
+  ["w"," "," "," "," "," "," ","f"," ","c"," ","w"],
   ["w"," "," ","p"," "," "," "," "," "," "," ","w"],
   ["w"," "," "," "," "," "," "," "," "," "," ","w"],
   ["w"," "," "," "," ","x"," "," "," "," "," ","w"],
@@ -109,12 +121,12 @@ allRooms["w"].addMap([
 allRooms["w"].addMap([
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
-  [" "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," ","%"," ","%"," "," "," "," "," "],
   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" ","l"," ","l"," ","l","@","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
-  [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
+  [" ","l"," ","l","&","l"," ","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
   [" "," "," "," "," "," "," "," "," "," "," "," "],
