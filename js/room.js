@@ -91,8 +91,14 @@ Room.prototype.addMap = function(map, foreground) {
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
           newEntity.sprite.front = false;
-        } else if(icon==="m") {
+        } else if(icon==="f") {
           this.monsters.push(newEntity);
+          newEntity.super = allSuperSprites["BatMobSprite"].copy();
+          newEntity.super.show("flyLeft");
+        } else if(icon==="c") {
+          this.monsters.push(newEntity);
+          newEntity.super = allSuperSprites["CrabMobSprite"].copy();
+          newEntity.super.show("idle");
         }
       }
     }
