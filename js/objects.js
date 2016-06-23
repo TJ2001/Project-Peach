@@ -281,14 +281,16 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     if (sprite!=player) {
       for(var i=0; i<currentRoom.wallObjects.length; i++) {
         var wo = currentRoom.wallObjects[i];
-        if(wo.behavior==="pit") {
+        if(wo.sprite===sprite && wo.behavior==="pit") {
           this.behavior = "none";
           wo.behavior = "none";
           wo.sprite.super.show("boulderHole");
           wo.sprite.front = false;
           currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
+          return;
         }
       }
+      this.collideSolid(sprite, xCollide, yCollide);
       if(xCollide) {
         this.xMovable = false;
       }
