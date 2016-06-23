@@ -165,8 +165,10 @@ Room.prototype.update = function() {
     if (collisionCheck(this.monsters[i], player)) {
       collisionCount ++;
       var reboundVector = vector(this.monsters[i].xPos, this.monsters[i].yPos, player.xPos, player.yPos);
-      player.xPos += enemyKnockBack * reboundVector[0];
-      player.yPos += enemyKnockBack * reboundVector[1];
+
+      console.log(collisionCount)
+      player.xPos += knockBack * reboundVector[0];
+      player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
       player.health-=0.5;
       console.log("Health: "+player.health.toString());
@@ -316,4 +318,42 @@ Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
     }
   };
   return puzzleCompleted;
+};
+
+
+Room.prototype.spawnMonster = function() {
+  // -- Spawn random monsters -- //
+  var randomXPos = 0;
+  var randomYPos = 0;
+  var legalPosition = false;
+  var randomColor = Math.floor(Math.random() * 2);
+  if (randomColor === 0) {
+    var monsterRadius = 10;
+    randomColor = "#000";
+  } else {
+    randomColor = "#111";
+    var monsterRadius = 15;
+  }
+  while (legalPosition === false) {
+    var collisionAlert = false;
+    while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 75) {
+      randomXPos = (Math.floor(Math.random() * this.width * 0.9 + monsterRadius));
+    };
+    while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 75) {
+      randomYPos = (Math.floor(Math.random() * this.height * 0.9 + monsterRadius));
+    };
+    for (var i = 0; i < this.sprites.length; i ++) {
+      if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
+        collisionAlert = true;
+        console.log(sprite);
+        console.log("x=" + randomXPos + " y=" + randomYPos);
+      }
+      if (collisionAlert === false) {
+        legalPosition = true;
+      }
+    };
+  };
+  var newMonster = new Sprite(randomXPos, randomYPos, monsterRadius, randomColor);
+  this.monsters.push(newMonster);
+  this.sprites.push(newMonster);
 };

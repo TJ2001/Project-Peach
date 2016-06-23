@@ -100,11 +100,11 @@ var allSuperSprites = {
     "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall1.png",0,0,32,64,1,10)),
     "MapMarker": new SuperSprite("momohead", new Animation("img/overworld.png",64,0,16,16,1,10)),
 
-    "Fireball": new SuperSprite("upright", new Animation("img/fireball.png",0,0,32,32,3,10)),
+    "Fireball": new SuperSprite("right", new Animation("img/fireball.png",0,0,32,32,3,10)),
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
-    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2))
-
+    "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,2)),
+    "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
@@ -153,8 +153,11 @@ allSuperSprites["CrabMobSprite"].addAnimation("swipeRight", new Animation("img/M
 allSuperSprites["BatMobSprite"].addAnimation("flyRight", new Animation("img/monster-bat1.png",0,32,32,32,6,2));
 
 allSuperSprites["MapMarker"].addAnimation("boat", new Animation("img/overworld.png",80,0,16,16,1,10));
-allSuperSprites["Fireball"].addAnimation("upleft", new Animation("img/fireball.png",101,0,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("up", new Animation("img/fireball.png",6,36,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("down", new Animation("img/fireball.png",104,33,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",1,69,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",102,69,32,32,3,10));
+
+allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",97,0,32,32,3,10));
+allSuperSprites["Fireball"].addAnimation("up", new Animation("img/fireball.png",0,33,32,32,3,10));
+allSuperSprites["Fireball"].addAnimation("down", new Animation("img/fireball.png",97,33,32,32,3,10));
+allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",0,65,32,32,3,10));
+allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",97,65,32,32,3,10));
+
+allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,2,10));

@@ -20,7 +20,7 @@ var width = 906;
 var height = 906;
 var playerSpeed = 2;
 var supplies = 30;
-var enemyKnockBack = -70;
+var knockBack = -45;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
 var weaponSwingTime = 20;
@@ -67,23 +67,7 @@ var timerEvents = function() {
   //     monsters[i].monsterMove();
   //   };
   // } else
-  if (time % 81 === 0) {
-    // -- Spawn random monsters -- //
-      // var randomColor = "#";
-      // while (randomColor.length <= 6) {
-      //   randomColor += (Math.floor(Math.random() * 9) + 1);
-      // };
-      // var randomXPos = 0;
-      // var randomYPos = 0;
-      // while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 100) {
-      //   randomXPos = (Math.floor(Math.random() * width / 2 + width / 4));
-      // };
-      // while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 100) {
-      //   randomYPos = (Math.floor(Math.random() * height / 2 + height / 4));
-      // };
-      // var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
-      // monsters.push(newMonster);
-  }
+
   // if (time < weaponTimer) {
   //   // -- check for collisions with monsters and your weapon while weapon is active -- //
   //   for (var i = monsters.length - 1; i >= 0; i --) {
@@ -113,8 +97,8 @@ var update = function() {
   //     collisionCount ++;
   //     var reboundVector = vector(monsters[i].xPos, monsters[i].yPos, player.xPos, player.yPos);
   //     console.log(collisionCount)
-  //     player.xPos += enemyKnockBack * reboundVector[0];
-  //     player.yPos += enemyKnockBack * reboundVector[1];
+  //     player.xPos += knockBack * reboundVector[0];
+  //     player.yPos += knockBack * reboundVector[1];
   //     monsterHitTimer = time + 15;
   //     console.log("you lost a life");
   //   }
