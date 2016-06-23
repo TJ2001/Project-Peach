@@ -36,8 +36,10 @@ var entityDict = {
       return new Switch();
     } else if(icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
       return new Wall(0,0,64,64,"brown","door");
-    } else if(icon==="m") {
-      return new Sprite(0,0,30,"green");
+    } else if(icon==="f") {
+      return new Sprite(0,0,30,"#111");
+    } else if(icon==="c") {
+      return new Sprite(0,0,30,"#000");
     } else {
       return "";
     }

@@ -267,6 +267,9 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
         if(wo.behavior==="pit") {
           this.behavior = "none";
           wo.behavior = "none";
+          wo.sprite.super.show("boulderHole");
+          wo.sprite.front = false;
+          currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
         }
       }
       if(xCollide) {
@@ -309,6 +312,7 @@ function Switch(func = function() {
         if(wo.door===this.idNumber+5) {
           wo.doorOpen = true;
           wo.sprite.super.show("inDoorHOpen");
+          wo.sprite.front = false;
         }
       }
     }) {
