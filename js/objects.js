@@ -339,7 +339,14 @@ var collisionCheck = function(spriteOne, spriteTwo) {
   }
 };
 
+var collisionCheckOneSprite = function(spriteOne, xPos2, yPos2, radius2) {
+  if (calculateDistanceOneSprite(spriteOne, xPos2, yPos2) < spriteOne.radius + radius2) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 var attack = function(attackingSprite, attackRadiusModifier, attackPositionModifier) {
   attackTimer = time + 100;
-
 };

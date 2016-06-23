@@ -70,23 +70,7 @@ var timerEvents = function() {
   //     monsters[i].monsterMove();
   //   };
   // } else
-  if (time % 81 === 0) {
-    // -- Spawn random monsters -- //
-      // var randomColor = "#";
-      // while (randomColor.length <= 6) {
-      //   randomColor += (Math.floor(Math.random() * 9) + 1);
-      // };
-      // var randomXPos = 0;
-      // var randomYPos = 0;
-      // while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 100) {
-      //   randomXPos = (Math.floor(Math.random() * width / 2 + width / 4));
-      // };
-      // while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 100) {
-      //   randomYPos = (Math.floor(Math.random() * height / 2 + height / 4));
-      // };
-      // var newMonster = new Sprite(randomXPos, randomYPos, 35, randomColor);
-      // monsters.push(newMonster);
-  }
+
   // if (time < weaponTimer) {
   //   // -- check for collisions with monsters and your weapon while weapon is active -- //
   //   for (var i = monsters.length - 1; i >= 0; i --) {
