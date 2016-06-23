@@ -70,6 +70,7 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.column = ((x/2)+1)*10;
           newEntity.row = (y/2)+1;
           newEntity.sprite.ballColor = "brown";
+          newEntity.sprite.front = false;
         } else if(icon==="@") {
           this.entrance = newEntity;
         } else if(icon==="w"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
@@ -80,6 +81,7 @@ Room.prototype.addMap = function(map, foreground) {
         } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
           this.switches.push(newEntity);
           newEntity.idNumber = parseInt(icon);
+          newEntity.sprite.front = false;
         }
       }
     }
@@ -127,9 +129,16 @@ Room.prototype.draw = function(ctx) {
       ani.play(ctx, 2*ani.frameArray[0].width*x, 2*ani.frameArray[0].height*y);
     }
   }
+  for(var i=0; i<this.sprites.length; i++) {
+    if(!this.sprites[i].front) {
+      this.sprites[i].draw();
+    }
+  }
   this.sortSprites();
   for(var i=0; i<this.sprites.length; i++) {
-    this.sprites[i].draw();
+    if(this.sprites[i].front) {
+      this.sprites[i].draw();
+    }
   }
 }
 Room.prototype.update = function() {

@@ -27,7 +27,7 @@ var supplies = 30;
 var enemyKnockBack = -70;
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
-var weaponSwingTime = 10;
+var weaponSwingTime = 20;
 var canvas = document.createElement('canvas');
 canvas.width = width;
 canvas.height = height;
@@ -42,12 +42,9 @@ var monsters = [];
 var time = 0;
 // -- weaponTimer and monsterHitTimer will halt your ability to move while they are larger than time. -- //
 var weaponTimer = 0;
+var weaponActive = false;
 var monsterHitTimer = 0;
-//these are now declared in objects.js
-// var player = new Sprite(100, 100, 25, "blue");
-// var boat = new Sprite(boatX*tileDict["~"].frameArray[0].width,boatY*tileDict["~"].frameArray[0].height,15);
-var weaponTimer = 0;
-var playerWeapon = new Sprite(100, 122.5, player.radius * 1.3, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
+var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackTimer = 0;
 
 allSuperSprites["MomoSprite"].addObject(player);
@@ -97,6 +94,8 @@ var timerEvents = function() {
         monsters.splice(i, 1);
       }
     };
+  } else {
+    weaponActive = false;
   }
 };
 
@@ -196,9 +195,15 @@ window.addEventListener("keydown", function(event) {
     }
   }
   if (event.keyCode === 32) {
+    weaponActive = true;
     weaponTimer = time + weaponSwingTime;
     // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //
     attack(player, 1.3, 0.9);
+    // if(player.super.currentAnimation===player.super.animations["up"] || player.super.currentAnimation===player.super.animations["upStill"]) {
+    //   player.super.show("upSwing");
+    // } else if(player.super.currentAnimation===player.super.animations["down"] || player.super.currentAnimation===player.super.animations["downStill"]) {
+    //   player.super.show("downSwing");
+    // }
   }
 });
 // -- keyup press is designed to stop movement if the key for the direction you are moving is released. We can adjust that behavior towards whatever we want. -- //

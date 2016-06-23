@@ -8,7 +8,7 @@
 
 
 // Important objects
-var player = new Sprite(100, 100, 25, "blue");
+var player = new Sprite(100, 100, 20, "blue");
 var boat = new Sprite(0,0,15);
 allSuperSprites["MapMarker"].addObject(boat);
 
@@ -24,6 +24,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.xVel = xVel;
   this.yVel = yVel;
   this.super = undefined;
+  this.front = true;
 };
 
 // -- draws the sprite object on the canvas -- //
@@ -38,8 +39,10 @@ Sprite.prototype.draw = function () {
   } else {
     if(this.super.currentAnimation.spriteSheet.src===allSuperSprites["WallSprite"].currentAnimation.spriteSheet.src) {
       this.super.draw(context, this.xPos-this.radius, this.yPos-(this.radius*3));
+    } else if(this===player) {
+      this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
     } else {
-      this.super.draw(context, this.xPos-this.radius, this.yPos-this.radius);
+      this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
     }
     // -- CODE FOR TESTING- draw the hitbox circle so we can adjust numbers -- //
     context.beginPath();
