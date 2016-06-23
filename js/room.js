@@ -79,6 +79,8 @@ Room.prototype.addMap = function(map, foreground) {
             newEntity.sprite.super.show("inDoorHClosed");
           } else if (icon === "b") {
             newEntity.sprite.super.show("boulder");
+          } else if (icon === "p") {
+            newEntity.sprite.super.show("hole");
           }
 
           this.wallObjects.push(newEntity);
