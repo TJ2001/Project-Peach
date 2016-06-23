@@ -200,6 +200,9 @@ Room.prototype.runTimedEvents = function() {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
     for (var i = this.monsters.length - 1; i >= 0; i --) {
       if (collisionCheck(playerWeapon, this.monsters[i])) {
+        var reboundVector = vector(player.xPos, player.yPos, this.monsters[i].xPos, this.monsters[i].yPos);
+        this.monsters[i].xPos += knockBack * reboundVector[0];
+        this.monsters[i].yPos += knockBack * reboundVector[1];
         if(!hitActive) {
           this.monsters[i].health-=1;
           hitActive = true;
