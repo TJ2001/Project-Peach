@@ -223,7 +223,13 @@ Room.prototype.update = function() {
       player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
       player.health-=0.5;
-      if(player.health <= 0) {message = "You were killed by monsters.";}
+      if(player.health <= 0) {
+        message = "You were killed by monsters.";
+        lightRoomMusic.pause();
+        boulderRoomMusic.pause();
+        oniBattleMusic.pause();
+        deathMusic.play();
+      }
       console.log("Health: "+player.health.toString());
     }
   };
@@ -356,7 +362,11 @@ Room.prototype.moveOverworld = function(direction) {
         message = "You ran out of food. You lost two hearts.";
         transitionTimer = time + 150;
         player.health -= 2;
-        if(player.health <= 0) {message = "You starved to death.";}
+        if(player.health <= 0) {
+          message = "You starved to death.";
+          overworldMusic.pause();
+          deathMusic.play();
+        }
         supplies = 5;
         var nearestCoords = this.findIsland(boatX, boatY);
         newX = nearestCoords[0];

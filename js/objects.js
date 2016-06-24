@@ -403,6 +403,11 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   } else if (this.behavior === "exitDoor") {
     if(xCollide || yCollide) {
       currentRoom = allRooms["overworld"];
+      lightRoomMusic.pause();
+      boulderRoomMusic.pause();
+      oniBattleMusic.pause();
+      overworldMusic.play();
+      console.log("overworldMusic should play now");
       message = "";
       transitionTimer = time + 60;
     }

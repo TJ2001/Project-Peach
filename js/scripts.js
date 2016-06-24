@@ -148,11 +148,21 @@ window.addEventListener("keydown", function(event) {
     // var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
+      overworldMusic.pause();
+      console.log("pause overworld");
       if(newRoom==="u") {
         message = "Get ready."
+        oniBattleMusic.play();
       } else if(message!="You ran out of food. You lost two hearts." && message!="You starved to death.") {
         message = "";
+      } else if (newRoom === "A" || newroom === "g" || newroom === "r" || newroom === "s" || newroom === "t") {
+        boulderRoomMusic.play();
+        console.log("play boulder")
+      } else if (newroom === "m" || newroom === "n" || newroom === "p") {
+        lightRoomMusic.play();
+        console.log("play light")
       }
+
       if(currentRoom.sprites.indexOf(player)===-1) {
         currentRoom.addSprite(player);
       }
@@ -188,6 +198,11 @@ window.addEventListener("keydown", function(event) {
     }
     if(event.keyCode === 82) {
       currentRoom.reset();
+      lightRoomMusic.pause();
+      boulderRoomMusic.pause();
+      oniBattleMusic.pause();
+      overworldMusic.play();
+      console.log("overworldMusic should play now");
     }
   }
   if (event.keyCode === 32) {
