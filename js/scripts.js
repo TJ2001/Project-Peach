@@ -63,6 +63,7 @@ var timerEvents = function() {
   if (time === -1) {
     $(".story-intro").hide();
     $("canvas").show();
+    boulderRoomMusic.play();
   }
   // -- timed events can go here -- //
   time ++;
@@ -150,15 +151,18 @@ window.addEventListener("keydown", function(event) {
     if(newRoom!="overworld") {
       overworldMusic.pause();
       console.log("pause overworld");
+      console.log(newRoom)
+      // debugger;
       if(newRoom==="u") {
         message = "Get ready."
         oniBattleMusic.play();
       } else if(message!="You ran out of food. You lost two hearts." && message!="You starved to death.") {
         message = "";
-      } else if (newRoom === "A" || newroom === "g" || newroom === "r" || newroom === "s" || newroom === "t") {
+      }
+      if (newRoom === "A" || newRoom === "g" || newRoom === "r" || newRoom === "s" || newRoom === "t") {
         boulderRoomMusic.play();
         console.log("play boulder")
-      } else if (newroom === "m" || newroom === "n" || newroom === "p") {
+      } else if (newRoom === "l" || newRoom === "m" || newRoom === "n" || newRoom === "p") {
         lightRoomMusic.play();
         console.log("play light")
       }

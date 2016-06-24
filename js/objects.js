@@ -56,11 +56,6 @@ Sprite.prototype.draw = function () {
     } else {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
     }
-    // -- CODE FOR TESTING- draw the hitbox circle so we can adjust numbers -- //
-    context.beginPath();
-    context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
-    context.lineWidth = 1;
-    context.stroke();
   }
 };
 
