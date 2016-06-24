@@ -47,6 +47,9 @@ SuperSprite.prototype.addObject = function(obj) {
 //    Argument: key: the key associated with the desired animation
 SuperSprite.prototype.show = function(key) {
   this.currentAnimation = this.animations[key];
+  if(!this.auto) {
+    this.currentAnimation.currentFrame = -1;
+  }
 }
 
 //draw method --

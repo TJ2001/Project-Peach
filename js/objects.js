@@ -8,7 +8,7 @@
 
 
 // Important objects
-var player = new Sprite(400, 400, 20, "blue");
+var player = new Sprite(120, 800, 20, "blue");
 var boat = new Sprite(0,0,15);
 allSuperSprites["MapMarker"].addObject(boat);
 var batRadius = 16;
@@ -355,7 +355,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     if(sprite.ballColor!="#666" && sprite.ballColor!="#222") {
       this.collideSolid(sprite, xCollide, yCollide);
     }
-  } else if(this.behavior==="door") {
+  } else if(this.behavior==="door" || this.behavior==="completionDoor") {
     if(!this.doorOpen) {
       this.collideSolid(sprite, xCollide, yCollide);
     }

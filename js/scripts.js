@@ -15,18 +15,18 @@ var animate = window.requestAnimationFrame ||
 var collisionCount = 0;
 
 // -- Initialize Global Variables -- //
-var currentRoom = allRooms["overworld"];
+var currentRoom = allRooms["A"];
 
 var width = 1152;
 var height = 960;
-var playerSpeed = 6;
+var playerSpeed = 3;
 var supplies = 30;
 var knockBack = -45;
 var money = 0;
 
 var boatX = Math.floor(allRooms["overworld"].width/2);
 var boatY = Math.floor(allRooms["overworld"].height/2);
-var weaponSwingTime = 20;
+var weaponSwingTime = 12;
 var canvas = document.createElement('canvas');
 canvas.width = width;
 canvas.height = height;
@@ -173,17 +173,6 @@ window.addEventListener("keydown", function(event) {
       currentRoom.reset();
     }
   }
-  // if(currentRoom===allRooms["overworld"]) {
-  //   var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
-  //   currentRoom = allRooms[newRoom];
-  //   if(newRoom!="overworld") {
-  //     if(currentRoom.sprites.indexOf(player)===-1) {
-  //       currentRoom.addSprite(player);
-  //     }
-  //     player.xPos = currentRoom.entrance.xPos;
-  //     player.yPos = currentRoom.entrance.yPos;
-  //   }
-  // }
   if (event.keyCode === 32) {
     if (time % 2 === 0) {
       ha.currentTime = 0;

@@ -36,6 +36,7 @@ var tileDict = {
   "l": new Animation("img/overworld.png",0,0,16,16,2,59),
   "m": new Animation("img/overworld.png",0,0,16,16,2,59),
   "n": new Animation("img/overworld.png",0,0,16,16,2,59),
+  "A": new Animation("img/overworld.png",0,0,16,16,2,59),
   "p": new Animation("img/overworld.png",0,0,16,16,2,59)
 
 }
@@ -75,6 +76,12 @@ var entityDict = {
         currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
         currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
       });
+    } else if(icon==="$") {
+      return new Switch(function() {
+        money += 1;
+        currentRoom.switches.splice(currentRoom.switches.indexOf(this),1);
+        currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
+      });
     } else {
       return "";
     }
@@ -89,6 +96,7 @@ var roomHeight = 15;
 // allRooms
 //  -- This object contains all the rooms of the game. To add more rooms, add a key:room-object pair to allRooms
 var allRooms = {
+  "A": new Room(roomWidth, roomHeight),
   "q": new Room(roomWidth, roomHeight),
   "r": new Room(roomWidth, roomHeight),
   "s": new Room(roomWidth, roomHeight),
@@ -107,6 +115,41 @@ var allRooms = {
 //In this area, new maps can be created and added to the rooms created above
 //  Instructions: Get the desired room from the allRooms object and use the addMap method on it.
 //    For additional details see my comments on the addMap method in room.js
+allRooms["A"].addMap([
+  ["f","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b",">"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+  ["h","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","i"],
+],false);
+allRooms["A"].addMap([
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," ","f"," "," "," "," "," ","%"," ","u"," ","x"," "],
+  [" ","&"," ","b"," "," "," "," "," "," "," ","%"," "," ","w"," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"," ","$"," "],
+  [" "," "," "," "," ","u","u","u","u","u","u","u","u","u","w"," "," "," "],
+  [" "," ","p"," "," "," "," "," ","b","p"," "," "," "," ","w"," ","$"," "],
+  [" "," "," ","u","u","u","u","u","u"," "," "," "," "," ","w"," "," "," "],
+  [" "," "," ","w"," "," "," "," "," "," ","$"," ","$"," ","w"," ","$"," "],
+  ["u","u","5","w","u"," "," "," "," "," "," "," "," "," ","w"," "," "," "],
+  [" "," "," "," ","w"," "," "," "," "," ","$"," ","$"," ","d"," ","$"," "],
+  [" "," "," "," ","w"," ","l"," ","l"," "," "," "," "," ","u"," "," "," "],
+  [" "," "," ","0","w"," "," "," "," "," "," "," "," "," ","w"," "," "," "],
+  [" ","@"," "," ","w"," ","l"," ","l"," "," "," "," "," ","w"," "," "," "],
+  [" "," "," "," ","w"," "," "," "," "," "," "," "," "," ","w"," "," "," "],
+  [" "," "," "," ","w","u","u","u","u","u","u","u","u","u","w","u","u"," "],
+],true);
+allRooms["A"].addSprite(player);
 
 allRooms["q"].addMap([
   ["f","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b",">"],
@@ -354,7 +397,7 @@ allRooms["m"].addMap([
 ],true);
 
 allRooms["n"].addMap([
-  ["f","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","g"],
+  ["f","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b",">"],
   ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
   ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
   ["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
@@ -472,7 +515,8 @@ for(var y=0; y<oh; y++) {
   }
 }
 
-map[boatY][boatX] = "l";
+map[boatY][boatX] = "A";
+map[15][15] = "l";
 map[10][10] = "m";
 map[20][13] = "q";
 map[22][20] = "r";
