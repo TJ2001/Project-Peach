@@ -177,6 +177,7 @@ allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Sp
 allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10));
 
 allSuperSprites["OniSprite"].addAnimation("tell", new Animation("img/Monster-Spritesheet.png",0,247,184,199,1,30));
-allSuperSprites["OniSprite"].addAnimation("swing", new Animation("img/Monster-Spritesheet.png",0,46,184,199,3,60));
-allSuperSprites["OniSprite"].addAnimation("fireBreath", new Animation("img/Monster-Spritesheet.png",184,247,184,199,1,30)
-allSuperSprites["OniSprite"].animations["swing"].frameArray[0].time = 5;
+allSuperSprites["OniSprite"].addAnimation("swing", new Animation("img/Monster-Spritesheet.png",0,46,184,199,3,10));
+allSuperSprites["OniSprite"].addAnimation("fireBreath", new Animation("img/Monster-Spritesheet.png",184,247,184,199,1,30));
+allSuperSprites["OniSprite"].addAnimation("windup", new Animation("img/Monster-Spritesheet.png",0,46,184,199,1,5));
+allSuperSprites["OniSprite"].animations["swing"].frameArray[1].time = 30;

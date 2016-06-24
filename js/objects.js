@@ -28,6 +28,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.super = undefined;
   this.front = true;
   this.health = 3;
+  this.oniTell = 0;
 };
 
 // -- draws the sprite object on the canvas -- //
@@ -48,6 +49,8 @@ Sprite.prototype.draw = function () {
       }
     } else if(this===player) {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.super.height + 10));
+    } else if(this.ballColor === "#666") {
+      this.super.draw(context, this.xPos-this.super.width+50, this.yPos-this.super.height);
     } else {
       this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height);
     }
@@ -106,35 +109,60 @@ Sprite.prototype.oniFireball = function() {
     fire.health = 300;
     currentRoom.addSprite(fire);
     currentRoom.monsters.push(fire);
+    this.oniTell = 50;
   }
 }
 Sprite.prototype.oniSwing = function() {
   if(this.ballColor==="#666") {
-    if(randomNumber===0) {
-      var hit = new Sprite(this.xPos,this.yPos,50,"#333");
-      hit.health = 5;
-      currentRoom.addSprite(hit);
-      currentRoom.monsters.push(hit);
-    }
+    this.super.show("swing");
+    this.super.currentAnimation.currentFrame = 0;
+    var hit = new Sprite(this.xPos,this.yPos+80,150,"#222");
+    hit.health = 5;
+    currentRoom.addSprite(hit);
+    currentRoom.monsters.push(hit);
+    this.oniTell = 50;
   }
 }
 
 Sprite.prototype.monsterMove = function() {
   var randomNumber = Math.floor(Math.random() * 10);
- // -- causes the sprite to constantly move towards the player. This is the behavior for the fireballs -- //
-  if(this.ballColor==="#666") {
-    if(Math.random()<.01) {
-      this.oniFireball();
-    }
-  }
-  if(this.ballColor==="333") {
-    this.health -=1;
-    if(this.health <=0) {
-      currentRoom.sprites.splice(currentRoom.sprites.indexOf(this),1);
-      currentRoom.monsters.splice(currentRoom.monsters.indexOf(this),1);
-    }
-  }
 
+  if(this.ballColor==="#666") {
+    if(this.oniTell > 0) {
+      this.oniTell -= 1;
+    } else if(this.oniTell < 0) {
+      this.oniTell += 1;
+    }
+    if(this.oniTell===1) {
+      this.oniFireball();
+    } else if(this.oniTell===-1) {
+      this.oniSwing();
+    } else if(this.oniTell===21) {
+      this.oniTell = 0;
+    } else if(this.oniTell===0) {
+      this.super.show("idle");
+      if(Math.random()<.01) {
+        this.oniTell += 20;
+      }
+      if(Math.random()<.01) {
+        this.oniTell -= 20;
+      }
+    } else if(this.oniTell < 21) {
+      if(this.oniTell > 0) {
+        this.super.show("tell");
+      } else {
+        this.super.show("windup");
+      }
+    }
+  }
+  // if(this.ballColor==="333") {
+  //   this.health -=1;
+  //   if(this.health <=0) {
+  //     currentRoom.sprites.splice(currentRoom.sprites.indexOf(this),1);
+  //     currentRoom.monsters.splice(currentRoom.monsters.indexOf(this),1);
+  //   }
+  // }
+// -- causes the sprite to constantly move towards the player. This is the behavior for the fireballs -- //
   if (this.ballColor === "#222") {
     this.health -= 1;
     if(this.health <=0) {
@@ -322,7 +350,9 @@ Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
 // -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
-    this.collideSolid(sprite, xCollide, yCollide);
+    if(sprite.ballColor!="#666" && sprite.ballColor!="#222") {
+      this.collideSolid(sprite, xCollide, yCollide);
+    }
   } else if(this.behavior==="door") {
     if(!this.doorOpen) {
       this.collideSolid(sprite, xCollide, yCollide);
