@@ -12,9 +12,7 @@
 var tileDict = {
   "a": new Animation("img/grass1.png",0,0,32,32,1,10),
   "b": new Animation("img/grass1.png",0,0,32,32,1,10),
-  "c": new Animation("img/test-image.jpg",0,64,32,32,1,10),
   "~": new Animation("img/overworld.png",32,0,16,16,2,59),
-  "#": new Animation("img/overworld.png",0,0,16,16,2,59),
   "q": new Animation("img/overworld.png",0,0,16,16,2,59),
   "w": new Animation("img/overworld.png",0,0,16,16,2,60),
   "o": new Animation("img/onitile.png",0,0,16,16,2,60),
@@ -99,70 +97,15 @@ var allRooms = {
   "m": new Room(roomWidth, roomHeight),
   "n": new Room(roomWidth, roomHeight),
   "p": new Room(roomWidth, roomHeight),
-  "overworld": new Room(23, 15)
+  "overworld": new Room(roomWidth*2, roomHeight*2)
+
+
 }
 
 
 //In this area, new maps can be created and added to the rooms created above
 //  Instructions: Get the desired room from the allRooms object and use the addMap method on it.
 //    For additional details see my comments on the addMap method in room.js
-// allRooms["q"].addMap([
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-// ],false);
-// allRooms["q"].addMap([
-//   ["w","w","w","w","w","w","w","w","w","w","w","w"],
-//   ["w"," "," "," "," "," "," ","f"," ","c"," ","w"],
-//   ["w"," "," ","p"," "," "," "," "," "," "," ","w"],
-//   ["w"," "," "," "," "," "," "," "," "," "," ","w"],
-//   ["w"," "," "," "," ","x"," "," "," "," "," ","w"],
-//   ["w"," ","w"," "," "," "," "," "," "," "," ","w"],
-//   ["w"," "," "," "," "," "," ","5"," ","0"," ","w"],
-//   ["w"," "," "," "," ","@"," "," "," "," "," ","w"],
-//   [" "," "," ","b"," "," "," ","6"," ","1"," ","w"],
-//   [" "," "," "," "," "," "," "," "," "," "," ","w"],
-//   [" "," "," "," "," "," "," "," "," "," "," ","w"],
-//   [" "," "," "," "," ","w","w","w","w","w","w","w"],
-// ],true);
-
-// allRooms["w"].addMap([
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"],
-//   ["a","a","a","a","a","a","a","a","a","a","a","a"]
-// ],false);
-// allRooms["w"].addMap([
-//   [" "," "," "," "," "," "," "," "," "," "," "," "],
-//   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
-//   [" "," "," "," ","%"," ","%"," "," "," "," "," "],
-//   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
-//   [" "," "," "," "," "," "," "," "," "," "," "," "],
-//   [" ","l"," ","l"," ","l","@","l"," ","l"," "," "],
-//   [" "," "," "," "," "," "," "," "," "," "," "," "],
-//   [" ","l"," ","l","&","l"," ","l"," ","l"," "," "],
-//   [" "," "," "," "," "," "," "," "," "," "," "," "],
-//   [" ","l"," ","l"," ","l"," ","l"," ","l"," "," "],
-//   [" "," "," "," "," "," "," "," "," "," "," "," "],
-//   [" "," "," "," "," "," "," "," "," "," ","x"," "],
-// ],true);
 
 allRooms["q"].addMap([
   ["f","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","b","g"],
@@ -335,7 +278,7 @@ allRooms["u"].addMap([
   ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
   ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
   ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
-  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," ","@"," "," "," "," "," "," "," "," ","w"],
   ["w","u","u","u","u","u","u","u","u","u","u","u","u","u","u","u","u","w"],
 ],true);
 
@@ -515,6 +458,7 @@ allRooms["p"].addMap([
 
 
 //this code creates the overworld room -- it is special so it needs fancier code
+
 var map = [];
 var ow = allRooms["overworld"].width;
 var oh = allRooms["overworld"].height;
@@ -526,19 +470,37 @@ for(var y=0; y<oh; y++) {
     map[y].push("~");
   }
 }
-var placeIslands = function() {
-  for(var i=0; i<Math.min(oh,ow)/2; i+=1) {
-    for(var y=0+i; y<oh-i; y++) {
-      for(var x=0+i; x<ow-i; x++) {
-        var rand = Math.random();
-        if(rand<.003*i) {
-          map[y][x] = "p";
-        }
-      }
-    }
-  }
-}
-placeIslands();
-map[boatY][boatX] = "u";
+
+map[boatY][boatX] = "l";
+map[10][10] = "m";
+map[20][13] = "q";
+map[22][20] = "r";
+map[12][16] = "s";
+map[12][26] = "t";
+map[20][26] = "u";
+map[6][9] = "n";
+//debugger;
+// var placeIslands = function() {
+//   for(var i=0; i<Math.min(oh,ow)/2; i+=1) {
+//     for(var y=0+i; y<oh-i; y++) {
+//       for(var x=0+i; x<ow-i; x++) {
+//         var rand = Math.random();
+//         if(rand<.003*i) {
+//           map[y][x] = "q";
+//         }
+//       }
+//     }
+//   }
+// }
+// placeIslands();
+// map[boatY][boatX] = "u";
+
 allRooms["overworld"].addMap(map, false);
 allRooms["overworld"].addSprite(boat);
+
+var oni = new Sprite(570,300,80);
+oni.health = 10;
+oni.super = allSuperSprites["OniSprite"];
+oni.ballColor = "#666";
+allRooms["u"].addSprite(oni);
+allRooms["u"].monsters.push(oni);

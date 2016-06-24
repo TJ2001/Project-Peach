@@ -88,17 +88,26 @@ var vector = function (xPos1, yPos1, xPos2, yPos2) {
 
 // -- place items that need to be drawn in here. static lines, text, images and objects -- //
 var draw = function() {
-  context.fillStyle = "#666";
+  context.fillStyle = "#000";
   context.fillRect(0, 0, width, height);
-  currentRoom.draw(context);
-  playerWeapon.draw();
-  context.font = "15px Arial";
-  allSuperSprites["PickupSprite"].animations["heart"].play(context,5,5);
-  context.fillText("x "+player.health.toString(),35,22);
-  allSuperSprites["PickupSprite"].animations["peach"].play(context,75,5);
-  context.fillText("x "+supplies.toString(),105,22);
-  allSuperSprites["PickupSprite"].animations["coin"].play(context,145,5);
-  context.fillText("x "+money.toString(),175,22);
+  if(player.health<=0) {
+    currentRoom.sprites = [player];
+    player.super.show("hitDown");
+    player.draw();
+    context.font = "30px Arial";
+    context.fillStyle = "white";
+    context.fillText("GAME OVER", canvas.width/2, canvas.height/2);
+  } else {
+    currentRoom.draw(context);
+    playerWeapon.draw();
+    context.font = "15px Arial";
+    allSuperSprites["PickupSprite"].animations["heart"].play(context,5,5);
+    context.fillText("x "+player.health.toString(),35,22);
+    allSuperSprites["PickupSprite"].animations["peach"].play(context,75,5);
+    context.fillText("x "+supplies.toString(),105,22);
+    allSuperSprites["PickupSprite"].animations["coin"].play(context,145,5);
+    context.fillText("x "+money.toString(),175,22);
+  }
 };
 
 // -- Creates the canvas element on page load and starts animating the canvas -- //
@@ -176,6 +185,13 @@ window.addEventListener("keydown", function(event) {
   //   }
   // }
   if (event.keyCode === 32) {
+    if (time % 2 === 0) {
+      ha.currentTime = 0;
+      ha.play();
+    } else {
+      swordSound.currentTime = 0;
+      swordSound.play();
+    }
     weaponActive = true;
     weaponTimer = time + weaponSwingTime;
     // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //

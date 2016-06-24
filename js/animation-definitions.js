@@ -10,6 +10,7 @@
 var allSuperSprites = {
   "MomoSprite": new SuperSprite("down", new Animation("img/Momo-Spritesheet.png",257,0,64,64,4,10),true,function() {
       var s = this.obj;
+      if(player.health<=0) {return "downHit";}
       if(weaponActive) {
         if(this.currentAnimation===this.animations["down"] || this.currentAnimation===this.animations["downStill"] || this.currentAnimation===this.animations["downSwing"] || this.currentAnimation===this.animations["downHit"]) {
           return "downSwing";
@@ -105,7 +106,8 @@ var allSuperSprites = {
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
     "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,5)),
     "Button": new SuperSprite("on", new Animation("img/button.png",0,0,32,32,1,10)),
-    "PickupSprite": new SuperSprite("heart", new Animation("img/Momo-Spritesheet.png",210,527,13,11,1,10))
+    "PickupSprite": new SuperSprite("heart", new Animation("img/Momo-Spritesheet.png",210,527,13,11,1,10)),
+    "OniSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",184,247,184,199,2,30))
 }
 
 // -- Here, new animations can be constructed and added to the supersprites declared above
@@ -167,5 +169,10 @@ allSuperSprites["Fireball"].addAnimation("off", new Animation("img/fireball2.png
 
 allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,1,10));
 
-allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Spritesheet.png",226,527,13,11,1,10))
-allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10))
+allSuperSprites["PickupSprite"].addAnimation("peach", new Animation("img/Momo-Spritesheet.png",226,527,13,11,1,10));
+allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spritesheet.png",210,540,13,11,1,10));
+
+allSuperSprites["OniSprite"].addAnimation("tell", new Animation("img/Monster-Spritesheet.png",0,247,184,199,1,30));
+allSuperSprites["OniSprite"].addAnimation("swing", new Animation("img/Monster-Spritesheet.png",0,46,184,199,3,60));
+allSuperSprites["OniSprite"].addAnimation("fireBreath", new Animation("img/Monster-Spritesheet.png",184,247,184,199,1,30));
+allSuperSprites["OniSprite"].animations["swing"].frameArray[0].time = 5;
