@@ -19,7 +19,7 @@ var currentRoom = allRooms["overworld"];
 
 var width = 1152;
 var height = 960;
-var playerSpeed = 2;
+var playerSpeed = 6;
 var supplies = 30;
 var knockBack = -45;
 var money = 0;

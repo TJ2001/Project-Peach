@@ -25,6 +25,7 @@ function Room(width, height) {
   this.entities = [];
   this.monsters = [];
   this.entrance = undefined;
+  this.completed = false;
   // -- for the overworld room
   this.boatX = Math.floor(this.width/2);
   this.boatY = Math.floor(this.height/2);
@@ -76,13 +77,19 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.front = false;
         } else if(icon==="@") {
           this.entrance = newEntity;
-        } else if(icon==="w"||icon==="u"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
+        } else if(icon==="w"||icon==="d"||icon==="u"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
           if (parseInt(icon)<10 && parseInt(icon)>4) {
             newEntity.sprite.super.show("inDoorHClosed");
           } else if (icon === "b") {
             newEntity.sprite.super.show("boulder");
           } else if (icon === "p") {
             newEntity.sprite.super.show("hole");
+          } else if (icon === "u") {
+            newEntity.sprite.super.show("solidShort");
+          } else if (icon === "x") {
+            newEntity.sprite.super.show("none");
+          } else if (icon === "d") {
+            newEntity.sprite.super.show("inDoorHClosed");
           }
 
           this.wallObjects.push(newEntity);
@@ -179,11 +186,19 @@ Room.prototype.update = function() {
   boat.yPos = currentRoom.boatY*tileDict["~"].frameArray[0].height*2  + (tileDict["~"].frameArray[0].height);
   this.collisionCheckLightPuzzle(player, this.currentLightPuzzle);
   // -- Checks if light puzzle is completed -- //
-  if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
-    // if (this === currentRoom) {
-      // console.log(" ");
-      // chimes.play();
-    // }
+  if(this.monsters.length===0) {
+    var prepareChimes = false;
+    if(!this.completed && this.currentLightPuzzle.length > 0) {
+      prepareChimes = true;
+    }
+    if (this.lightPuzzleCompleteCheck(true)) {
+      if (this === currentRoom) {
+        if(prepareChimes) {
+          chimes.play();
+        }
+        this.completed = true;
+      }
+    }
   }
   for(var i=0; i<this.sprites.length; i++) {
     if (this.sprites[i] === player) {
@@ -208,6 +223,11 @@ Room.prototype.update = function() {
     }
   };
   for (var i=0; i < this.wallObjects.length; i++) {
+    if(this.wallObjects[i].behavior==="completionDoor" && this.completed) {
+      this.wallObjects[i].doorOpen = true;
+      this.wallObjects[i].sprite.super.show("inDoorHOpen");
+      this.wallObjects[i].sprite.front = false;
+    }
     this.wallObjects[i].xMovable = true;
     this.wallObjects[i].yMovable = true;
     for(var s=0; s<this.sprites.length; s++) {
@@ -246,7 +266,7 @@ Room.prototype.runTimedEvents = function() {
           hitActive = true;
         }
         if (this.monsters[i].ballColor === "#000" || this.monsters[i].ballColor === "#111") {
-          monsterBeingHit,play();
+          monsterBeingHit.play();
         } else if (this.monsters[i].ballColor === "#666"){
           if (this.monsters[i].health === 9) {
             oniLaugh.play();
@@ -364,6 +384,7 @@ Room.prototype.collisionCheckLightPuzzle = function(triggeringSprite, lightPuzzl
 // -- Checks that all isLit booleans in an array, lightArray, match the boolean you input in booleanToMatch -- //
 Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
   var puzzleCompleted = true;
+  //if(this.currentLightPuzzle.length===0) {return false;}
   for (var i = 0; i < this.currentLightPuzzle.length; i ++) {
     if (this.currentLightPuzzle[i].isLit != booleanToMatch) {
       puzzleCompleted = false;

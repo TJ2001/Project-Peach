@@ -155,6 +155,7 @@ allSuperSprites["WallSprite"].addAnimation("inDoorVOpen", new Animation("img/inr
 allSuperSprites["WallSprite"].addAnimation("inDoorVOpening", new Animation("img/inroom-door1-vert.png",0,0,32,64,8,10));
 allSuperSprites["WallSprite"].addAnimation("hole", new Animation("img/hole1.png",0,0,32,32,1,10));
 allSuperSprites["WallSprite"].addAnimation("boulderHole", new Animation("img/boulder-hole1.png",0,0,32,32,1,10));
+allSuperSprites["WallSprite"].addAnimation("none", new Animation("img/boulder-hole1.png",32,32,32,32,1,10));
 
 allSuperSprites["CrabMobSprite"].addAnimation("walk", new Animation("img/Monster-Spritesheet.png",1,0,43,18,2,20));
 allSuperSprites["CrabMobSprite"].addAnimation("hit", new Animation("img/Monster-Spritesheet.png",1,18,43,18,1,15));

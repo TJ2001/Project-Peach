@@ -44,6 +44,8 @@ Sprite.prototype.draw = function () {
     if(Object.keys(this.super.animations).indexOf("solid") != -1) {
       if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
+      } else if(this.super.currentAnimation===this.super.animations["hole"] || this.super.currentAnimation===this.super.animations["boulderHole"]) {
+        this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2-12);
       } else {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2);
       }
