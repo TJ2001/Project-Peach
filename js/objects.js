@@ -179,20 +179,20 @@ Sprite.prototype.monsterMove = function() {
   } else if (this.ballColor === "#000") {
     if (Math.abs(this.yPos - player.yPos) >= 16  && this.xVel === 0) {
       if (this.yPos - player.yPos < 0) {
-        this.yVel = 1.5;
+        this.yVel = 2;
         this.super.show("walk");
       } else {
-        this.yVel = -1.5;
+        this.yVel = -2;
         this.super.show("walk");
       }
     } else if (Math.abs(this.xPos - player.xPos) < 16) {
       this.xVel = 0;
     } else if (this.xPos - player.xPos < 0) {
-      this.xVel = 2.5;
+      this.xVel = 3.5;
       this.yVel = 0;
       this.super.show("swipeRight");
     } else if (this.xPos -player.xPos > 0) {
-      this.xVel = -2.5;
+      this.xVel = -3.5;
       this.yVel = 0;
       this.super.show("swipeLeft");
     } else {
