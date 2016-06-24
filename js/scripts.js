@@ -79,7 +79,7 @@ var update = function() {
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
-  if(transitionTimer < time) {
+  if(transitionTimer < time && player.health > 0) {
     currentRoom.update();
   }
 };
@@ -150,9 +150,6 @@ window.addEventListener("keydown", function(event) {
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
       overworldMusic.pause();
-      console.log("pause overworld");
-      console.log(newRoom)
-      // debugger;
       if(newRoom==="u") {
         message = "Get ready."
         oniBattleMusic.play();
@@ -161,10 +158,8 @@ window.addEventListener("keydown", function(event) {
       }
       if (newRoom === "A" || newRoom === "g" || newRoom === "r" || newRoom === "s" || newRoom === "t") {
         boulderRoomMusic.play();
-        console.log("play boulder")
       } else if (newRoom === "l" || newRoom === "m" || newRoom === "n" || newRoom === "p") {
         lightRoomMusic.play();
-        console.log("play light")
       }
 
       if(currentRoom.sprites.indexOf(player)===-1) {

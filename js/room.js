@@ -197,7 +197,7 @@ Room.prototype.update = function() {
           chimes.play();
         }
         this.completed = true;
-        if(allRooms["q"].completed){// && allRooms["r"].completed && allRooms["l"].completed) {
+        if(allRooms["q"].completed && allRooms["A"].completed && allRooms["l"].completed && allRooms["r"].completed && allRooms["s"].completed && allRooms["t"].completed){
           allRooms["overworld"].background[15][18] = "u";
           allRooms["overworld"].backgroundAnimations[15][18] = tileDict["u"].copy();
         }

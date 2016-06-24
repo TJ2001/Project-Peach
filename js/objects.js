@@ -34,12 +34,7 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
 // -- draws the sprite object on the canvas -- //
 Sprite.prototype.draw = function () {
   if(typeof this.super === "undefined") {
-    context.beginPath();
-    context.arc(this.xPos, this.yPos, this.radius, 2 * Math.PI, false);
-    context.fillStyle = this.ballColor;
-    context.strokeStyle = this.ballColor;
-    context.lineWidth = 1;
-    context.stroke();
+    console.log("No super for this object.")
   } else {
     if(Object.keys(this.super.animations).indexOf("solid") != -1) {
       if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
