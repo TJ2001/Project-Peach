@@ -17,6 +17,7 @@ var tileDict = {
   "#": new Animation("img/overworld.png",0,0,16,16,2,59),
   "q": new Animation("img/overworld.png",0,0,16,16,2,59),
   "w": new Animation("img/overworld.png",0,0,16,16,2,60),
+  "o": new Animation("img/onitile.png",0,0,16,16,2,60),
 
   "h": new Animation("img/edge-island-corner.png",0,0,32,32,1,10),
   "i": new Animation("img/edge-island-corner.png",32,0,32,32,1,10),

@@ -100,7 +100,7 @@ var allSuperSprites = {
     "WallSprite": new SuperSprite("solid", new Animation("img/inroom-wall1.png",0,0,32,64,1,10)),
     "MapMarker": new SuperSprite("momohead", new Animation("img/overworld.png",64,0,16,16,1,10)),
 
-    "Fireball": new SuperSprite("right", new Animation("img/fireball.png",0,0,32,32,3,10)),
+    "Fireball": new SuperSprite("right", new Animation("img/fireball2.png",0,0,16,16,2,10)),
 
     "CrabMobSprite": new SuperSprite("idle", new Animation("img/Monster-Spritesheet.png",89,0,43,18,2,20)),
     "BatMobSprite": new SuperSprite("flyLeft", new Animation("img/monster-bat1.png",0,0,32,32,6,5)),
@@ -163,11 +163,7 @@ allSuperSprites["BatMobSprite"].addAnimation("flyRight", new Animation("img/mons
 
 allSuperSprites["MapMarker"].addAnimation("boat", new Animation("img/overworld.png",80,0,16,16,1,10));
 
-allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",97,0,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("up", new Animation("img/fireball.png",0,33,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("down", new Animation("img/fireball.png",97,33,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("left", new Animation("img/fireball.png",0,65,32,32,3,10));
-allSuperSprites["Fireball"].addAnimation("right", new Animation("img/fireball.png",97,65,32,32,3,10));
+allSuperSprites["Fireball"].addAnimation("off", new Animation("img/fireball2.png",16,0,16,16,2,10));
 
 allSuperSprites["Button"].addAnimation("off", new Animation("img/button.png",33,0,32,32,1,10));
 
