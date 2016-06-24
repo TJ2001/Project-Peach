@@ -269,6 +269,7 @@ Room.prototype.runTimedEvents = function() {
 Room.prototype.reset = function() {
   if(currentRoom!=allRooms["overworld"]) {
     currentRoom = allRooms["overworld"];
+
     var allRoomKeys = Object.keys(allRooms);
     var copy = new Room(this.width, this.height);
     for(var i=0; i<allRoomKeys.length; i++) {
