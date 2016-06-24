@@ -34,7 +34,6 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
 // -- draws the sprite object on the canvas -- //
 Sprite.prototype.draw = function () {
   if(typeof this.super === "undefined") {
-    console.log("No super for this object.")
   } else {
     if(Object.keys(this.super.animations).indexOf("solid") != -1) {
       if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
