@@ -176,6 +176,13 @@ window.addEventListener("keydown", function(event) {
   //   }
   // }
   if (event.keyCode === 32) {
+    if (time % 2 === 0) {
+      ha.currentTime = 0;
+      ha.play();
+    } else {
+      swordSound.currentTime = 0;
+      swordSound.play();
+    }
     weaponActive = true;
     weaponTimer = time + weaponSwingTime;
     // -- Calls the attack function attack(sprite, attack size, position offset modifier -- //

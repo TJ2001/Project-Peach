@@ -531,7 +531,7 @@ var placeIslands = function() {
       for(var x=0+i; x<ow-i; x++) {
         var rand = Math.random();
         if(rand<.003*i) {
-          map[y][x] = "p";
+          map[y][x] = "l";
         }
       }
     }
