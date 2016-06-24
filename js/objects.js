@@ -98,11 +98,49 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
     this.yPos = dependantSprite.yPos + this.yVel;
   }
 };
+Sprite.prototype.oniFireball = function() {
+  if(this.ballColor==="#666") {
+    this.super.show("fireBreath");
+    var fire = new Sprite(this.xPos,this.yPos,10,"#222");
+    fire.super = allSuperSprites["Fireball"];
+    fire.health = 300;
+    currentRoom.addSprite(fire);
+    currentRoom.monsters.push(fire);
+  }
+}
+Sprite.prototype.oniSwing = function() {
+  if(this.ballColor==="#666") {
+    if(randomNumber===0) {
+      var hit = new Sprite(this.xPos,this.yPos,50,"#333");
+      hit.health = 5;
+      currentRoom.addSprite(hit);
+      currentRoom.monsters.push(hit);
+    }
+  }
+}
 
 Sprite.prototype.monsterMove = function() {
   var randomNumber = Math.floor(Math.random() * 10);
  // -- causes the sprite to constantly move towards the player. This is the behavior for the fireballs -- //
+  if(this.ballColor==="#666") {
+    if(Math.random()<.01) {
+      this.oniFireball();
+    }
+  }
+  if(this.ballColor==="333") {
+    this.health -=1;
+    if(this.health <=0) {
+      currentRoom.sprites.splice(currentRoom.sprites.indexOf(this),1);
+      currentRoom.monsters.splice(currentRoom.monsters.indexOf(this),1);
+    }
+  }
+
   if (this.ballColor === "#222") {
+    this.health -= 1;
+    if(this.health <=0) {
+      currentRoom.sprites.splice(currentRoom.sprites.indexOf(this),1);
+      currentRoom.monsters.splice(currentRoom.monsters.indexOf(this),1);
+    }
     if (this.xPos < player.xPos) {
       this.xVel = 1;
     } else if (this.xPos >player.xPos) {

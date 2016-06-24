@@ -119,6 +119,7 @@ Room.prototype.addMap = function(map, foreground) {
     }
   } else {
     this.background = map;
+    //debugger;
     for(var y=0; y<this.height; y++) {
       this.backgroundAnimations.push([]);
       for(var x=0; x<this.width; x++) {
@@ -222,8 +223,8 @@ Room.prototype.update = function() {
 
 
 Room.prototype.runTimedEvents = function() {
-    for (i = 0; i < this.monsters.length; i++) {
-      this.monsters[i].monsterMove();
+  for (i = 0; i < this.monsters.length; i++) {
+    this.monsters[i].monsterMove();
   }
   if (time < weaponTimer) {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
