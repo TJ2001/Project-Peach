@@ -412,7 +412,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
       transitionTimer = time + 60;
     }
   } else if (this.behavior === "exitGame") {
-    //End of Game stuff here
+    window.location.replace("movie-credits/index.html");
   }
 };
 
