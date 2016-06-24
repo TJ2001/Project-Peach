@@ -180,7 +180,10 @@ Room.prototype.update = function() {
   this.collisionCheckLightPuzzle(player, this.currentLightPuzzle);
   // -- Checks if light puzzle is completed -- //
   if (this.lightPuzzleCompleteCheck(this.currentLightPuzzle, true) === true) {
-    //Puzzle
+    // if (this === currentRoom) {
+      // console.log(" ");
+      // chimes.play();
+    // }
   }
   for(var i=0; i<this.sprites.length; i++) {
     if (this.sprites[i] === player) {
@@ -195,8 +198,8 @@ Room.prototype.update = function() {
     if (collisionCheck(this.monsters[i], player)) {
       collisionCount ++;
       var reboundVector = vector(this.monsters[i].xPos, this.monsters[i].yPos, player.xPos, player.yPos);
-
-      console.log(collisionCount)
+      momoBeingHit.currentTime = 0;
+      momoBeingHit.play();
       player.xPos += knockBack * reboundVector[0];
       player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
@@ -239,6 +242,16 @@ Room.prototype.runTimedEvents = function() {
         if(!hitActive) {
           this.monsters[i].health-=1;
           hitActive = true;
+        }
+        if (this.monsters[i].ballColor === "#000" || this.monsters[i].ballColor === "#111") {
+          monsterBeingHit,play();
+        } else if (this.monsters[i].ballColor === "#666"){
+          if (this.monsters[i].health === 9) {
+            oniLaugh.play();
+          } else {
+            oniGettingHit.currentTime = 0
+            oniGettingHit.play();
+          }
         }
         console.log("Monster Health: "+this.monsters[i].health.toString());
         if(this.monsters[i].health<=0) {
@@ -353,6 +366,9 @@ Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
       puzzleCompleted = false;
     }
   };
+  // if (puzzleCompleted = true) {
+  //   chimes.play();
+  // }
   return puzzleCompleted;
 };
 

@@ -178,5 +178,5 @@ allSuperSprites["PickupSprite"].addAnimation("coin", new Animation("img/Momo-Spr
 
 allSuperSprites["OniSprite"].addAnimation("tell", new Animation("img/Monster-Spritesheet.png",0,247,184,199,1,30));
 allSuperSprites["OniSprite"].addAnimation("swing", new Animation("img/Monster-Spritesheet.png",0,46,184,199,3,60));
-allSuperSprites["OniSprite"].addAnimation("fireBreath", new Animation("img/Monster-Spritesheet.png",184,247,184,199,1,30)
+allSuperSprites["OniSprite"].addAnimation("fireBreath", new Animation("img/Monster-Spritesheet.png",184,247,184,199,1,30));
 allSuperSprites["OniSprite"].animations["swing"].frameArray[0].time = 5;
