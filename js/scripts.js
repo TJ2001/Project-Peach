@@ -78,7 +78,7 @@ var update = function() {
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
-  if(transitionTimer < time) {
+  if(transitionTimer < time && player.health > 0) {
     currentRoom.update();
   }
 };
