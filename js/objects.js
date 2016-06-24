@@ -403,7 +403,11 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   } else if (this.behavior === "exitDoor") {
     if(xCollide || yCollide) {
       currentRoom = allRooms["overworld"];
+      message = "";
+      transitionTimer = time + 60;
     }
+  } else if (this.behavior === "exitGame") {
+    //End of Game stuff here
   }
 };
 

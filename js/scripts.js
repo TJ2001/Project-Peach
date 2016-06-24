@@ -20,7 +20,7 @@ var currentRoom = allRooms["A"];
 var width = 1152;
 var height = 960;
 var playerSpeed = 3;
-var supplies = 30;
+var supplies = 5;
 var knockBack = -45;
 var money = 0;
 
@@ -46,8 +46,10 @@ var monsterHitTimer = 0;
 var hitActive = false;
 var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
 var attackTimer = 0;
-
+var transitionTimer = 0;
+var message = "";
 allSuperSprites["MomoSprite"].addObject(player);
+context.textAlign = "center";
 
 // -- place each function in here that runs on each animation step -- //
 var step = function() {
@@ -56,6 +58,7 @@ var step = function() {
   animate(step);
   timerEvents();
 };
+
 var timerEvents = function() {
   if (time === -1) {
     $(".story-intro").hide();
@@ -75,7 +78,9 @@ var update = function() {
   if(player.xVel || player.yVel) {
     playerWeapon.weaponUpdate(player);
   }
-  currentRoom.update();
+  if(transitionTimer < time) {
+    currentRoom.update();
+  }
 };
 
 // -- a helper function to find the vector ratios between two pointsit takes two points as an input and returns a vector pair [x,y]
@@ -97,16 +102,22 @@ var draw = function() {
     context.font = "30px Arial";
     context.fillStyle = "white";
     context.fillText("GAME OVER", canvas.width/2, canvas.height/2);
-  } else {
+    context.font = "20px Arial";
+    context.fillText(message, canvas.width/2, canvas.height/2 + 50);
+  } else if(transitionTimer < time) {
     currentRoom.draw(context);
     playerWeapon.draw();
     context.font = "15px Arial";
     allSuperSprites["PickupSprite"].animations["heart"].play(context,5,5);
-    context.fillText("x "+player.health.toString(),35,22);
+    context.fillText("x "+player.health.toString(),45,22);
     allSuperSprites["PickupSprite"].animations["peach"].play(context,75,5);
-    context.fillText("x "+supplies.toString(),105,22);
+    context.fillText("x "+supplies.toString(),115,22);
     allSuperSprites["PickupSprite"].animations["coin"].play(context,145,5);
-    context.fillText("x "+money.toString(),175,22);
+    context.fillText("x "+money.toString(),185,22);
+  } else {
+    context.font = "30px Arial";
+    context.fillStyle = "white";
+    context.fillText(message, canvas.width/2, canvas.height/2);
   }
 };
 
@@ -119,7 +130,7 @@ window.onload = function() {
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
   // -- Event listener for up and down key. -- //
-  if(currentRoom===allRooms["overworld"]) {
+  if(currentRoom===allRooms["overworld"] && transitionTimer < time) {
     if (event.keyCode === 38) {
       var tempMove = 8;
     }
@@ -137,9 +148,15 @@ window.addEventListener("keydown", function(event) {
     // var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
     currentRoom = allRooms[newRoom];
     if(newRoom!="overworld") {
+      if(newRoom==="u") {
+        message = "Get ready."
+      } else if(message!="You ran out of food. You lost two hearts." && message!="You starved to death.") {
+        message = "";
+      }
       if(currentRoom.sprites.indexOf(player)===-1) {
         currentRoom.addSprite(player);
       }
+      transitionTimer = time + 60;
       player.xPos = currentRoom.entrance.xPos;
       player.yPos = currentRoom.entrance.yPos;
     }

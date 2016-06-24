@@ -77,7 +77,7 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.front = false;
         } else if(icon==="@") {
           this.entrance = newEntity;
-        } else if(icon==="w"||icon==="d"||icon==="u"||icon==="x"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
+        } else if(icon==="w"||icon==="d"||icon==="u"||icon==="x"||icon==="X"||icon==="b"||icon==="p"||icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
           if (parseInt(icon)<10 && parseInt(icon)>4) {
             newEntity.sprite.super.show("inDoorHClosed");
           } else if (icon === "b") {
@@ -86,7 +86,7 @@ Room.prototype.addMap = function(map, foreground) {
             newEntity.sprite.super.show("hole");
           } else if (icon === "u") {
             newEntity.sprite.super.show("solidShort");
-          } else if (icon === "x") {
+          } else if (icon === "x" || icon==="X") {
             newEntity.sprite.super.show("none");
           } else if (icon === "d") {
             newEntity.sprite.super.show("inDoorHClosed");
@@ -197,6 +197,10 @@ Room.prototype.update = function() {
           chimes.play();
         }
         this.completed = true;
+        if(allRooms["q"].completed){// && allRooms["r"].completed && allRooms["l"].completed) {
+          allRooms["overworld"].background[15][18] = "u";
+          allRooms["overworld"].backgroundAnimations[15][18] = tileDict["u"].copy();
+        }
       }
     }
   }
@@ -219,6 +223,7 @@ Room.prototype.update = function() {
       player.yPos += knockBack * reboundVector[1];
       monsterHitTimer = time + 15;
       player.health-=0.5;
+      if(player.health <= 0) {message = "You were killed by monsters.";}
       console.log("Health: "+player.health.toString());
     }
   };
@@ -291,7 +296,8 @@ Room.prototype.runTimedEvents = function() {
 Room.prototype.reset = function() {
   if(currentRoom!=allRooms["overworld"]) {
     currentRoom = allRooms["overworld"];
-
+    message = "The island shifts beneath your feet.";
+    transitionTimer = time + 60;
     var allRoomKeys = Object.keys(allRooms);
     var copy = new Room(this.width, this.height);
     for(var i=0; i<allRoomKeys.length; i++) {
@@ -346,8 +352,12 @@ Room.prototype.moveOverworld = function(direction) {
     }
     if(0 <= newX&&newX < this.width  &&  0 <= newY&&newY < this.height) {
       supplies --;
-      if(supplies<1) {
+      if(supplies<0) {
+        message = "You ran out of food. You lost two hearts.";
+        transitionTimer = time + 150;
         player.health -= 2;
+        if(player.health <= 0) {message = "You starved to death.";}
+        supplies = 5;
         var nearestCoords = this.findIsland(boatX, boatY);
         newX = nearestCoords[0];
         newY = nearestCoords[1];
