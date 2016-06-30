@@ -32,4 +32,4 @@ _Thank you to everyone who enjoyed our project._
 
 *Licensed under creative commons.*
 
-Copyright (c) 2016 **_{List of contributors or company name}_**
+Copyright (c) 2016 **_Team Juggernaut_**
