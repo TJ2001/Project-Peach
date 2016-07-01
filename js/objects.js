@@ -8,11 +8,11 @@
 
 
 // Important objects
-var player = new Sprite(120, 800, 20, "blue");
-var boat = new Sprite(0,0,15);
+var player = new Sprite(120, 800, tileSize * 0.3125, "blue");
+var boat = new Sprite(0,0,tileSize / 4);
 allSuperSprites["MapMarker"].addObject(boat);
-var batRadius = 16;
-var crabRadius = 16;
+var batRadius = tileSize / 4;
+var crabRadius = tileSize / 4;
 
 
 // -- SPRITE CONSTRUCTOR -- //
@@ -58,15 +58,15 @@ Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
   if (this.ballColor === "blue" || this.ballColor === "#000" || this.ballColor === "#111") {
-    if (this.xPos - this.radius < 64) {
-      this.xPos = this.radius + 65;
-    } else if (this.xPos + this.radius > currentRoom.width * 64 - 64) {
-      this.xPos = currentRoom.width * 64 - this.radius - 65;
+    if (this.xPos - this.radius < tileSize) {
+      this.xPos = this.radius + tileSize + 1;
+    } else if (this.xPos + this.radius > currentRoom.width * tileSize - tileSize) {
+      this.xPos = currentRoom.width * tileSize - this.radius - tileSize - 1;
     }
-    if (this.yPos - this.radius < 64) {
-      this.yPos = this.radius + 65;
-    } else if (this.yPos + this.radius > currentRoom.height * 64 - 64) {
-      this.yPos = currentRoom.height * 64 - this.radius - 65;
+    if (this.yPos - this.radius < tileSize) {
+      this.yPos = this.radius + tileSize + 1;
+    } else if (this.yPos + this.radius > currentRoom.height * tileSize - tileSize) {
+      this.yPos = currentRoom.height * tileSize - this.radius - tileSize - 1;
     }
   }
 };
@@ -95,7 +95,7 @@ Sprite.prototype.weaponUpdate = function(dependantSprite) {
 Sprite.prototype.oniFireball = function() {
   if(this.ballColor==="#666") {
     this.super.show("fireBreath");
-    var fire = new Sprite(this.xPos,this.yPos,10,"#222");
+    var fire = new Sprite(this.xPos,this.yPos,tileSize / 6,"#222");
     fire.super = allSuperSprites["Fireball"];
     fire.health = 300;
     currentRoom.addSprite(fire);
@@ -107,7 +107,7 @@ Sprite.prototype.oniSwing = function() {
   if(this.ballColor==="#666") {
     this.super.show("swing");
     this.super.currentAnimation.currentFrame = 0;
-    var hit = new Sprite(this.xPos,this.yPos+80,150,"#222");
+    var hit = new Sprite(this.xPos,this.yPos+tileSize*1.25,tileSize*2.34,"#222");
     hit.health = 5;
     currentRoom.addSprite(hit);
     currentRoom.monsters.push(hit);
@@ -161,16 +161,16 @@ Sprite.prototype.monsterMove = function() {
       currentRoom.monsters.splice(currentRoom.monsters.indexOf(this),1);
     }
     if (this.xPos < player.xPos) {
-      this.xVel = 1;
+      this.xVel = playerSpeed / 3;
     } else if (this.xPos >player.xPos) {
-      this.xVel = -1;
+      this.xVel = -playerSpeed / 3;
     } else {
       this.xVel = 0;
     }
     if (this.yPos < player.yPos) {
-      this.yVel = 1;
+      this.yVel = playerSpeed / 3;
     } else if (this.yPos >player.yPos) {
-      this.yVel = -1;
+      this.yVel = -playerSpeed / 3;
     } else {
       this.yVel = 0;
     }
@@ -179,20 +179,20 @@ Sprite.prototype.monsterMove = function() {
   } else if (this.ballColor === "#000") {
     if (Math.abs(this.yPos - player.yPos) >= 16  && this.xVel === 0) {
       if (this.yPos - player.yPos < 0) {
-        this.yVel = 2;
+        this.yVel = 2 * playerSpeed / 3;
         this.super.show("walk");
       } else {
-        this.yVel = -2;
+        this.yVel = -2 * playerSpeed / 3;
         this.super.show("walk");
       }
     } else if (Math.abs(this.xPos - player.xPos) < 16) {
       this.xVel = 0;
     } else if (this.xPos - player.xPos < 0) {
-      this.xVel = 3.5;
+      this.xVel = playerSpeed * 1.4;
       this.yVel = 0;
       this.super.show("swipeRight");
     } else if (this.xPos -player.xPos > 0) {
-      this.xVel = -3.5;
+      this.xVel = -playerSpeed * 1.4;
       this.yVel = 0;
       this.super.show("swipeLeft");
     } else {
@@ -220,19 +220,19 @@ Sprite.prototype.monsterMove = function() {
       //   }
       // } else {
         if (randomNumber ===  0) {
-          this.xVel = 2;
+          this.xVel = playerSpeed * 0.7;
           this.yVel = 0;
           this.super.show("flyRight");
         } else if (randomNumber === 1) {
-          this.xVel = -2;
+          this.xVel = -playerSpeed * 0.7;
           this.yVel = 0;
           this.super.show("flyLeft");
         } else if (randomNumber === 2) {
           this.xVel = 0;
-          this.yVel = 2;
+          this.yVel = playerSpeed * 0.7;
         } else if (randomNumber === 3) {
           this.xVel = 0;
-          this.yVel = -2;
+          this.yVel = -playerSpeed * 0.7;
         } else if (randomNumber === 4) {
           this.xVel = 0;
           this.yVel = 0;
@@ -244,7 +244,7 @@ Sprite.prototype.monsterMove = function() {
 
 // -- a construcor to make light puzzles. -- //
 function LightPuzzle(positionInGridX, positionInGridY, isLit = false) {
-  this.sprite = new Sprite(0, 0, 32);
+  this.sprite = new Sprite(0, 0, tileSize / 2);
   // -- adjustments to allow checking neighbors based on numbers -- //
   this.column = 10 * positionInGridX;
   this.row = positionInGridY;
@@ -416,7 +416,7 @@ function Switch(func = function() {
         }
       }
     }) {
-  this.sprite = new Sprite(0,0,16,"purple");
+  this.sprite = new Sprite(0,0,tileSize / 4,"purple");
   this.idNumber = 0;
   this.func = func;
 };

@@ -3,16 +3,6 @@
   -- This file is where any functionality that occurs on the room level should be defined
 ###########################################################################################*/
 
-
-/////TEST ENTITY -- added to test the rooms ability to handle different sprites -- should be removed eventually
-function TestEntity1() {
-  this.sprite = new Sprite(0,0,20, "blue");
-}
-function TestEntity2() {
-  this.sprite = new Sprite(0,0,20, "green");
-}
-
-
 //  Room constructor
 //  -- To be called in room-definitions.js. To create a room call the function and pass it
 //      the width and height in tiles of the room to be created.
@@ -58,12 +48,12 @@ Room.prototype.addMap = function(map, foreground) {
           if(newEntity!="") {
             if(newEntity instanceof Sprite) {
               this.sprites.push(newEntity);
-              newEntity.yPos = y*64+32;
-              newEntity.xPos = x*64+32;
+              newEntity.yPos = y*tileSize+tileSize/2;
+              newEntity.xPos = x*tileSize+tileSize/2;
             } else {
               this.entities.push(newEntity);
-              newEntity.sprite.yPos = y*64+32;
-              newEntity.sprite.xPos = x*64+32;
+              newEntity.sprite.yPos = y*tileSize+tileSize/2;
+              newEntity.sprite.xPos = x*tileSize+tileSize/2;
               //debugger;
               this.sprites.push(newEntity.sprite);
             }
@@ -432,11 +422,11 @@ Room.prototype.spawnMonster = function() {
   }
   while (legalPosition === false) {
     var collisionAlert = false;
-    while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 75) {
-      randomXPos = (Math.floor(Math.random() * this.width * 64 * 0.9 + monsterRadius));
+    while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < tileSize * 1.2) {
+      randomXPos = (Math.floor(Math.random() * this.width * tileSize * 0.9 + monsterRadius));
     };
-    while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 75) {
-      randomYPos = (Math.floor(Math.random() * this.height * 64 * 0.9 + monsterRadius));
+    while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < tileSize * 1.2) {
+      randomYPos = (Math.floor(Math.random() * this.height * tileSize * 0.9 + monsterRadius));
     };
     for (var i = 0; i < this.sprites.length; i ++) {
       if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {

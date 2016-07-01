@@ -47,21 +47,21 @@ var entityDict = {
     } else if(icon==="@") {
       return new Sprite(0,0,0);
     } else if(icon==="w" || icon==="u") {
-      return new Wall(0,0,64,96,"green","solidWall");
+      return new Wall(0,0,tileSize,tileSize * 1.5,"green","solidWall");
     } else if(icon==="x") {
-      return new Wall(0,0,64,64,"red","exitDoor");
+      return new Wall(0,0,tileSize,tileSize,"red","exitDoor");
     } else if(icon==="X") {
-      return new Wall(0,0,64,64,"red","exitGame");
+      return new Wall(0,0,tileSize,tileSize,"red","exitGame");
     } else if(icon==="b") {
-      return new Wall(0,0,54,64,"orange","boulder");
+      return new Wall(0,0,tileSize * 0.85,tileSize,"orange","boulder");
     } else if(icon==="p") {
-      return new Wall(0,0,50,64,"red","pit");
+      return new Wall(0,0,tileSize * 0.8,tileSize,"red","pit");
     } else if(icon==="d") {
-      return new Wall(0,0,50,64,"red","completionDoor");
+      return new Wall(0,0,tileSize * 0.8,tileSize,"red","completionDoor");
     } else if(icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
       return new Switch();
     } else if(icon==="5"||icon==="6"||icon==="7"||icon==="8"||icon==="9") {
-      return new Wall(0,0,64,64,"brown","door");
+      return new Wall(0,0,tileSize,tileSize,"brown","door");
     } else if(icon==="f") {
       return new Sprite(0,0,batRadius,"#111");
     } else if(icon==="c") {

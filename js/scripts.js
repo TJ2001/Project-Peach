@@ -17,11 +17,11 @@ var collisionCount = 0;
 // -- Initialize Global Variables -- //
 var currentRoom = allRooms["A"];
 
-var width = 1152;
-var height = 960;
-var playerSpeed = 3;
+var width = 18 * tileSize;
+var height = 15 * tileSize;
+var playerSpeed = tileSize / 21;
 var supplies = 5;
-var knockBack = -45;
+var knockBack = -tileSize * 0.6;
 var money = 0;
 
 var boatX = Math.floor(allRooms["overworld"].width/2);
@@ -127,6 +127,9 @@ window.onload = function() {
   document.body.appendChild(canvas);
   animate(step);
 };
+
+
+
 
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
@@ -252,3 +255,6 @@ window.addEventListener("keyup", function (event) {
     depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
   };
 });
+
+// -- Start the event handler to innitialize the screen resize function -- //
+initialize();
