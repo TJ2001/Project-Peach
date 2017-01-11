@@ -102,7 +102,7 @@ Sprite.prototype.oniFireball = function() {
     currentRoom.monsters.push(fire);
     this.oniTell = 50;
   }
-}
+};
 Sprite.prototype.oniSwing = function() {
   if(this.ballColor==="#666") {
     this.super.show("swing");
