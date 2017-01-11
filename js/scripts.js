@@ -9,7 +9,7 @@
 var animate = window.requestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.mozRequestAnimationFrame ||
-  function(callback) { window.setTimeout(callback, 1000/60)
+  function(callback) { window.setTimeout(callback, 1000/60);
   };
 
 var collisionCount = 0;
@@ -44,7 +44,7 @@ var weaponTimer = 0;
 var weaponActive = false;
 var monsterHitTimer = 0;
 var hitActive = false;
-var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9)
+var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.radius * 1.3 * 0.9, player.radius * 1.3 * 0.9);
 var attackTimer = 0;
 var transitionTimer = 0;
 var message = "";
@@ -84,11 +84,11 @@ var update = function() {
   }
 };
 
-// -- a helper function to find the vector ratios between two pointsit takes two points as an input and returns a vector pair [x,y]
+// -- a helper function to find the vector ratios between two points, it takes two points as an input and returns a vector pair [x,y]
 var vector = function (xPos1, yPos1, xPos2, yPos2) {
   var angle = Math.atan2(xPos1 - xPos2, yPos1 -yPos2);
   var resultVector = [Math.sin(angle), Math.cos(angle)];
-  console.log(resultVector)
+  console.log(resultVector);
   return resultVector;
 };
 
@@ -250,5 +250,5 @@ window.addEventListener("keyup", function (event) {
   }
   while (depressedKeys.includes(event.keyCode)) {
     depressedKeys.splice(depressedKeys.indexOf(event.keyCode), 1);
-  };
+  }
 });
