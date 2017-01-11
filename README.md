@@ -1,5 +1,8 @@
 # _Momo's Lightbright Adventures_
 
+#### View this project on [github pages][1]
+[1]: http://tj2001.github.io/Project-Peach/ "Project Peach"
+
 #### _Momo, a boy born from a giant peach, goes on grand adventure to fight monsters, solve puzzles, and maybe fight an Oni, Will he survive? His life rest in your hands. June 24, 2016_
 
 #### By _**Callan McNulty, Joel Delight, Stewart Cole, Tim Jung**_
