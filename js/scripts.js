@@ -15,7 +15,7 @@ var animate = window.requestAnimationFrame ||
 var collisionCount = 0;
 
 // -- Initialize Global Variables -- //
-var currentRoom = allRooms["A"];
+var currentRoom = allRooms.overworld;
 
 var width = 1152;
 var height = 960;
@@ -24,8 +24,8 @@ var supplies = 5;
 var knockBack = -45;
 var money = 0;
 
-var boatX = Math.floor(allRooms["overworld"].width/2);
-var boatY = Math.floor(allRooms["overworld"].height/2);
+var boatX = Math.floor(allRooms.overworld.width/2);
+var boatY = Math.floor(allRooms.overworld.height/2);
 var weaponSwingTime = 12;
 var canvas = document.createElement('canvas');
 canvas.width = width;
@@ -48,7 +48,7 @@ var playerWeapon = new Sprite(100, 122.5, player.radius * 1.7, "black", player.r
 var attackTimer = 0;
 var transitionTimer = 0;
 var message = "";
-allSuperSprites["MomoSprite"].addObject(player);
+allSuperSprites.MomoSprite.addObject(player);
 context.textAlign = "center";
 
 // -- place each function in here that runs on each animation step -- //
@@ -97,6 +97,7 @@ var draw = function() {
   context.fillStyle = "#000";
   context.fillRect(0, 0, width, height);
   if(player.health<=0) {
+  // -- Update if you are dead -- //
     currentRoom.sprites = [player];
     player.super.show("hitDown");
     player.draw();
@@ -106,14 +107,15 @@ var draw = function() {
     context.font = "20px Arial";
     context.fillText(message, canvas.width/2, canvas.height/2 + 50);
   } else if(transitionTimer < time) {
+  // --  -- //
     currentRoom.draw(context);
     playerWeapon.draw();
     context.font = "15px Arial";
-    allSuperSprites["PickupSprite"].animations["heart"].play(context,5,5);
+    allSuperSprites.PickupSprite.animations.heart.play(context,5,5);
     context.fillText("x "+player.health.toString(),45,22);
-    allSuperSprites["PickupSprite"].animations["peach"].play(context,75,5);
+    allSuperSprites.PickupSprite.animations.peach.play(context,75,5);
     context.fillText("x "+supplies.toString(),115,22);
-    allSuperSprites["PickupSprite"].animations["coin"].play(context,145,5);
+    allSuperSprites.PickupSprite.animations.coin.play(context,145,5);
     context.fillText("x "+money.toString(),185,22);
   } else {
     context.font = "30px Arial";
@@ -130,20 +132,22 @@ window.onload = function() {
 
 // -- Optional movement key code to work better while pushing opposite directions -- //
 window.addEventListener("keydown", function(event) {
-  // -- Event listener for up and down key. -- //
-  if(currentRoom===allRooms["overworld"] && transitionTimer < time) {
+
+  if(currentRoom===allRooms.overworld && transitionTimer < time) {
+    var tempMove;
+    // -- Event listener for up and down key. -- //
     if (event.keyCode === 38) {
-      var tempMove = 8;
+      tempMove = 8;
     }
     if (event.keyCode === 40) {
-      var tempMove = 2;
+      tempMove = 2;
     }
     // -- Event listener for left and rigth key. -- //
     if (event.keyCode === 37) {
-      var tempMove = 4;
+      tempMove = 4;
     }
     if (event.keyCode === 39) {
-      var tempMove = 6;
+      tempMove = 6;
     }
     var newRoom = currentRoom.moveOverworld(tempMove);
     // var newRoom = currentRoom.moveOverworld(parseInt(event.keyCode)-48);
@@ -151,7 +155,7 @@ window.addEventListener("keydown", function(event) {
     if(newRoom!="overworld") {
       overworldMusic.pause();
       if(newRoom==="u") {
-        message = "Get ready."
+        message = "Get ready.";
         oniBattleMusic.play();
       } else if(message!="You ran out of food. You lost two hearts." && message!="You starved to death.") {
         message = "";

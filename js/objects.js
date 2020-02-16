@@ -1,3 +1,4 @@
+
 /*#########################################################################################
             OBJECTS
   -- This file contains the constructors and method definitions and related functions for
@@ -10,7 +11,7 @@
 // Important objects
 var player = new Sprite(120, 800, 20, "blue");
 var boat = new Sprite(0,0,15);
-allSuperSprites["MapMarker"].addObject(boat);
+allSuperSprites.MapMarker.addObject(boat);
 var batRadius = 16;
 var crabRadius = 16;
 
@@ -29,16 +30,16 @@ function Sprite(xPos, yPos, radius, color = "red", xVel = 0, yVel = 0) {
   this.front = true;
   this.health = 3;
   this.oniTell = 0;
-};
+}
 
 // -- draws the sprite object on the canvas -- //
 Sprite.prototype.draw = function () {
   if(typeof this.super === "undefined") {
   } else {
     if(Object.keys(this.super.animations).indexOf("solid") != -1) {
-      if(this.super.currentAnimation===this.super.animations["solid"] || this.super.currentAnimation===this.super.animations["solidShort"]) {
+      if(this.super.currentAnimation===this.super.animations.solid || this.super.currentAnimation===this.super.animations.solidShort) {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-(this.radius*3));
-      } else if(this.super.currentAnimation===this.super.animations["hole"] || this.super.currentAnimation===this.super.animations["boulderHole"]) {
+      } else if(this.super.currentAnimation===this.super.animations.hole || this.super.currentAnimation===this.super.animations.boulderHole) {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2-12);
       } else {
         this.super.draw(context, this.xPos-this.super.width, this.yPos-this.super.height/2);
@@ -96,7 +97,7 @@ Sprite.prototype.oniFireball = function() {
   if(this.ballColor==="#666") {
     this.super.show("fireBreath");
     var fire = new Sprite(this.xPos,this.yPos,10,"#222");
-    fire.super = allSuperSprites["Fireball"];
+    fire.super = allSuperSprites.Fireball;
     fire.health = 300;
     currentRoom.addSprite(fire);
     currentRoom.monsters.push(fire);
@@ -113,7 +114,7 @@ Sprite.prototype.oniSwing = function() {
     currentRoom.monsters.push(hit);
     this.oniTell = 50;
   }
-}
+};
 
 Sprite.prototype.monsterMove = function() {
   var randomNumber = Math.floor(Math.random() * 10);
@@ -132,10 +133,10 @@ Sprite.prototype.monsterMove = function() {
       this.oniTell = 0;
     } else if(this.oniTell===0) {
       this.super.show("idle");
-      if(Math.random()<.01) {
+      if(Math.random()<0.01) {
         this.oniTell += 20;
       }
-      if(Math.random()<.01) {
+      if(Math.random()<0.01) {
         this.oniTell -= 20;
       }
     } else if(this.oniTell < 21) {
@@ -249,9 +250,9 @@ function LightPuzzle(positionInGridX, positionInGridY, isLit = false) {
   this.column = 10 * positionInGridX;
   this.row = positionInGridY;
   this.isLit = isLit;
-  var newLightSuper = allSuperSprites["LightPanelSprite"].copy();
+  var newLightSuper = allSuperSprites.LightPanelSprite.copy();
   newLightSuper.addObject(this.sprite);
-};
+}
 
 // -- This function will toggle all directly adjacent lights. -- //
 LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
@@ -272,7 +273,7 @@ LightPuzzle.prototype.toggleLights = function(currentLightPuzzle) {
         this.sprite.super.show("off");
       }
     }
-  };
+  }
 };
 
 // -- constructor for static rectangular objects. xPos and yPos are the top left corner of the wall object. xSpan and ySpan are the width and height.  Behavior is how the wall will act with collisions. -- //
@@ -284,10 +285,10 @@ function Wall(xPos, yPos, xSpan, ySpan, color = "green", behavior = "solidWall")
   this.sprite = new Sprite(xPos+xSpan/2, yPos, xSpan/2);
   this.door = -1;
   this.doorOpen = false;
-  allSuperSprites["WallSprite"].copy().addObject(this.sprite);
+  allSuperSprites.WallSprite.copy().addObject(this.sprite);
   this.xMovable = true;
   this.yMovable = false;
-};
+}
 
 Wall.prototype.draw = function() {
   context.fillStyle = this.wallColor;
@@ -317,12 +318,13 @@ Wall.prototype.collisionWithSprite = function(sprite) {
 
 //Collision Behavior used by all solid wall types
 Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
+  var bump;
   if (xCollide) {
     while(Math.abs(this.sprite.xPos-sprite.xPos) <= this.sprite.radius + sprite.radius) {
       if(this.sprite.xPos>sprite.xPos) {
-        var bump = Math.min(sprite.xVel, -.5);
+        bump = Math.min(sprite.xVel, -0.5);
       } else {
-        var bump = Math.max(sprite.xVel, .5);
+        bump = Math.max(sprite.xVel, 0.5);
       }
       sprite.xPos = sprite.xPos + bump;
     }
@@ -330,14 +332,14 @@ Wall.prototype.collideSolid = function(sprite, xCollide, yCollide) {
   if (yCollide) {
     while(Math.abs(this.sprite.yPos-sprite.yPos) <= this.sprite.radius + sprite.radius) {
       if(this.sprite.yPos>sprite.yPos) {
-        var bump = Math.min(sprite.xVel, -.5);
+        bump = Math.min(sprite.xVel, -0.5);
       } else {
-        var bump = Math.max(sprite.xVel, .5);
+        bump = Math.max(sprite.xVel, 0.5);
       }
       sprite.yPos = sprite.yPos + bump;
     }
   }
-}
+};
 // -- collisionBehavior will be run by collisionWithSprite -- //
 Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
   if (this.behavior === "solidWall") {
@@ -360,7 +362,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
           currentRoom.sprites.splice(currentRoom.sprites.indexOf(this.sprite),1);
           return;
         }
-      };
+      }
       this.collideSolid(sprite, xCollide, yCollide);
       if(xCollide) {
         this.xMovable = false;
@@ -391,7 +393,7 @@ Wall.prototype.collisionBehavior = function(sprite, xCollide, yCollide) {
     }
   } else if (this.behavior === "exitDoor") {
     if(xCollide || yCollide) {
-      currentRoom = allRooms["overworld"];
+      currentRoom = allRooms.overworld;
       lightRoomMusic.pause();
       boulderRoomMusic.pause();
       oniBattleMusic.pause();

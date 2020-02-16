@@ -10,24 +10,27 @@
 //        to add additional entites, add another else-if block to the 'get' function which will return a new
 //        instance of the object given its key
 var tileDict = {
-  "a": new Animation("img/grass1.png",0,0,32,32,1,10),
-  "b": new Animation("img/grass1.png",0,0,32,32,1,10),
+  // ["a","a","a","a","o","h","i","d","e","/","|","f","g","b","c","<",">","g"],
+  // ["a","a","a","a","a","a","a","a","a","b","b","b","b","b","b","b","b","g"],
+  //   new Animation(ImageFile,X-OffSet,Y-OffSet,X-Size,Y-Size,Frames,AnimationSpeed)
+  "a": new Animation("img/grass1.png",0,0,32,32,1,10),//Grass
+  //"b": new Animation("img/grass1.png",0,0,32,32,1,10),
   "~": new Animation("img/overworld.png",32,0,16,16,2,59),
   "q": new Animation("img/overworld.png",0,0,16,16,2,59),
   "w": new Animation("img/overworld.png",0,0,16,16,2,60),
   "o": new Animation("img/onitile.png",0,0,16,16,2,60),
-  "h": new Animation("img/edge-island-corner.png",0,0,32,32,1,10),
-  "i": new Animation("img/edge-island-corner.png",32,0,32,32,1,10),
-  "d": new Animation("img/edge-island1.png",0,0,32,32,1,10),
-  "e": new Animation("img/edge-island1.png",32,0,32,32,1,10),
-  "/": new Animation("img/exit-boat1-sm.png",0,0,32,32,1,10),
-  "|": new Animation("img/exit-boat1-sm.png",32,0,32,32,1,10),
-  "f": new Animation("img/edge-island-corner2.png",0,0,32,32,1,10),
-  "g": new Animation("img/edge-island-corner2.png",32,0,32,32,1,10),
-  "b": new Animation("img/edge-island2.png",0,0,32,32,1,10),
-  "c": new Animation("img/edge-island2.png",32,0,32,32,1,10),
-  ">": new Animation("img/exit-boat1-sm2.png",0,0,32,32,1,10),
-  "<": new Animation("img/exit-boat1-sm2.png",32,0,32,32,1,10),
+  "h": new Animation("img/edge-island-corner.png",0,0,32,32,1,10),//Island Corner Bottom-Left
+  "i": new Animation("img/edge-island-corner.png",32,0,32,32,1,10),//Island Corner Bottom-Right
+  "d": new Animation("img/edge-island1.png",0,0,32,32,1,10),//Island Side Right
+  "e": new Animation("img/edge-island1.png",32,0,32,32,1,10),//Island Side Bottom
+  "/": new Animation("img/exit-boat1-sm.png",0,0,32,32,1,10),//Boat Corner Bottom-Left
+  "|": new Animation("img/exit-boat1-sm.png",32,0,32,32,1,10),//Boat Corner Bottom-Right
+  "f": new Animation("img/edge-island-corner2.png",0,0,32,32,1,10),//Island Corner Top-Left
+  "g": new Animation("img/edge-island-corner2.png",32,0,32,32,1,10),//Island Corner Top-Right
+  "b": new Animation("img/edge-island2.png",0,0,32,32,1,10),//Island Side Top
+  "c": new Animation("img/edge-island2.png",32,0,32,32,1,10),//Island Side Left
+  ">": new Animation("img/exit-boat1-sm2.png",0,0,32,32,1,10),//Boat Corner Top-Right
+  "<": new Animation("img/exit-boat1-sm2.png",32,0,32,32,1,10),//Boat Corner Top-Left
 
   "r": new Animation("img/overworld.png",0,0,16,16,2,59),
   "s": new Animation("img/overworld.png",0,0,16,16,2,59),
@@ -39,7 +42,7 @@ var tileDict = {
   "A": new Animation("img/overworld.png",0,0,16,16,2,59),
   "p": new Animation("img/overworld.png",0,0,16,16,2,59)
 
-}
+};
 var entityDict = {
   get: function(icon) {
     if(icon==="l") {
@@ -88,7 +91,7 @@ var entityDict = {
       return "";
     }
   }
-}
+};
 
 
 // -- default height and width of the room in tiles
@@ -108,11 +111,46 @@ var allRooms = {
   "m": new Room(roomWidth, roomHeight),
   "n": new Room(roomWidth, roomHeight),
   "p": new Room(roomWidth, roomHeight),
+  "test": new Room(roomWidth, roomHeight),
   "overworld": new Room(roomWidth*2, roomHeight*2)
 
 
-}
+};
 
+allRooms.test.addMap([
+["a","a","a","a","o","h","i","d","e","/","|","f","g","b","c","<",">","g"],
+["a","a","a","a","a","a","a","a","a","b","b","b","b","b","b","b","b","g"],
+["a","a","a","a","o","h","i","d","e","/","|","f","g","b","c","<",">","g"],
+["a","a","a","a","a","a","a","a","a","b","b","b","b","b","b","b","b","g"],
+["a","a","a","a","o","h","i","d","e","/","|","f","g","b","c","<",">","g"],
+["a","a","a","a","a","a","a","a","a","b","b","b","b","b","b","b","b","g"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["c","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","d"],
+["h","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","e","i"], ],false);
+allRooms.test.addMap([
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  [" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","w"],
+  ["w","u","u","u","u","u","u","u","u","u","u","u","u","u","u","u","u","w"],
+],true);
+allRooms.test.addSprite(player);
 
 //In this area, new maps can be created and added to the rooms created above
 //  Instructions: Get the desired room from the allRooms object and use the addMap method on it.
@@ -290,7 +328,7 @@ allRooms["t"].addMap([
   [" "," "," "," ","w","c","7"," ","7","$","%","$","%","w"," "," "," "," "],
   [" "," "," "," ","w","u","u","2","u","u","u","u","u","w"," "," "," "," "],
   [" "," "," "," "," "," ","w","m","7"," "," "," "," "," "," "," ","x"," "],
-  [" ","u","u","u","u","u","w","u","w","u","u","u","u","u","u","u","u","m"],
+  [" ","u","u","u","u","u","w","u","u","u","u","u","u","u","u","u","u","m"],
 
 ],true);
 
@@ -522,6 +560,7 @@ map[boatY][boatX] = "A";
 map[15][15] = "q";
 map[12][14] = "l";
 map[10][17] = "r";
+map[12][12] = "p";
 map[9][21] = "m";
 map[11][26] = "s";
 map[12][22] = "n";

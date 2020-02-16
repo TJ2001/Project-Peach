@@ -32,7 +32,7 @@ function Room(width, height) {
   // -- Boolean to stop triggering the light puzzle repeatedly -- //
   this.lightPuzzlePlayerBoolean = false;
   // -- variable to make collisionCheckLightPuzzle work -- //
-  this.triggeredLight;
+  this.triggeredLight = null;
   // -- set up the light puzzle -- //
   this.currentLightPuzzle = [];
   this.wallObjects = [];
@@ -52,10 +52,11 @@ Room.prototype.addMap = function(map, foreground) {
     this.foreground = map;
     for(var y=0; y<this.height; y++) {
       for(var x=0; x<this.width; x++) {
+        var newEntity;
         var icon = this.foreground[y][x];
         if(icon!=" ") {
-          var newEntity = entityDict.get(icon);
-          if(newEntity!="") {
+          newEntity = entityDict.get(icon);
+          if(newEntity!=="") {
             if(newEntity instanceof Sprite) {
               this.sprites.push(newEntity);
               newEntity.yPos = y*64+32;
@@ -98,16 +99,16 @@ Room.prototype.addMap = function(map, foreground) {
           }
         } else if(icon==="$"||icon==="%"||icon ==="&"||icon==="0"||icon==="1"||icon==="2"||icon==="3"||icon==="4") {
           if(icon==="$") {
-            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super = allSuperSprites.PickupSprite.copy();
             newEntity.sprite.super.show("coin");
           } else if(icon==="%") {
-            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super = allSuperSprites.PickupSprite.copy();
             newEntity.sprite.super.show("heart");
           } else if(icon==="&") {
-            newEntity.sprite.super = allSuperSprites["PickupSprite"].copy();
+            newEntity.sprite.super = allSuperSprites.PickupSprite.copy();
             newEntity.sprite.super.show("peach");
           } else {
-            newEntity.sprite.super = allSuperSprites["Button"].copy();
+            newEntity.sprite.super = allSuperSprites.Button.copy();
             newEntity.sprite.super.show("off");
           }
           this.switches.push(newEntity);
@@ -115,11 +116,11 @@ Room.prototype.addMap = function(map, foreground) {
           newEntity.sprite.front = false;
         } else if(icon==="f") {
           this.monsters.push(newEntity);
-          newEntity.super = allSuperSprites["BatMobSprite"].copy();
+          newEntity.super = allSuperSprites.BatMobSprite.copy();
           newEntity.super.show("flyLeft");
         } else if(icon==="c") {
           this.monsters.push(newEntity);
-          newEntity.super = allSuperSprites["CrabMobSprite"].copy();
+          newEntity.super = allSuperSprites.CrabMobSprite.copy();
           newEntity.super.show("walk");
         }
       }
@@ -127,14 +128,14 @@ Room.prototype.addMap = function(map, foreground) {
   } else {
     this.background = map;
     //debugger;
-    for(var y=0; y<this.height; y++) {
+    for(var y2=0; y2<this.height; y2++) {
       this.backgroundAnimations.push([]);
-      for(var x=0; x<this.width; x++) {
-        this.backgroundAnimations[y].push(tileDict[this.background[y][x]].copy());
+      for(var x2=0; x2<this.width; x2++) {
+        this.backgroundAnimations[y2].push(tileDict[this.background[y2][x2]].copy());
       }
     }
   }
-}
+};
 
 // sortSprites and addSprite methods
 //  -- These methods do not need to be called manually if using a map to set up a room.
@@ -154,11 +155,11 @@ Room.prototype.sortSprites = function() {
       return 0;
     }
   });
-}
+};
 Room.prototype.addSprite = function(sprite) {
   this.sprites.push(sprite);
   this.sortSprites();
-}
+};
 
 // draw and update methods
 // -- these methods are to be called in the main game loop and contain code that is to be run every step of the game
@@ -175,12 +176,12 @@ Room.prototype.draw = function(ctx) {
     }
   }
   this.sortSprites();
-  for(var i=0; i<this.sprites.length; i++) {
-    if(this.sprites[i].front) {
-      this.sprites[i].draw();
+  for(var j=0; j<this.sprites.length; j++) {
+    if(this.sprites[j].front) {
+      this.sprites[j].draw();
     }
   }
-}
+};
 Room.prototype.update = function() {
   boat.xPos = currentRoom.boatX*tileDict["~"].frameArray[0].width*2 + (tileDict["~"].frameArray[0].width);
   boat.yPos = currentRoom.boatY*tileDict["~"].frameArray[0].height*2  + (tileDict["~"].frameArray[0].height);
@@ -197,9 +198,9 @@ Room.prototype.update = function() {
           chimes.play();
         }
         this.completed = true;
-        if(allRooms["l"].completed && allRooms["r"].completed){
-          allRooms["overworld"].background[15][18] = "u";
-          allRooms["overworld"].backgroundAnimations[15][18] = tileDict["u"].copy();
+        if(allRooms.l.completed && allRooms.r.completed){
+          allRooms.overworld.background[15][18] = "u";
+          allRooms.overworld.backgroundAnimations[15][18] = tileDict.u.copy();
         }
       }
     }
@@ -232,33 +233,33 @@ Room.prototype.update = function() {
       }
       console.log("Health: "+player.health.toString());
     }
-  };
-  for (var i=0; i < this.wallObjects.length; i++) {
-    if(this.wallObjects[i].behavior==="completionDoor" && this.completed) {
-      this.wallObjects[i].doorOpen = true;
-      this.wallObjects[i].sprite.super.show("inDoorHOpen");
-      this.wallObjects[i].sprite.front = false;
+  }
+  for (var j=0; j < this.wallObjects.length; j++) {
+    if(this.wallObjects[j].behavior==="completionDoor" && this.completed) {
+      this.wallObjects[j].doorOpen = true;
+      this.wallObjects[j].sprite.super.show("inDoorHOpen");
+      this.wallObjects[j].sprite.front = false;
     }
-    this.wallObjects[i].xMovable = true;
-    this.wallObjects[i].yMovable = true;
+    this.wallObjects[j].xMovable = true;
+    this.wallObjects[j].yMovable = true;
     for(var s=0; s<this.sprites.length; s++) {
-      if(this.sprites[s]!=player && this.wallObjects[i].behavior!="exitDoor" && this.sprites[s].front) {
-        this.wallObjects[i].collisionWithSprite(this.sprites[s]);
+      if(this.sprites[s]!=player && this.wallObjects[j].behavior!="exitDoor" && this.sprites[s].front) {
+        this.wallObjects[j].collisionWithSprite(this.sprites[s]);
       }
     }
-    this.wallObjects[i].collisionWithSprite(player);
+    this.wallObjects[j].collisionWithSprite(player);
   }
-  for (var i=0; i < this.switches.length; i++) {
-    this.switches[i].collisionWithSprite(player);
+  for (var k=0; k < this.switches.length; k++) {
+    this.switches[k].collisionWithSprite(player);
   }
-}
+};
 
 
 
 
 Room.prototype.runTimedEvents = function() {
-  for (i = 0; i < this.monsters.length; i++) {
-    this.monsters[i].monsterMove();
+  for (var h = 0; h < this.monsters.length; h++) {
+    this.monsters[h].monsterMove();
   }
   if (time < weaponTimer) {
     // -- check for collisions with monsters and your weapon while weapon is active -- //
@@ -282,7 +283,7 @@ Room.prototype.runTimedEvents = function() {
           if (this.monsters[i].health === 9) {
             oniLaugh.play();
           } else {
-            oniGettingHit.currentTime = 0
+            oniGettingHit.currentTime = 0;
             oniGettingHit.play();
           }
         }
@@ -292,16 +293,16 @@ Room.prototype.runTimedEvents = function() {
           this.monsters.splice(i, 1);
         }
       }
-    };
+    }
   } else {
     weaponActive = false;
     hitActive = false;
   }
-}
+};
 
 Room.prototype.reset = function() {
-  if(currentRoom!=allRooms["overworld"]) {
-    currentRoom = allRooms["overworld"];
+  if(currentRoom!=allRooms.overworld) {
+    currentRoom = allRooms.overworld;
     message = "The island shifts beneath your feet.";
     transitionTimer = time + 60;
     var allRoomKeys = Object.keys(allRooms);
@@ -315,7 +316,7 @@ Room.prototype.reset = function() {
       }
     }
   }
-}
+};
 
 // findIsland and moveOverworld methods
 // -- These methods deal with movement in the overworld
@@ -341,7 +342,7 @@ Room.prototype.findIsland = function(startX, startY) {
       }
     }
   }
-}
+};
 Room.prototype.moveOverworld = function(direction) {
   if(0 < direction&&direction < 10) {
     var newX = this.boatX;
@@ -383,7 +384,7 @@ Room.prototype.moveOverworld = function(direction) {
     }
   }
   return "overworld";
-}
+};
 
 // Light puzzle methods
 // -- these methods are used to make light puzzles work
@@ -399,7 +400,7 @@ Room.prototype.collisionCheckLightPuzzle = function(triggeringSprite, lightPuzzl
   if (this.lightPuzzlePlayerBoolean === true && calculateDistance(this.triggeredLight, player) > this.triggeredLight.radius + triggeringSprite.radius + 10) {
     this.lightPuzzlePlayerBoolean = false;
   }
-}
+};
 
 // -- Checks that all isLit booleans in an array, lightArray, match the boolean you input in booleanToMatch -- //
 Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
@@ -409,7 +410,7 @@ Room.prototype.lightPuzzleCompleteCheck = function(booleanToMatch) {
     if (this.currentLightPuzzle[i].isLit != booleanToMatch) {
       puzzleCompleted = false;
     }
-  };
+  }
   // if (puzzleCompleted = true) {
   //   chimes.play();
   // }
@@ -423,21 +424,22 @@ Room.prototype.spawnMonster = function() {
   var randomYPos = 0;
   var legalPosition = false;
   var randomColor = Math.floor(Math.random() * 2);
+  var monsterRadius;
   if (randomColor === 0) {
     randomColor = "#000";
-    var monsterRadius = crabRadius;
+    monsterRadius = crabRadius;
   } else {
     randomColor = "#111";
-    var monsterRadius = batRadius;
+    monsterRadius = batRadius;
   }
   while (legalPosition === false) {
     var collisionAlert = false;
     while (randomXPos < 1 || Math.abs(randomXPos - player.xPos) < 75) {
       randomXPos = (Math.floor(Math.random() * this.width * 64 * 0.9 + monsterRadius));
-    };
+    }
     while (randomYPos < 1 || Math.abs(randomYPos - player.yPos) < 75) {
       randomYPos = (Math.floor(Math.random() * this.height * 64 * 0.9 + monsterRadius));
-    };
+    }
     for (var i = 0; i < this.sprites.length; i ++) {
       if (collisionCheckOneSprite(this.sprites[i], randomXPos, randomYPos, monsterRadius)) {
         collisionAlert = true;
@@ -446,13 +448,13 @@ Room.prototype.spawnMonster = function() {
       if (collisionAlert === false) {
         legalPosition = true;
       }
-    };
-  };
+    }
+  }
   var newMonster = new Sprite(randomXPos, randomYPos, monsterRadius, randomColor);
   if(newMonster.ballColor==="#000") {
-    newMonster.super = allSuperSprites["CrabMobSprite"].copy();
+    newMonster.super = allSuperSprites.CrabMobSprite.copy();
   } else if(newMonster.ballColor==="#111") {
-    newMonster.super = allSuperSprites["BatMobSprite"].copy();
+    newMonster.super = allSuperSprites.BatMobSprite.copy();
   }
   this.monsters.push(newMonster);
   this.sprites.push(newMonster);
