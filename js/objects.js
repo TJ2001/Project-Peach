@@ -10,6 +10,7 @@
 
 // Important objects
 var player = new Sprite(120, 800, 20, "blue");
+var dog = new Sprite(145,845,15,"#006");
 var boat = new Sprite(0,0,15);
 allSuperSprites.MapMarker.addObject(boat);
 var batRadius = 16;
@@ -58,7 +59,7 @@ Sprite.prototype.draw = function () {
 Sprite.prototype.update = function() {
   this.xPos += this.xVel;
   this.yPos += this.yVel;
-  if (this.ballColor === "blue" || this.ballColor === "#000" || this.ballColor === "#111") {
+  if (this.ballColor === "blue" || this.ballColor === "#000" || this.ballColor === "#111" || this.ballColor === "#006") {
     if (this.xPos - this.radius < 64) {
       this.xPos = this.radius + 65;
     } else if (this.xPos + this.radius > currentRoom.width * 64 - 64) {
@@ -240,6 +241,12 @@ Sprite.prototype.monsterMove = function() {
         }
       // }
     }
+  } else if (this.ballColor === "#006") {
+    // if (this.xPos - player.xPos != 64){
+    //   this
+    // }
+    this.xPos = player.xPos + 64;
+    this.yPos = player.yPos;
   }
 };
 

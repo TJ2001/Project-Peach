@@ -89,3 +89,4 @@ $(".start").click(function() {
   console.log("time reset");
   time = -5800;
 });
+$(document).ready(function(){$("#skip-intro").click();});
